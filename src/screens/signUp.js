@@ -10,23 +10,17 @@ import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import Input from "@mui/material/Input";
-import FilledInput from "@mui/material/FilledInput";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
-import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-
-import Stack from '@mui/material/Stack';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import CreateIcon from "@mui/icons-material/Create";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 
 import Colors from "../res/colors";
 import Images from "../res/images";
@@ -55,8 +49,13 @@ export default function SignInSide() {
     showPassword: false,
     confirmPassword: "",
     showConfirmPassword: false,
-    date: new Date("2014-08-18T21:11:54"),
   });
+
+  const [gender, setGender] = React.useState("");
+
+  const handleGenderChange = (event) => {
+    setGender(event.target.value);
+  };
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -98,7 +97,7 @@ export default function SignInSide() {
         sm={4}
         md={8}
         sx={{
-          backgroundImage: `url(${Images.backgroundImage1})`,
+          backgroundImage: `url(${Images.SofaBrown})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -106,15 +105,16 @@ export default function SignInSide() {
       <Grid item xs={12} sm={8} md={4} component={Paper} elevation={6} square>
         <Box
           sx={{
-            my: 15,
             mx: 4,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ width: 70, height: 70, m: 1, bgcolor: Colors.biraRed }}>
-            <LockOutlinedIcon />
+          <Avatar
+            sx={{ width: 90, height: 90, m: 1, bgcolor: Colors.primary, mt: 3 }}
+          >
+            <CreateIcon sx={{ width: 45, height: 45 }} />
           </Avatar>
           <Typography
             component="h1"
@@ -229,26 +229,48 @@ export default function SignInSide() {
                   />
                 </FormControl>
               </Grid>
+
+            
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    id="date"
+                    label="Date of Birth"
+                    type="date"
+                    sx={{ width: 220 }}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">
+                      Gender
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={gender}
+                      label="Gender"
+                      onChange={handleGenderChange}
+                    >
+                      <MenuItem value={10}>Male</MenuItem>
+                      <MenuItem value={20}>Female</MenuItem>
+                      <MenuItem value={30}>Other</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
+
               <Grid item xs={12}>
                 <FormControlLabel
                   control={
                     <Checkbox value="allowExtraEmails" color="primary" />
                   }
-                  label="I'd like to receive exclusive offers and promotions via email."
+                  label="I'd like to receive new offers and promotions via email."
                 />
               </Grid>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <Stack spacing={3}>
-                  <DesktopDatePicker
-                    label="Date desktop"
-                    inputFormat="MM/dd/yyyy"
-                    value={values.date}
-                    onChange={handleChange}
-                    renderInput={(params) => <TextField {...params} />}
-                  />
-                </Stack>
-              </LocalizationProvider>
-            </Grid>
+            
 
             <Button
               type="submit"
@@ -278,7 +300,7 @@ export default function SignInSide() {
                 </Link>
               </Grid>
             </Grid>
-            <Copyright sx={{ mt: 5 }} />
+            <Copyright sx={{ mt: 3 }} />
           </Box>
         </Box>
       </Grid>

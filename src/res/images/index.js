@@ -1,11 +1,13 @@
-import bb from './bb.jpg';
-import bbb from './bbb.jpg';
-import bbbb from './bbbb.jpg';
+import MirrorGreen from './mirrorGreen.jpg';
+import MirrorWhite from './mirrorWhite.jpg';
+import RoomGreen from './roomGreen.jpg';
+import SofaBrown from './sofaBrown.jpg';
 
 const Images= {
-  backgroundImage1: bb,
-  backgroundImage2: bbb,
-  backgroundImage3: bbbb,
+  MirrorGreen: MirrorGreen,
+  MirrorWhite: MirrorWhite,
+  RoomGreen: RoomGreen,
+  SofaBrown: SofaBrown,
 }
 
 export default Images;

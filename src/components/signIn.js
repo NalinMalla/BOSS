@@ -51,7 +51,7 @@ export default function SignIn() {
       }}
     >
       <Avatar
-        sx={{ width: 90, height: 90, m: 1, bgcolor: Colors.biraRed, mt: 3 }}
+        sx={{ width: 90, height: 90, m: 1, bgcolor: Colors.primary, mt: 3 }}
       >
         <LockOpenIcon sx={{ width: 45, height: 45 }} />
       </Avatar>

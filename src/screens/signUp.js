@@ -230,47 +230,41 @@ export default function SignInSide() {
                 </FormControl>
               </Grid>
 
-            
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    id="date"
-                    label="Date of Birth"
-                    type="date"
-                    sx={{ width: 220 }}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">
-                      Gender
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={gender}
-                      label="Gender"
-                      onChange={handleGenderChange}
-                    >
-                      <MenuItem value={10}>Male</MenuItem>
-                      <MenuItem value={20}>Female</MenuItem>
-                      <MenuItem value={30}>Other</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-              </Grid>
-
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I'd like to receive new offers and promotions via email."
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="date"
+                  label="Date of Birth"
+                  type="date"
+                  fullWidth
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                 />
               </Grid>
-            
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={gender}
+                    label="Gender"
+                    onChange={handleGenderChange}
+                  >
+                    <MenuItem value={10}>Male</MenuItem>
+                    <MenuItem value={20}>Female</MenuItem>
+                    <MenuItem value={30}>Other</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+            </Grid>
+
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={<Checkbox value="allowExtraEmails" color="primary" />}
+                label="I'd like to receive new offers and promotions via email."
+              />
+            </Grid>
 
             <Button
               type="submit"

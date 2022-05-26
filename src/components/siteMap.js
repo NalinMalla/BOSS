@@ -34,7 +34,7 @@ export default function SiteMap(){
          <Link href="#" underline="none" style={{color: "rgba(255,255,255,0.6)",}}>Email</Link>
          <Link href="#" underline="none" style={{color: "rgba(255,255,255,0.6)",}}>Facebook</Link>
          <Link href="#" underline="none" style={{color: "rgba(255,255,255,0.6)",}}>Whats App</Link>
-         <Link href="#" underline="none" style={{color: "rgba(255,255,255,0.6)",}}>+997-01445555</Link>
+         <Link href="#" underline="none" style={{color: "rgba(255,255,255,0.6)",}}>+977-01445555</Link>
        </div>
      </div>
    );
@@ -44,10 +44,10 @@ const Styles = {
   root: {
     display: "flex",
     flex: 1,
-    paddingLeft: 60,
-    paddingRight: 60,
+    width: '93%',
+
     paddingTop: 32,
-    marginTop: 60,
+    // marginTop: 5,
     justifyContent: "space-between",
     backgroundColor: Colors.primary,
     alignItems: "flex-start"
@@ -58,7 +58,9 @@ const Styles = {
     justifyContent: "space-around",
     color: "rgba(255,255,255,0.6)",
     fontWeight: 5,
-    fontSize: 16
+    fontSize: 16,
+    marginLeft: 5,
+    marginRight: 5,
   },
   header: {
     color: "rgba(255,255,255,0.9)",

@@ -16,6 +16,7 @@ const NavButton = (prop) => {
       style={{
         height: 45,
         border: "0px",
+        borderRadius: '0px 0px 5px 5px',
         paddingRight: 20,
         paddingLeft: 20,
         backgroundColor: Colors.primary,

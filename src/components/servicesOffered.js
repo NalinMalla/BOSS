@@ -25,6 +25,7 @@ const Styles = {
     flexDirection: 'row',
     alignItems: "center",
     justifyContent: "space-around",
+    width:'95%',
     marginLeft:60,
     marginRight:60,
     marginTop:32,
@@ -38,11 +39,11 @@ const Styles = {
   heading: {
     color: Colors.primary,
     fontWeight: "bold",
-    fontSize: 18,
+    fontSize: 20,
   },
   description: {
     color: Colors.secondary,
-    fontSize: 14,
+    fontSize: 16,
     marginTop: 3
   }
 };

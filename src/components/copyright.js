@@ -29,7 +29,7 @@ export default function Copyright() {
 
       <div style={Styles.rightContainer}>
         <a href="/" style={{ marginBottom: -7 }}>
-          <img src={Images.Logo} alt="Logo" style={Styles.logo} />
+          <img src={Images.LogoStamp} alt="Logo" style={Styles.logo} />
         </a>
       </div>
     </div>
@@ -40,8 +40,7 @@ const Styles = {
   root: {
     display: "flex",
     flex: 1,
-    paddingLeft: 60,
-    paddingRight: 60,
+    width: '92%',
     paddingTop: 20,
     paddingBottom: 60,
     justifyContent: "space-between",
@@ -55,9 +54,10 @@ const Styles = {
     fontSize: 13,
     fontWeight: 3,
     color: "rgba(255,255,255, 0.7)",
+    
   },
   logo: {
-    height: "10vh",
+    height: "13vh",
   },
   rightContainer: {
     display: "flex",

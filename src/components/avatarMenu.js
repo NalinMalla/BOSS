@@ -15,18 +15,12 @@ import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import StarBorderPurple500Icon from "@mui/icons-material/StarBorderPurple500";
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import PersonIcon from '@mui/icons-material/Person';
-import SignIn from "../components/signIn"
-import CustomModal from "../components/CustomModal";
 
 import Colors from "../res/colors";
 
-export default function AccountMenu() {
-  const [signIn, setSignIn] = React.useState(false);
-  const handleOpenSignIn = () => setSignIn(true);
-  const handleCloseSignIn = () => setSignIn(false);
-
+export default function AvatartMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const reveal = Boolean(anchorEl);
+  const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -36,14 +30,14 @@ export default function AccountMenu() {
   return (
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
-        <Tooltip title="Account settings">
+        <Tooltip title="User Profile">
           <IconButton
             onClick={handleClick}
             size="small"
             sx={{ mt: 4,  }}
-            aria-controls={reveal ? "avatar-menu" : undefined}
+            aria-controls={open ? "avatar-menu" : undefined}
             aria-haspopup="true"
-            aria-expanded={reveal ? "true" : undefined}
+            aria-expanded={open ? "true" : undefined}
           >
             <Avatar sx={{ width: 28, height: 28, backgroundColor: Colors.primary}}>
               <PersonIcon sx={{ width: 20, height: 20}}/>
@@ -54,7 +48,7 @@ export default function AccountMenu() {
       <Menu
         anchorEl={anchorEl}
         id="avatar-menu"
-        reveal={reveal}
+        open={open}
         onClose={handleClose}
         onClick={handleClose}
         PaperProps={{
@@ -86,15 +80,10 @@ export default function AccountMenu() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem  onClick={handleOpenSignIn}>
-          <ListItemIcon >
+        <MenuItem>
+          <ListItemIcon>
             <AccountBoxIcon fontSize="small" />
           </ListItemIcon>
-          <CustomModal
-        signIn={signIn}
-        onClose={handleCloseSignIn}
-        component= {<SignIn />}
-      />
           Profile
         </MenuItem>
         <MenuItem>

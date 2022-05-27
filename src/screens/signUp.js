@@ -95,14 +95,14 @@ export default function SignInSide() {
         item
         xs={false}
         sm={4}
-        md={8}
+        md={7.5}
         sx={{
           backgroundImage: `url(${Images.SofaBrown})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       />
-      <Grid item xs={12} sm={8} md={4} component={Paper} elevation={6} square>
+      <Grid item xs={12} sm={8} md={4.5} component={Paper} elevation={6} square>
         <Box
           sx={{
             mx: 4,
@@ -112,14 +112,14 @@ export default function SignInSide() {
           }}
         >
           <Avatar
-            sx={{ width: 90, height: 90, m: 1, bgcolor: Colors.primary, mt: 3 }}
+            sx={{ width: 84, height: 84, m: 1, bgcolor: Colors.primary, mt: 3 }}
           >
-            <CreateIcon sx={{ width: 45, height: 45 }} />
+            <CreateIcon sx={{ width: 42, height: 42 }} />
           </Avatar>
           <Typography
             component="h1"
             variant="h4"
-            sx={{ color: Colors.primary }}
+            sx={{ color: Colors.primary, fontSize: 30 }}
           >
             Sign Up
           </Typography>
@@ -271,8 +271,8 @@ export default function SignInSide() {
               fullWidth
               variant="contained"
               sx={{
-                mt: 3,
-                mb: 2,
+                mt: 2,
+                mb: 1,
                 height: "50px",
                 backgroundColor: Colors.primary,
                 fontSize: "16px",

@@ -47,18 +47,17 @@ export default function SignIn() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        borderRadius: 2,
       }}
     >
       <Avatar
-        sx={{ width: 90, height: 90, m: 1, bgcolor: Colors.primary, mt: 3 }}
+        sx={{ width: 84, height: 84, m: 1, bgcolor: Colors.primary }}
       >
-        <LockOpenIcon sx={{ width: 45, height: 45 }} />
+        <LockOpenIcon sx={{ width: 42, height: 42 }} />
       </Avatar>
-      <Typography component="h1" variant="h4" sx={{ color: Colors.primary }}>
+      <Typography component="h1" variant="h4" sx={{ color: Colors.primary, fontSize: 30 }}>
         Sign In
       </Typography>
-      <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3,color: Colors.primary, borderColor: Colors.primary }}>
+      <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 2,color: Colors.primary, borderColor: Colors.primary }}>
      
       <TextField
           margin="normal"
@@ -93,7 +92,7 @@ export default function SignIn() {
           type="submit"
           fullWidth
           variant="contained"
-          sx={{ mt: 3, mb: 2, height: "50px", backgroundColor:Colors.primary, fontSize: "16px" }}
+          sx={{ mt: 1, mb: 1, height: "50px", backgroundColor:Colors.primary, fontSize: "16px" }}
         >
           Sign In
         </Button>
@@ -110,7 +109,7 @@ export default function SignIn() {
           </Grid>
         </Grid>
       </Box>
-      <Copyright sx={{ mt: 8, mb: 3 }} />
+      <Copyright sx={{ mt: 5}} />
     </Box>
   );
 }

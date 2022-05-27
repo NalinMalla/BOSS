@@ -9,13 +9,20 @@ import ServicesOffered from "../components/servicesOffered";
 import AboutCompany from "../components/aboutCompany";
 import SiteMap from "../components/siteMap";
 import Copyright from "../components/copyright";
+import SignIn from "../components/signIn"
+import CustomModal from "../components/CustomModal";
+import ProductGrid from "../components/productGrid";
 
 import Images from "../res/images";
 
 const Home = () => {
+  const [openModal, setOpenModal] = React.useState(false);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+  
   return (
     <div id="root" style={Styles.root}>
-      <Header />
+      <Header handleSignIn={handleOpenModal}/>
       <NavBar />
       {/* <Carousel/> */}
       <img
@@ -38,17 +45,25 @@ const Home = () => {
         <span style={Styles.title}>MOST POPULAR</span>
         <div style={{ ...Styles.titleUnderline, width: 170 }}></div>
       </div>
+      <ProductGrid/>
+      
       <div style={Styles.container}>
         <span style={Styles.title}>HOT DEALS</span>
         <div style={{ ...Styles.titleUnderline, width: 120 }}></div>
       </div>
+      <ProductGrid/>
 
       <AboutCompany />
       <div style={Styles.wrapper}>
         <SiteMap />
         <Copyright />
       </div>
-      
+
+      <CustomModal
+        open={openModal}
+        onClose={handleCloseModal}
+        component= {<SignIn />}
+      />
     </div>
   );
 };

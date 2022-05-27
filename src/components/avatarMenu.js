@@ -13,12 +13,12 @@ import InventoryIcon from "@mui/icons-material/Inventory";
 import CancelIcon from "@mui/icons-material/Cancel";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import StarBorderPurple500Icon from "@mui/icons-material/StarBorderPurple500";
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import PersonIcon from '@mui/icons-material/Person';
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import PersonIcon from "@mui/icons-material/Person";
 
 import Colors from "../res/colors";
 
-export default function AvatartMenu() {
+export default function AvatartMenu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -34,13 +34,15 @@ export default function AvatartMenu() {
           <IconButton
             onClick={handleClick}
             size="small"
-            sx={{ mt: 4,  }}
+            sx={{ mt: 4 }}
             aria-controls={open ? "avatar-menu" : undefined}
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar sx={{ width: 28, height: 28, backgroundColor: Colors.primary}}>
-              <PersonIcon sx={{ width: 20, height: 20}}/>
+            <Avatar
+              sx={{ width: 28, height: 28, backgroundColor: Colors.primary }}
+            >
+              <PersonIcon sx={{ width: 20, height: 20 }} />
             </Avatar>
           </IconButton>
         </Tooltip>
@@ -80,6 +82,19 @@ export default function AvatartMenu() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
+        <MenuItem onClick={props.handleSignIn}>
+          <ListItemIcon>
+            <AccountBoxIcon fontSize="small" />
+          </ListItemIcon>
+          Sign In
+        </MenuItem>
+        <MenuItem onClick={() => {window.location = 'signUp'}}>
+          <ListItemIcon>
+            <AccountBoxIcon fontSize="small" />
+          </ListItemIcon>
+          Sign Up
+        </MenuItem>
+        <Divider />
         <MenuItem>
           <ListItemIcon>
             <AccountBoxIcon fontSize="small" />

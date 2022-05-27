@@ -29,7 +29,7 @@ const Header = (props) => {
         <IconButton color="primary" title="Cart" aria-label="shopping cart" sx={{marginRight: 1, marginTop: 4 }}>
           <ShoppingCartIcon />
         </IconButton>
-        <AvatarMenu/>
+        <AvatarMenu handleSignIn={props.handleSignIn}/>
 
       </div>
     </div>

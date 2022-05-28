@@ -1,5 +1,11 @@
-import { Button } from "@mui/material";
 import React, { useState, useEffect } from "react";
+import { useSwipeable } from "react-swipeable";
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import IconButton from '@mui/material/IconButton';
+import BlurCircularIcon from '@mui/icons-material/BlurCircular';
+import AdjustIcon from '@mui/icons-material/Adjust';
+
 import "./carousel.css";
 
 export const CarouselItem = ({ children, width }) => {
@@ -10,76 +16,89 @@ export const CarouselItem = ({ children, width }) => {
   );
 };
 
-const Carousel = ({ children }) => {
+const Carousel = (props) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [paused, setPaused] = useState(false);
 
   const updateIndex = (newIndex) => {
     if (newIndex < 0) {
-      newIndex = React.Children.count(children) - 1;
-    } else if (newIndex >= React.Children.count(children)) {
+      newIndex = React.Children.count(props.children) - 1;
+    } else if (newIndex >= React.Children.count(props.children)) {
       newIndex = 0;
     }
     setActiveIndex(newIndex);
   };
 
   useEffect(() => {
-    const interval = setInterval(()=> {
-      if(!paused){
-        updateIndex(activeIndex+1);
+    const interval = setInterval(() => {
+      if (!paused) {
+        updateIndex(activeIndex + 1);
       }
     }, 1000);
 
-    return() => {
-      if(interval){
+    return () => {
+      if (interval) {
         clearInterval(interval);
       }
-    }
-  })
+    };
+  });
 
-  
+  const handlers = useSwipeable({
+    onSwipedLeft: () => updateIndex(activeIndex + 1),
+    onSwipedRight: () => updateIndex(activeIndex - 1),
+  });
 
   return (
-    <div 
+    <div
+      {...handlers}
       className="carousel"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div
-        className="inner"
-        style={{ transform: `translateX(-${activeIndex * 100}%)` }}
-      >
-        {React.Children.map(children, (child, index) => {
-          return React.cloneElement(child, { width: "100%" });
-        })}
-      </div>
-      <div className="indicators">
-        <Button
+      <div style={{ position: "relative" }}>
+        
+        <div
+          className="inner"
+          style={{
+            transform: `translateX(-${activeIndex * props.transformWidth}%)`,
+          }}
+        >
+          {React.Children.map(props.children, (child, index) => {
+            return React.cloneElement(child, { width: props.width });
+          })}
+        </div>
+        <IconButton
+          style={{ position: "absolute", top: '40%'}}
           onClick={() => {
             updateIndex(activeIndex - 1);
           }}
         >
-          Prev
-        </Button>
-        {React.Children.map(children, (child, index) => {
+          <ChevronLeftIcon sx={{height: 50, width: 50}}/>
+        </IconButton>
+        <IconButton
+          style={{ position: "absolute", top: '40%', right: '0%' }} 
+          onClick={() => {
+            updateIndex(activeIndex + 1);
+          }}
+        >
+          <ChevronRightIcon sx={{height: 50, width: 50}}/>
+        </IconButton>
+      </div>
+
+      <div className="indicators">
+        {React.Children.map(props.children, (child, index) => {
           return (
-            <Button
+            <IconButton
+              variant="outlined"
               className={`${index === activeIndex ? "active" : ""}`}
               onClick={() => {
                 updateIndex(index);
               }}
             >
-              {index + 1}
-            </Button>
+              <AdjustIcon className='icon' sx={{height: 17, width: 17}}/>
+            </IconButton>
           );
         })}
-        <Button
-          onClick={() => {
-            updateIndex(activeIndex + 1);
-          }}
-        >
-          Next
-        </Button>
       </div>
     </div>
   );

@@ -3,13 +3,13 @@ import Colors from "../res/colors";
 
 import Header from "../components/header";
 import NavBar from "../components/navBar";
-import Carousel, {CarouselItem} from "../components/carousel";
+import Carousel, { CarouselItem } from "../components/carousel";
 import CategoriesGrid from "../components/categoriesGrid";
 import ServicesOffered from "../components/servicesOffered";
 import AboutCompany from "../components/aboutCompany";
 import SiteMap from "../components/siteMap";
 import Copyright from "../components/copyright";
-import SignIn from "../components/signIn"
+import SignIn from "../components/signIn";
 import CustomModal from "../components/CustomModal";
 import ProductGrid from "../components/productGrid";
 
@@ -19,21 +19,34 @@ const Home = () => {
   const [openModal, setOpenModal] = React.useState(false);
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
-  
+
   return (
     <div id="root" style={Styles.root}>
-      <Header handleSignIn={handleOpenModal}/>
+      <Header handleSignIn={handleOpenModal} />
       <NavBar />
-      <Carousel>
-        <CarouselItem>Item 1</CarouselItem>
-        <CarouselItem>Item 2</CarouselItem>
-        <CarouselItem>Item 3</CarouselItem>
+      <Carousel width="100%" transformWidth="100">
+        <CarouselItem width="100%">
+          <img
+            style={{ width: "100%", height: "65vh" }}
+            src={Images.OnlineShopping}
+            alt="Exchange Offer 2"
+          />
+        </CarouselItem>
+        <CarouselItem width="100%">
+          <img
+            style={{ width: "100%", height: "65vh" }}
+            src={Images.ExchangeOffer1}
+            alt="Exchange Offer 1"
+          />
+        </CarouselItem>
+        <CarouselItem width="100%">
+          <img
+            style={{ width: "100%", height: "65vh" }}
+            src={Images.ExchangeOffer2}
+            alt="Exchange Offer 2"
+          />
+        </CarouselItem>
       </Carousel>
-      <img
-        style={{ width: "100%", height: "65%", marginTop: 10 }}
-        src={Images.ExchangeOffer1}
-        alt="OnlineShopping"
-      ></img>
       <ServicesOffered />
       <div style={Styles.container}>
         <span style={Styles.title}>BROWSE CATEGORIES</span>
@@ -49,13 +62,18 @@ const Home = () => {
         <span style={Styles.title}>MOST POPULAR</span>
         <div style={{ ...Styles.titleUnderline, width: 170 }}></div>
       </div>
-      <ProductGrid/>
-      
+      <Carousel width="100%" transformWidth="100">
+        <CarouselItem width="100%">
+          <ProductGrid />
+        </CarouselItem>
+      </Carousel>
+      <ProductGrid />
+
       <div style={Styles.container}>
         <span style={Styles.title}>HOT DEALS</span>
         <div style={{ ...Styles.titleUnderline, width: 120 }}></div>
       </div>
-      <ProductGrid/>
+      <ProductGrid />
 
       <AboutCompany />
       <div style={Styles.wrapper}>
@@ -66,7 +84,7 @@ const Home = () => {
       <CustomModal
         open={openModal}
         onClose={handleCloseModal}
-        component= {<SignIn />}
+        component={<SignIn />}
       />
     </div>
   );
@@ -80,12 +98,12 @@ const Styles = {
     alignItems: "center",
   },
   wrapper: {
-      display: "flex",
-      flexDirection: 'column',
-      width: '100%',
-      justifyContent: "center",
-      backgroundColor: Colors.primary,
-      alignItems: "center",
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
+    justifyContent: "center",
+    backgroundColor: Colors.primary,
+    alignItems: "center",
   },
   container: {
     display: "flex",

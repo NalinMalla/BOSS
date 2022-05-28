@@ -3,7 +3,7 @@ import Colors from "../res/colors";
 
 import Header from "../components/header";
 import NavBar from "../components/navBar";
-// import Carousel from "../components/carousel";
+import Carousel, {CarouselItem} from "../components/carousel";
 import CategoriesGrid from "../components/categoriesGrid";
 import ServicesOffered from "../components/servicesOffered";
 import AboutCompany from "../components/aboutCompany";
@@ -24,7 +24,11 @@ const Home = () => {
     <div id="root" style={Styles.root}>
       <Header handleSignIn={handleOpenModal}/>
       <NavBar />
-      {/* <Carousel/> */}
+      <Carousel>
+        <CarouselItem>Item 1</CarouselItem>
+        <CarouselItem>Item 2</CarouselItem>
+        <CarouselItem>Item 3</CarouselItem>
+      </Carousel>
       <img
         style={{ width: "100%", height: "65%", marginTop: 10 }}
         src={Images.ExchangeOffer1}

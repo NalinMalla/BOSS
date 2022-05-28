@@ -1,123 +1,88 @@
-import React, { Component } from 'react'
-import { Animated, View, StyleSheet, Image, Dimensions, ScrollView } from 'react'
+import { Button } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import "./carousel.css";
 
-const deviceWidth = Dimensions.get('window').width
-const FIXED_BAR_WIDTH = 280
-const BAR_SPACE = 10
+export const CarouselItem = ({ children, width }) => {
+  return (
+    <div className="carousel-item" style={{ width: width }}>
+      {children}
+    </div>
+  );
+};
 
-const images = [
-  'https://s-media-cache-ak0.pinimg.com/originals/ee/51/39/ee5139157407967591081ee04723259a.png',
-  'https://s-media-cache-ak0.pinimg.com/originals/40/4f/83/404f83e93175630e77bc29b3fe727cbe.jpg',
-  'https://s-media-cache-ak0.pinimg.com/originals/8d/1a/da/8d1adab145a2d606c85e339873b9bb0e.jpg',
-]
+const Carousel = ({ children }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
 
-export default class App extends Component {
+  const updateIndex = (newIndex) => {
+    if (newIndex < 0) {
+      newIndex = React.Children.count(children) - 1;
+    } else if (newIndex >= React.Children.count(children)) {
+      newIndex = 0;
+    }
+    setActiveIndex(newIndex);
+  };
 
-  numItems = images.length
-  itemWidth = (FIXED_BAR_WIDTH / this.numItems) - ((this.numItems - 1) * BAR_SPACE)
-  animVal = new Animated.Value(0)
+  useEffect(() => {
+    const interval = setInterval(()=> {
+      if(!paused){
+        updateIndex(activeIndex+1);
+      }
+    }, 1000);
 
-  render() {
-    let imageArray = []
-    let barArray = []
-    images.forEach((image, i) => {
-      console.log(image, i)
-      const thisImage = (
-        <Image
-          key={`image${i}`}
-          source={{uri: image}}
-          style={{ width: deviceWidth }}
-        />
-      )
-      imageArray.push(thisImage)
+    return() => {
+      if(interval){
+        clearInterval(interval);
+      }
+    }
+  })
 
-      const scrollBarVal = this.animVal.interpolate({
-        inputRange: [deviceWidth * (i - 1), deviceWidth * (i + 1)],
-        outputRange: [-this.itemWidth, this.itemWidth],
-        extrapolate: 'clamp',
-      })
+  
 
-      const thisBar = (
-        <View
-          key={`bar${i}`}
-          style={[
-            styles.track,
-            {
-              width: this.itemWidth,
-              marginLeft: i === 0 ? 0 : BAR_SPACE,
-            },
-          ]}
-        >
-          <Animated.View
-
-            style={[
-              styles.bar,
-              {
-                width: this.itemWidth,
-                transform: [
-                  { translateX: scrollBarVal },
-                ],
-              },
-            ]}
-          />
-        </View>
-      )
-      barArray.push(thisBar)
-    })
-
-    return (
-      <View
-        style={styles.container}
-        flex={1}
+  return (
+    <div 
+      className="carousel"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <div
+        className="inner"
+        style={{ transform: `translateX(-${activeIndex * 100}%)` }}
       >
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          scrollEventThrottle={10}
-          pagingEnabled
-          onScroll={
-            Animated.event(
-              [{ nativeEvent: { contentOffset: { x: this.animVal } } }]
-            )
-          }
+        {React.Children.map(children, (child, index) => {
+          return React.cloneElement(child, { width: "100%" });
+        })}
+      </div>
+      <div className="indicators">
+        <Button
+          onClick={() => {
+            updateIndex(activeIndex - 1);
+          }}
         >
-
-          {imageArray}
-
-        </ScrollView>
-        <View
-          style={styles.barContainer}
+          Prev
+        </Button>
+        {React.Children.map(children, (child, index) => {
+          return (
+            <Button
+              className={`${index === activeIndex ? "active" : ""}`}
+              onClick={() => {
+                updateIndex(index);
+              }}
+            >
+              {index + 1}
+            </Button>
+          );
+        })}
+        <Button
+          onClick={() => {
+            updateIndex(activeIndex + 1);
+          }}
         >
-          {barArray}
-        </View>
-      </View>
-    )
-  }
-}
+          Next
+        </Button>
+      </div>
+    </div>
+  );
+};
 
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  barContainer: {
-    position: 'absolute',
-    zIndex: 2,
-    top: 40,
-    flexDirection: 'row',
-  },
-  track: {
-    backgroundColor: '#ccc',
-    overflow: 'hidden',
-    height: 2,
-  },
-  bar: {
-    backgroundColor: '#5294d6',
-    height: 2,
-    position: 'absolute',
-    left: 0,
-    top: 0,
-  },
-})
+export default Carousel;

@@ -3,7 +3,6 @@ import Chair from './chairM.jpg';
 import Door from './doorM.jpg';
 import Dresser from './dresserBrown.jpg';
 import ExchangeOffer1 from './offers/exchangeOffer1.jpg';
-import ExchangeOffer2 from './offers/exchangeOffer2.jpg';
 import Logo from './logo/logo.svg';
 import LogoStamp from './logo/logoStamp.svg';
 import MirrorGreen from './mirrorGreen.jpg';
@@ -23,6 +22,8 @@ import Table from './tableM.jpg';
 import Wardrobe from './wardrobeM.jpg';
 import Window from './windowM.jpg';
 import HomeDesign from './designs/homeDesign.svg';
+import WhyDiwaliOffer from './offers/whyDiwaliOffer.jpg';
+import FurnitureManiaOffer from './offers/furnitureManiaOffer.jpg';
 
 const Images= {
   Bed: Bed,
@@ -30,7 +31,6 @@ const Images= {
   Door: Door,
   Dresser: Dresser,
   ExchangeOffer1: ExchangeOffer1,
-  ExchangeOffer2: ExchangeOffer2,
   Logo: Logo,
   LogoStamp: LogoStamp,
   MirrorGreen: MirrorGreen,
@@ -50,6 +50,8 @@ const Images= {
   HomeDesign: HomeDesign,
   Decoration: Decoration,
   MirrorBage: MirrorBage,
+  WhyDiwaliOffer: WhyDiwaliOffer,
+  FurnitureManiaOffer: FurnitureManiaOffer,
 }
 
 export default Images;

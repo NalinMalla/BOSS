@@ -15,7 +15,7 @@ import ProductGrid from "../components/productGrid";
 
 import Images from "../res/images";
 
-const Home = () => {
+const HomePage = () => {
   const [openModal, setOpenModal] = React.useState(false);
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
@@ -24,16 +24,16 @@ const Home = () => {
     {
       children: (
         <img
-          style={{ width: "100%", height: "65vh" }}
-          src={Images.OnlineShopping}
-          alt="Online Shopping"
+          style={{ width: "100%", height: "80vh" }}
+          src={Images.FurnitureManiaOffer}
+          alt="Exchange Offer 2"
         />
       ),
     },
     {
       children: (
         <img
-          style={{ width: "100%", height: "65vh" }}
+          style={{ width: "100%", height: "80vh" }}
           src={Images.ExchangeOffer1}
           alt="Exchange Offer 1"
         />
@@ -42,8 +42,8 @@ const Home = () => {
     {
       children: (
         <img
-          style={{ width: "100%", height: "65vh" }}
-          src={Images.ExchangeOffer2}
+          style={{ width: "100%", height: "80vh" }}
+          src={Images.WhyDiwaliOffer}
           alt="Exchange Offer 2"
         />
       ),
@@ -165,4 +165,4 @@ const Styles = {
   },
 };
 
-export default Home;
+export default HomePage;

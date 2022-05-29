@@ -111,7 +111,7 @@ const Carousel = (props) => {
                 updateIndex(index);
               }}
             >
-              <AdjustIcon className="icon" sx={{ height: 17, width: 17 }} />
+              <AdjustIcon className="icon" sx={{ height: 17, width: 17, marginLeft: 8, marginRight: 8, }} />
             </IconButton>
           );
         })}

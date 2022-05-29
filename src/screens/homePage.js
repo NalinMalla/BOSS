@@ -23,29 +23,43 @@ const HomePage = () => {
   const OfferCarouselData = [
     {
       children: (
-        <img
+        <a
+          href="offers/furnitureMania"
           style={{ width: "100%", height: "80vh" }}
-          src={Images.FurnitureManiaOffer}
-          alt="Exchange Offer 2"
-        />
+        >
+          <img
+            style={{ width: "100%", height: "80vh" }}
+            src={Images.FurnitureManiaOffer}
+            alt="Furniture Mania Offer"
+          />
+        </a>
       ),
     },
+
     {
       children: (
-        <img
-          style={{ width: "100%", height: "80vh" }}
-          src={Images.ExchangeOffer1}
-          alt="Exchange Offer 1"
-        />
+        <a href="offers/bigSaleOffer" style={{ width: "100%", height: "80vh" }}>
+          <img
+            style={{ width: "100%", height: "80vh" }}
+            src={Images.BigSaleOffer}
+            alt="Big Sale Offer"
+          />
+        </a>
       ),
     },
+
     {
       children: (
-        <img
+        <a
+          href="offers/whyOnlyDiwali"
           style={{ width: "100%", height: "80vh" }}
-          src={Images.WhyDiwaliOffer}
-          alt="Exchange Offer 2"
-        />
+        >
+          <img
+            style={{ width: "100%", height: "80vh" }}
+            src={Images.WhyDiwaliOffer}
+            alt="Why only in Diwali Offer"
+          />
+        </a>
       ),
     },
   ];
@@ -54,7 +68,7 @@ const HomePage = () => {
     {
       children: (
         <img
-          style={{ width: "100%",}}
+          style={{ width: "100%" }}
           src={Images.HomeDesign}
           alt="Home Design"
         />
@@ -63,7 +77,7 @@ const HomePage = () => {
     {
       children: (
         <img
-          style={{ width: "100%", }}
+          style={{ width: "100%" }}
           src={Images.HomeDesign}
           alt="Home Design"
         />
@@ -72,7 +86,7 @@ const HomePage = () => {
     {
       children: (
         <img
-          style={{ width: "100%", }}
+          style={{ width: "100%" }}
           src={Images.HomeDesign}
           alt="Home Design"
         />
@@ -84,7 +98,7 @@ const HomePage = () => {
     <div id="root" style={Styles.root}>
       <Header handleSignIn={handleOpenModal} />
       <NavBar />
-      <Carousel width="100%" transformWidth="100" delay="2000"> 
+      <Carousel width="100%" transformWidth="100" delay="1700">
         {OfferCarouselData.map((element) => (
           <CarouselItem {...element} />
         ))}
@@ -96,7 +110,12 @@ const HomePage = () => {
       </div>
       <CategoriesGrid />
 
-      <Carousel width="100%" transformWidth="100" carouselStyle={{ marginTop: 60,}} delay="2000">
+      <Carousel
+        width="100%"
+        transformWidth="100"
+        carouselStyle={{ marginTop: 60 }}
+        delay="2500"
+      >
         {DesignCarouselData.map((element) => (
           <CarouselItem {...element} />
         ))}
@@ -108,7 +127,6 @@ const HomePage = () => {
       </div>
 
       <ProductCarousel />
-        
 
       <div style={Styles.container}>
         <span style={Styles.title}>HOT DEALS</span>

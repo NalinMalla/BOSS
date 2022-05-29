@@ -81,7 +81,7 @@ const ProductCarousel = () => {
       transformWidth="16.666667"
       carouselStyle = {{marginTop: 32,}}
       innerDivStyle={{  width: '95%'}}
-      delay="1500"
+      delay="2000"
       arrayLength = {ProductCardData.length}
       indicatorsStyle = {{visibility: 'hidden'}}
     >

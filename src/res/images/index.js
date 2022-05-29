@@ -24,6 +24,11 @@ import Window from './windowM.jpg';
 import HomeDesign from './designs/homeDesign.svg';
 import WhyDiwaliOffer from './offers/whyDiwaliOffer.jpg';
 import FurnitureManiaOffer from './offers/furnitureManiaOffer.jpg';
+import FastDelivery from './logo/fastDelivery.png';
+import Sketch from './logo/sketch.png';
+import Discount from './logo/discount.png';
+import BigSaleOffer from './offers/bigSaleOffer.png';
+import SecurePayment from './logo/securePayment.png';
 
 const Images= {
   Bed: Bed,
@@ -52,6 +57,11 @@ const Images= {
   MirrorBage: MirrorBage,
   WhyDiwaliOffer: WhyDiwaliOffer,
   FurnitureManiaOffer: FurnitureManiaOffer,
+  FastDelivery: FastDelivery,
+  Sketch: Sketch,
+  Discount : Discount,
+  BigSaleOffer: BigSaleOffer,
+  SecurePayment: SecurePayment,
 }
 
 export default Images;

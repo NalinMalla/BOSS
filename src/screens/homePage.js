@@ -11,7 +11,7 @@ import SiteMap from "../components/siteMap";
 import Copyright from "../components/copyright";
 import SignIn from "../components/signIn";
 import CustomModal from "../components/CustomModal";
-import ProductGrid from "../components/productGrid";
+import ProductCarousel from "../components/productCarousel";
 
 import Images from "../res/images";
 
@@ -107,14 +107,14 @@ const HomePage = () => {
         <div style={{ ...Styles.titleUnderline, width: 170 }}></div>
       </div>
 
-      <ProductGrid />
+      <ProductCarousel />
         
 
       <div style={Styles.container}>
         <span style={Styles.title}>HOT DEALS</span>
         <div style={{ ...Styles.titleUnderline, width: 120 }}></div>
       </div>
-      <ProductGrid />
+      <ProductCarousel />
 
       <AboutCompany />
       <div style={Styles.wrapper}>

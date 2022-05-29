@@ -55,8 +55,26 @@ const ProductCardData = [
     price: "Rs.20,000",
     url: "category/door",
   },
+  {
+    title: "Ply Wood Table",
+    image: Images.Table,
+    price: "Rs. 20,000",
+    url: "product/table",
+  },
+  {
+    title: "Ply Wood Table",
+    image: Images.Table,
+    price: "Rs. 20,000",
+    url: "product/table",
+  },
+  {
+    title: "Ply Wood Table",
+    image: Images.Table,
+    price: "Rs. 20,000",
+    url: "product/table",
+  },
 ];
-const ProductGrid = () => {
+const ProductCarousel = () => {
   return (
     <Carousel
       width="16.666667%"
@@ -65,7 +83,7 @@ const ProductGrid = () => {
       innerDivStyle={{  width: '95%'}}
       delay="1500"
       arrayLength = {ProductCardData.length}
-      indicatorsStyle = {{display: 'none'}}
+      indicatorsStyle = {{visibility: 'hidden'}}
     >
       {ProductCardData.map((element) => (
         <CarouselItem>
@@ -76,4 +94,4 @@ const ProductGrid = () => {
   );
 };
 
-export default ProductGrid;
+export default ProductCarousel;

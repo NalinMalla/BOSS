@@ -22,7 +22,7 @@ import SofaBrown from './sofaM.jpg';
 import Table from './tableM.jpg';
 import Wardrobe from './wardrobeM.jpg';
 import Window from './windowM.jpg';
-import HomeDesign from './designs/homeDesign1.svg';
+import HomeDesign from './designs/homeDesign.svg';
 
 const Images= {
   Bed: Bed,

@@ -25,10 +25,10 @@ const Styles = {
     flexDirection: 'row',
     alignItems: "center",
     justifyContent: "space-around",
-    width:'95%',
+    width:'90%',
     marginLeft:60,
     marginRight:60,
-    marginTop:32,
+    marginTop:28,
   },
   container: {
     display: "flex",

@@ -75,8 +75,8 @@ const Styles = {
     alignItems: "center",
     justifyContent: "space-between",
     marginTop: 32,
-    marginLeft: '5%',
-    marginRight: '5%',
+    marginLeft: '2.5%',
+    marginRight: '2.5%',
     flexWrap: 'wrap',
   },
   card: {

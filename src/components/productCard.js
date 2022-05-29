@@ -3,8 +3,18 @@
 import Colors from "../res/colors";
 
 export default function ProductCard(props) {
+  function MouseOver(event) {
+    event.target.style.boxShadow = "4px 4px 4px rgba(0, 0, 0, 0.5)";
+  }
+  function MouseOut(event) {
+    event.target.style.boxShadow = "";
+  }
   return (
-    <div style={{ ...Styles.root, ...props.style }}>
+    <div
+      style={{ ...Styles.root, ...props.style }}
+      onMouseOver={MouseOver}
+      onMouseOut={MouseOut}
+    >
       <div
         style={{
           width: 196,
@@ -20,7 +30,8 @@ export default function ProductCard(props) {
         <span style={Styles.text}>
           <span
             style={{
-              textDecoration: props.discountedPrice === 0 ? "none" : "line-through",
+              textDecoration:
+                props.discountedPrice === 0 ? "none" : "line-through",
               marginRight: props.discountedPrice === 0 ? 0 : 5,
             }}
           >
@@ -36,7 +47,6 @@ export default function ProductCard(props) {
 ProductCard.defaultProps = {
   price: 0,
   discountedPrice: 0,
-  style: {},
 };
 
 const Styles = {

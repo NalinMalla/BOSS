@@ -1,8 +1,14 @@
 import { Link } from "@mui/material";
 
 export default function CategoriesCard(props) {
+  function MouseOver(event) {
+    event.target.style.boxShadow = '4px 6px 4px rgba(0, 0, 0, 0.5)';
+  }
+  function MouseOut(event) {
+    event.target.style.boxShadow = '';
+  }
   return (
-    <Link href={props.url} underline="none">
+    <Link href={props.url} underline="none" >
       <div
         style={{
           ...Styles.root,
@@ -10,6 +16,8 @@ export default function CategoriesCard(props) {
           backgroundSize: "cover",
           ...props.style,
         }}
+        onMouseOver={MouseOver} 
+        onMouseOut={MouseOut}
       >
         <span style={Styles.title}>{props.title}</span>
       </div>
@@ -27,7 +35,7 @@ const Styles = {
     height: 290,
     borderRadius: 8,
     border: "1px solid #361709",
-    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+    
   },
   title: {
     backgroundColor: "rgba(0, 0, 0, 0.4)",

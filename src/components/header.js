@@ -2,7 +2,7 @@ import * as React from "react";
 // import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import IconButton from "@mui/material/IconButton";
-import AssistantPhotoIcon from '@mui/icons-material/AssistantPhoto';
+import AssistantPhotoIcon from "@mui/icons-material/AssistantPhoto";
 
 import SearchInput from "../components/searchInput";
 import AvatarMenu from "../components/avatarMenu";
@@ -13,38 +13,55 @@ import Images from "../res/images";
 const Header = (props) => {
   return (
     <div style={styles.root}>
-      <div style={styles.leftContainer}>
-        <a href="/" style={{marginBottom: -7 }}>
-          <img src={Images.Logo} alt="Logo" style={styles.logo} />
-        </a>
-        <div style={styles.motto}>Excellence with Elegance</div>
-      </div>
+      <div style={styles.wrapper}>
+        <div style={styles.leftContainer}>
+          <a href="/" style={{ marginBottom: -7 }}>
+            <img src={Images.Logo} alt="Logo" style={styles.logo} />
+          </a>
+          <div style={styles.motto}>Excellence with Elegance</div>
+        </div>
 
-      <div style={styles.rightContainer}>
-        <SearchInput />
-        
-        <IconButton color="primary" title="Tagged Items" aria-label="Tagged Items" sx={{marginRight: 1, marginTop: 4 }} >
-          <AssistantPhotoIcon />
-        </IconButton>
-        <IconButton color="primary" title="Cart" aria-label="shopping cart" sx={{marginRight: 1, marginTop: 4 }}>
-          <ShoppingCartIcon />
-        </IconButton>
-        <AvatarMenu handleSignIn={props.handleSignIn}/>
+        <div style={styles.rightContainer}>
+          <SearchInput />
 
+          <IconButton
+            color="primary"
+            title="Tagged Items"
+            aria-label="Tagged Items"
+            sx={{ marginRight: 1, marginTop: 4 }}
+          >
+            <AssistantPhotoIcon />
+          </IconButton>
+          <IconButton
+            color="primary"
+            title="Cart"
+            aria-label="shopping cart"
+            sx={{ marginRight: 1, marginTop: 4 }}
+          >
+            <ShoppingCartIcon />
+          </IconButton>
+          <AvatarMenu handleSignIn={props.handleSignIn} />
+        </div>
       </div>
     </div>
   );
 };
 
 const styles = {
-  root: {
+  root:{
     display: "flex",
     flex: 1,
-    width: '95%',
+    width: "100%",
+    justifyContent: 'center',
+    background: "#FFF",
+    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+  },
+  wrapper: {
+    display: "flex",
+    width: "95%",
     paddingTop: 2,
     paddingBottom: 1,
     justifyContent: "space-between",
-    
   },
   leftContainer: {
     display: "flex",

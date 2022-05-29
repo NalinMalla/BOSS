@@ -2,12 +2,12 @@ import Colors from "../res/colors";
 
 const NavButton = (prop) => {
   function MouseOver(event) {
-    event.target.style.background = "white";
+    event.target.style.background = "#FFF";
     event.target.style.color = Colors.primary;
   }
   function MouseOut(event) {
     event.target.style.background = Colors.primary;
-    event.target.style.color = "white";
+    event.target.style.color = "#FFF";
   }
   return (
     <button

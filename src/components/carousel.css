@@ -27,6 +27,7 @@
   align-items: center;
   margin: 10px;
   margin-top: 0px;
+  color: #000;
 }
 
 .indicators> button.active> .icon {

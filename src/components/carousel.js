@@ -23,12 +23,9 @@ const Carousel = (props) => {
     console.log(newIndex);
     if (newIndex < 0) {
       newIndex = React.Children.count(props.children) - 1;
-    } 
-    else if(newIndex > (props.arrayLength - 6))
-    {
-      newIndex= 0;
-    }
-    else if (newIndex >= React.Children.count(props.children)) {
+    } else if (newIndex > props.arrayLength - 6) {
+      newIndex = 0;
+    } else if (newIndex >= React.Children.count(props.children)) {
       newIndex = 0;
     }
     setActiveIndex(newIndex);
@@ -59,7 +56,7 @@ const Carousel = (props) => {
       className="carousel"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
-      style={{...props.carouselStyle}}
+      style={{ ...props.carouselStyle }}
     >
       <div
         style={{
@@ -83,7 +80,7 @@ const Carousel = (props) => {
         </div>
 
         <IconButton
-          style={{ position: "absolute", top: "40%", left: '0%'}}
+          style={{ position: "absolute", top: "40%", left: "0%" }}
           onClick={() => {
             updateIndex(activeIndex - 1);
           }}
@@ -99,22 +96,26 @@ const Carousel = (props) => {
         >
           <ChevronRightIcon sx={{ height: 50, width: 50 }} />
         </IconButton>
-      </div>
 
-      <div className="indicators" style={{ ...props.indicatorsStyle}}>
-        {React.Children.map(props.children, (child, index) => {
-          return (
-            <IconButton
-              variant="outlined"
-              className={`${index === activeIndex ? "active" : ""}`}
-              onClick={() => {
-                updateIndex(index);
-              }}
-            >
-              <AdjustIcon className="icon" sx={{ height: 17, width: 17, marginLeft: 8, marginRight: 8, }} />
-            </IconButton>
-          );
-        })}
+        <div className="indicators" style={{ ...props.indicatorsStyle, position: "absolute", top: "92%", left: "32%" }}>
+          {React.Children.map(props.children, (child, index) => {
+            return (
+              <IconButton
+                variant="outlined"
+                className={`${index === activeIndex ? "active" : ""}`}
+                onClick={() => {
+                  updateIndex(index);
+                }}
+                style={{marginLeft: 73, marginRight: 73}}
+              >
+                <AdjustIcon
+                  className="icon"
+                  sx={{ height: 17, width: 17, }}
+                />
+              </IconButton>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

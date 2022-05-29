@@ -97,7 +97,7 @@ const Carousel = (props) => {
           <ChevronRightIcon sx={{ height: 50, width: 50 }} />
         </IconButton>
 
-        <div className="indicators" style={{ ...props.indicatorsStyle, position: "absolute", top: "92%", left: "32%" }}>
+        <div className="indicators" style={{ ...props.indicatorsStyle, position: "absolute", top: "92%", display: 'flex', justifyContent: 'center', }}>
           {React.Children.map(props.children, (child, index) => {
             return (
               <IconButton

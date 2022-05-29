@@ -20,13 +20,14 @@ const Carousel = (props) => {
   const [paused, setPaused] = useState(false);
 
   const updateIndex = (newIndex) => {
+    console.log(newIndex);
     if (newIndex < 0) {
       newIndex = React.Children.count(props.children) - 1;
     } 
-    // else if(newIndex = (6-props.arrayLength))
-    // {
-    //   newIndex= 0;
-    // }
+    else if(newIndex > (props.arrayLength - 6))
+    {
+      newIndex= 0;
+    }
     else if (newIndex >= React.Children.count(props.children)) {
       newIndex = 0;
     }
@@ -100,7 +101,7 @@ const Carousel = (props) => {
         </IconButton>
       </div>
 
-      <div className="indicators">
+      <div className="indicators" style={{ ...props.indicatorsStyle}}>
         {React.Children.map(props.children, (child, index) => {
           return (
             <IconButton

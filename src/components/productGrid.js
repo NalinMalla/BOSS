@@ -59,12 +59,13 @@ const ProductCardData = [
 const ProductGrid = () => {
   return (
     <Carousel
-      width="16%"
-      transformWidth="16"
-      carouselStyle = {{marginTop: 32}}
+      width="16.666667%"
+      transformWidth="16.666667"
+      carouselStyle = {{marginTop: 32,}}
       innerDivStyle={{  width: '95%'}}
       delay="1500"
       arrayLength = {ProductCardData.length}
+      indicatorsStyle = {{display: 'none'}}
     >
       {ProductCardData.map((element) => (
         <CarouselItem>

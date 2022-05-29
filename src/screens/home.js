@@ -20,32 +20,74 @@ const Home = () => {
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
 
+  const OfferCarouselData = [
+    {
+      children: (
+        <img
+          style={{ width: "100%", height: "65vh" }}
+          src={Images.OnlineShopping}
+          alt="Online Shopping"
+        />
+      ),
+    },
+    {
+      children: (
+        <img
+          style={{ width: "100%", height: "65vh" }}
+          src={Images.ExchangeOffer1}
+          alt="Exchange Offer 1"
+        />
+      ),
+    },
+    {
+      children: (
+        <img
+          style={{ width: "100%", height: "65vh" }}
+          src={Images.ExchangeOffer2}
+          alt="Exchange Offer 2"
+        />
+      ),
+    },
+  ];
+
+  const DesignCarouselData = [
+    {
+      children: (
+        <img
+          style={{ width: "100%",}}
+          src={Images.HomeDesign}
+          alt="Home Design"
+        />
+      ),
+    },
+    {
+      children: (
+        <img
+          style={{ width: "100%", }}
+          src={Images.HomeDesign}
+          alt="Home Design"
+        />
+      ),
+    },
+    {
+      children: (
+        <img
+          style={{ width: "100%", }}
+          src={Images.HomeDesign}
+          alt="Home Design"
+        />
+      ),
+    },
+  ];
+
   return (
     <div id="root" style={Styles.root}>
       <Header handleSignIn={handleOpenModal} />
       <NavBar />
-      <Carousel width="100%" transformWidth="100">
-        <CarouselItem width="100%">
-          <img
-            style={{ width: "100%", height: "65vh" }}
-            src={Images.OnlineShopping}
-            alt="Exchange Offer 2"
-          />
-        </CarouselItem>
-        <CarouselItem width="100%">
-          <img
-            style={{ width: "100%", height: "65vh" }}
-            src={Images.ExchangeOffer1}
-            alt="Exchange Offer 1"
-          />
-        </CarouselItem>
-        <CarouselItem width="100%">
-          <img
-            style={{ width: "100%", height: "65vh" }}
-            src={Images.ExchangeOffer2}
-            alt="Exchange Offer 2"
-          />
-        </CarouselItem>
+      <Carousel width="100%" transformWidth="100" delay="2000"> 
+        {OfferCarouselData.map((element) => (
+          <CarouselItem {...element} />
+        ))}
       </Carousel>
       <ServicesOffered />
       <div style={Styles.container}>
@@ -53,21 +95,20 @@ const Home = () => {
         <div style={{ ...Styles.titleUnderline, width: 220 }}></div>
       </div>
       <CategoriesGrid />
-      <img
-        style={{ width: "100%", marginTop: 80 }}
-        src={Images.HomeDesign}
-        alt="Home Design"
-      ></img>
+
+      <Carousel width="100%" transformWidth="100" carouselStyle={{ marginTop: 60,}} delay="2000">
+        {DesignCarouselData.map((element) => (
+          <CarouselItem {...element} />
+        ))}
+      </Carousel>
+
       <div style={Styles.container}>
         <span style={Styles.title}>MOST POPULAR</span>
         <div style={{ ...Styles.titleUnderline, width: 170 }}></div>
       </div>
-      <Carousel width="100%" transformWidth="100">
-        <CarouselItem width="100%">
-          <ProductGrid />
-        </CarouselItem>
-      </Carousel>
+
       <ProductGrid />
+        
 
       <div style={Styles.container}>
         <span style={Styles.title}>HOT DEALS</span>

@@ -3,8 +3,6 @@ import Chair from './chairM.jpg';
 import Door from './doorM.jpg';
 import Dresser from './dresserBrown.jpg';
 import ExchangeOffer1 from './offers/exchangeOffer1.jpg';
-import Logo from './logo/logo.svg';
-import LogoStamp from './logo/logoStamp.svg';
 import MirrorGreen from './mirrorGreen.jpg';
 import MirrorWhite from './mirrorWhite.jpg';
 import MirrorBage from './mirrorBage.jpg';
@@ -24,11 +22,7 @@ import Window from './windowM.jpg';
 import HomeDesign from './designs/homeDesign.svg';
 import WhyDiwaliOffer from './offers/whyDiwaliOffer.jpg';
 import FurnitureManiaOffer from './offers/furnitureManiaOffer.jpg';
-import FastDelivery from './logo/fastDelivery.png';
-import Sketch from './logo/sketch.png';
-import Discount from './logo/discount.png';
 import BigSaleOffer from './offers/bigSaleOffer.png';
-import SecurePayment from './logo/securePayment.png';
 
 const Images= {
   Bed: Bed,
@@ -36,8 +30,6 @@ const Images= {
   Door: Door,
   Dresser: Dresser,
   ExchangeOffer1: ExchangeOffer1,
-  Logo: Logo,
-  LogoStamp: LogoStamp,
   MirrorGreen: MirrorGreen,
   MirrorWhite: MirrorWhite,
   OnlineShopping: OnlineShopping,
@@ -57,11 +49,7 @@ const Images= {
   MirrorBage: MirrorBage,
   WhyDiwaliOffer: WhyDiwaliOffer,
   FurnitureManiaOffer: FurnitureManiaOffer,
-  FastDelivery: FastDelivery,
-  Sketch: Sketch,
-  Discount : Discount,
   BigSaleOffer: BigSaleOffer,
-  SecurePayment: SecurePayment,
 }
 
 export default Images;

@@ -1,7 +1,7 @@
 import * as React from "react";
 import Link from "@mui/material/Link";
 
-import Images from "../res/images";
+import Icons from "../res/icons";
 import Colors from "../res/colors";
 
 export default function Copyright() {
@@ -29,7 +29,7 @@ export default function Copyright() {
 
       <div style={Styles.rightContainer}>
         <a href="/" style={{ marginBottom: -7 }}>
-          <img src={Images.LogoStamp} alt="Logo" style={Styles.logo} />
+          <img src={Icons.LogoStamp} alt="Logo" style={Styles.logo} />
         </a>
       </div>
     </div>

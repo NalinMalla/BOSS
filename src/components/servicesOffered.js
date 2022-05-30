@@ -1,12 +1,12 @@
 import Colors from "../res/colors";
-import Images from "../res/images";
+import Icons from "../res/icons";
 
 export default function ServicesOffered() {
   return (
     <div style={Styles.root}>
       <div style={{ ...Styles.container, paddingLeft: 25, paddingRight: 25 }}>
         <img
-          src={Images.FastDelivery}
+          src={Icons.FastDelivery}
           style={{ height: 115, width: 120, paddingLeft: 35, paddingRight: 35 }}
           alt= "Fast Delivery"
         />
@@ -16,7 +16,7 @@ export default function ServicesOffered() {
 
       <div style={Styles.container}>
         <img
-          src={Images.Sketch}
+          src={Icons.Sketch}
           style={{ height: 95, width: 95, marginBottom: 10, marginTop: 10 }}
           alt= "Custom Design"
         />
@@ -28,7 +28,7 @@ export default function ServicesOffered() {
 
       <div style={{ ...Styles.container, paddingLeft: 25, paddingRight: 25 }}>
         <img
-          src={Images.Discount}
+          src={Icons.Discount}
           style={{ height: 95, width: 95, marginBottom: 10, marginTop: 10 }}
           alt= "Discounted Prices"
         />
@@ -39,7 +39,7 @@ export default function ServicesOffered() {
 
       <div style={{ ...Styles.container, paddingLeft: 25, paddingRight: 25 }}>
         <img
-          src={Images.SecurePayment}
+          src={Icons.SecurePayment}
           style={{ height: 95, width: 95, marginBottom: 10, marginTop: 10 }}
           alt= "Encrypted Payments"
         />

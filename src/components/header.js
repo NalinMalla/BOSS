@@ -8,7 +8,7 @@ import SearchInput from "../components/searchInput";
 import AvatarMenu from "../components/avatarMenu";
 
 import Colors from "../res/colors";
-import Images from "../res/images";
+import Icons from "../res/icons";
 
 const Header = (props) => {
   return (
@@ -16,7 +16,7 @@ const Header = (props) => {
       <div style={styles.wrapper}>
         <div style={styles.leftContainer}>
           <a href="/" style={{ marginBottom: -7 }}>
-            <img src={Images.Logo} alt="Logo" style={styles.logo} />
+            <img src={Icons.Logo} alt="Logo" style={styles.logo} />
           </a>
           <div style={styles.motto}>Excellence with Elegance</div>
         </div>

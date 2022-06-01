@@ -103,7 +103,7 @@ export default function SignIn() {
             </Link>
           </Grid>
           <Grid item>
-            <Link href="#" variant="body1" sx={{color: Colors.primary}} underline="hover" color={Colors.primary}>
+            <Link href="signUp" variant="body1" sx={{color: Colors.primary}} underline="hover" color={Colors.primary}>
               {"Don't have an account?"}
             </Link>
           </Grid>

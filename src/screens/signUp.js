@@ -22,6 +22,9 @@ import CreateIcon from "@mui/icons-material/Create";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 
+import SignIn from "../components/signIn";
+import CustomModal from "../components/CustomModal";
+
 import Colors from "../res/colors";
 import Images from "../res/images";
 
@@ -50,6 +53,10 @@ export default function SignInSide() {
     confirmPassword: "",
     showConfirmPassword: false,
   });
+
+  const [openModal, setOpenModal] = React.useState(false);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
 
   const [gender, setGender] = React.useState("");
 
@@ -284,11 +291,12 @@ export default function SignInSide() {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link
-                  href="#"
+                  // href="#"
                   variant="body2"
                   sx={{ color: Colors.primary }}
                   underline="hover"
                   color={Colors.primary}
+                  onClick={handleOpenModal}
                 >
                   Already have an account? Sign in
                 </Link>
@@ -298,6 +306,11 @@ export default function SignInSide() {
           </Box>
         </Box>
       </Grid>
+      <CustomModal
+        open={openModal}
+        onClose={handleCloseModal}
+        component={<SignIn />}
+      />
     </Grid>
   );
 }

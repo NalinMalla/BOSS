@@ -1,8 +1,4 @@
 import * as React from "react";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import {Divider } from "@mui/material";
 import NavButton from "./navButton";
 
 import Colors from "../res/colors";
@@ -10,252 +6,278 @@ import Icons from "../res/icons";
 
 const NavButtonData = [
   {
-    value: "Product Catalog",
-    url: "/productCatalog/",
+    title: "Product Catalog",
     menu: [
       {
-        children: (
-          <MenuItem
-            onClick={() => {
-              window.location = "categories/prefab";
-            }}
-          >
-            <ListItemIcon>
-              <img
-                alt="Product Catalog"
-                src={Icons.All}
-                style={{ width: 25, height: 25, marginRight: 20 }}
-              />
-            </ListItemIcon>
-            <ListItemText>All</ListItemText>
-          </MenuItem>
-            
+        title: 'All',
+        url: "categories/prefab",
+        icon: (
+          <img
+            alt="Product Catalog"
+            src={Icons.All}
+            style={{ width: 25, height: 25, marginRight: 20 }}
+          />
         ),
       },
-    
       {
-        children: <Divider />,
-      },
-    
-      {
-        children: (
-          <span style={{ textDecoration: "underline" }}>Categories</span>
+        title: 'Sofa',
+        url: "categories/sofa",
+        icon: (
+          <img
+            alt="Sofa"
+            src={Icons.Sofa}
+            style={{ width: 25, height: 25, marginRight: 20 }}
+          />
         ),
       },
-    
+
       {
-        children: (
-          <MenuItem
-            onClick={() => {
-              window.location = "categories/sofa";
-            }}
-          >
-            <ListItemIcon>
-              <img
-                alt="Sofa"
-                src={Icons.Sofa}
-                style={{ width: 25, height: 25, marginRight: 20 }}
-              />
-            </ListItemIcon>
-            <ListItemText>Sofa</ListItemText>
-          </MenuItem>
+        title: 'Chair',
+        url: "categories/chair",
+        icon: (
+          <img
+            alt="Chair"
+            src={Icons.Chair}
+            style={{ width: 25, height: 25, marginRight: 20 }}
+          />
         ),
       },
-    
+
       {
-        children: (
-          <MenuItem
-            onClick={() => {
-              window.location = "categories/chair";
-            }}
-          >
-            <ListItemIcon>
-              <img
-                alt="Chair"
-                src={Icons.Chair}
-                style={{ width: 25, height: 25, marginRight: 20 }}
-              />
-            </ListItemIcon>
-            <ListItemText>Chair</ListItemText>
-          </MenuItem>
+        title: 'Bed',
+        url: "categories/bed",
+        icon: (
+          <img
+            alt="Bed"
+            src={Icons.Bed}
+            style={{ width: 25, height: 25, marginRight: 20 }}
+          />
         ),
       },
-    
+
       {
-        children: (
-          <MenuItem
-            onClick={() => {
-              window.location = "categories/bed";
-            }}
-          >
-            <ListItemIcon>
-              <img
-                alt="Bed"
-                src={Icons.Bed}
-                style={{ width: 25, height: 25, marginRight: 20 }}
-              />
-            </ListItemIcon>
-            <ListItemText>Bed</ListItemText>
-          </MenuItem>
+        title: 'Wardrobe',
+        url: "categories/wardrobe",
+        icon: (
+          <img
+            alt="Wardrobe"
+            src={Icons.Wardrobe}
+            style={{ width: 25, height: 25, marginRight: 20 }}
+          />
         ),
       },
-    
+
       {
-        children: (
-          <MenuItem
-            onClick={() => {
-              window.location = "categories/wardrobe";
-            }}
-          >
-            <ListItemIcon>
-              <img
-                alt="Wardrobe"
-                src={Icons.Wardrobe}
-                style={{ width: 25, height: 25, marginRight: 20 }}
-              />
-            </ListItemIcon>
-            <ListItemText>Wardrobe</ListItemText>
-          </MenuItem>
+        title: 'Decoration',
+        url: "categories/decoration",
+        icon: (
+          <img
+            alt="Decoration"
+            src={Icons.Decoration}
+            style={{ width: 25, height: 25, marginRight: 20 }}
+          />
         ),
       },
-    
+
       {
-        children: (
-          <MenuItem
-            onClick={() => {
-              window.location = "categories/decoration";
-            }}
-          >
-            <ListItemIcon>
-              <img
-                alt="Decoration"
-                src={Icons.Decoration}
-                style={{ width: 25, height: 25, marginRight: 20 }}
-              />
-            </ListItemIcon>
-            <ListItemText>Decoration</ListItemText>
-          </MenuItem>
+        title: 'Table',
+        url: "categories/table",
+        icon: (
+          <img
+            alt="Table"
+            src={Icons.Table}
+            style={{ width: 25, height: 25, marginRight: 20 }}
+          />
         ),
       },
-    
+
       {
-        children: (
-          <MenuItem
-            onClick={() => {
-              window.location = "categories/table";
-            }}
-          >
-            <ListItemIcon>
-              <img
-                alt="Table"
-                src={Icons.Table}
-                style={{ width: 25, height: 25, marginRight: 20 }}
-              />
-            </ListItemIcon>
-            <ListItemText>Table</ListItemText>
-          </MenuItem>
+        title: 'Shelf',
+        url: "categories/shelf",
+        icon: (
+          <img
+            alt="Shelf"
+            src={Icons.Shelf}
+            style={{ width: 25, height: 25, marginRight: 20 }}
+          />
         ),
       },
-    
+
       {
-        children: (
-          <MenuItem
-            onClick={() => {
-              window.location = "categories/shelf";
-            }}
-          >
-            <ListItemIcon>
-              <img
-                alt="Shelf"
-                src={Icons.Shelf}
-                style={{ width: 25, height: 25, marginRight: 20 }}
-              />
-            </ListItemIcon>
-            <ListItemText>Shelf</ListItemText>
-          </MenuItem>
+        title: 'Window',
+        url: "categories/window",
+        icon: (
+          <img
+            alt="Window"
+            src={Icons.Window}
+            style={{ width: 25, height: 25, marginRight: 20 }}
+          />
         ),
       },
-    
+
       {
-        children: (
-          <MenuItem
-            onClick={() => {
-              window.location = "categories/window";
-            }}
-          >
-            <ListItemIcon>
-              <img
-                alt="Window"
-                src={Icons.Window}
-                style={{ width: 25, height: 25, marginRight: 20 }}
-              />
-            </ListItemIcon>
-            <ListItemText>Window</ListItemText>
-          </MenuItem>
+        title: 'Door',
+        url: "categories/door",
+        icon: (
+          <img
+            alt="Door"
+            src={Icons.Door}
+            style={{ width: 25, height: 25, marginRight: 20 }}
+          />
         ),
       },
-    
+
       {
-        children: (
-          <MenuItem
-            onClick={() => {
-              window.location = "categories/door";
-            }}
-          >
-            <ListItemIcon>
-              <img
-                alt="Door"
-                src={Icons.Door}
-                style={{ width: 25, height: 25, marginRight: 20 }}
-              />
-            </ListItemIcon>
-            <ListItemText>Door</ListItemText>
-          </MenuItem>
+        title: 'Prefab',
+        url: "categories/prefab",
+        icon: (
+          <img
+            alt="Prefab"
+            src={Icons.Prefab}
+            style={{ width: 25, height: 25, marginRight: 20 }}
+          />
         ),
       },
-    
-      {
-        children: (
-          <MenuItem
-            onClick={() => {
-              window.location = "categories/prefab";
-            }}
-          >
-            <ListItemIcon>
-              <img
-                alt="Prefab"
-                src={Icons.Prefab}
-                style={{ width: 25, height: 25, marginRight: 20 }}
-              />
-            </ListItemIcon>
-            <ListItemText>Prefab</ListItemText>
-          </MenuItem>
-        ),
-      },
-    ]
+    ],
   },
   {
-    value: "Custom Design",
+    title: "Custom Design",
     url: "/customDesign/",
   },
   {
-    value: "Prefab Construction",
+    title: "Prefab Construction",
     url: "/prefabConstruction/",
   },
   {
-    value: "Get To Know Us",
+    title: "Get To Know Us",
     url: "/aboutUs/",
+    menu: [
+      {
+        title: 'Our Company',
+        url: "aboutUs/company",
+        icon: (
+          <img
+            alt="Company"
+            src={Icons.Company}
+            style={{ width: 25, height: 25, marginRight: 20 }}
+          />
+        ),
+      },
+      {
+        title: 'Our Designs',
+        url: "aboutUs/designs",
+        icon: (
+          <img
+            alt="Designs"
+            src={Icons.Design}
+            style={{ width: 25, height: 25, marginRight: 20 }}
+          />
+        ),
+      },
+      {
+        title: 'Our Projects',
+        url: "aboutUs/projects",
+        icon: (
+          <img
+            alt="Prefab"
+            src={Icons.Prefab}
+            style={{ width: 25, height: 25, marginRight: 20 }}
+          />
+        ),
+      },
+      {
+        title: 'Our Team',
+        url: "aboutUs/team",
+        icon: (
+          <img
+            alt="Team"
+            src={Icons.Team}
+            style={{ width: 25, height: 25, marginRight: 20 }}
+          />
+        ),
+      },
+      {
+        title: 'Connect With Us',
+        url: "aboutUs/contact",
+        icon: (
+          <img
+            alt="Contact"
+            src={Icons.Network}
+            style={{ width: 25, height: 25, marginRight: 20 }}
+          />
+        ),
+      },
+    ],
   },
   {
-    value: "Careers",
+    title: "Careers",
     url: "/careers/",
+    menu: [
+      {
+        title: 'Join',
+        url: "careers/join",
+        icon: (
+          <img
+            alt="Join"
+            src={Icons.Handshake}
+            style={{ width: 25, height: 25, marginRight: 20 }}
+          />
+        ),
+      },
+      {
+        title: 'Internship',
+        url: "careers/internship",
+        icon: (
+          <img
+            alt="Internship"
+            src={Icons.Internship}
+            style={{ width: 25, height: 25, marginRight: 20 }}
+          />
+        ),
+      },
+    ],
+
   },
   {
-    value: "Customer Support",
+    title: "Customer Support",
     url: "/customerSupport/",
+    menu: [
+      {
+        title: 'Help Center',
+        url: "customerSupport/help",
+        icon: (
+          <img
+            alt="Help Center"
+            src={Icons.CustomerSupport}
+            style={{ width: 25, height: 25, marginRight: 20 }}
+          />
+        ),
+      },
+      {
+        title: 'FAQ',
+        url: "customerSupport/faq",
+        icon: (
+          <img
+            alt="FAQ"
+            src={Icons.FAQ}
+            style={{ width: 25, height: 25, marginRight: 20 }}
+          />
+        ),
+      },
+      {
+        title: 'Feedback',
+        url: "customerSupport/feedback",
+        icon: (
+          <img
+            alt="Feedback"
+            src={Icons.Feedback}
+            style={{ width: 25, height: 25, marginRight: 20 }}
+          />
+        ),
+      },
+    ],
   },
 ];
-
 
 const NavBar = () => {
   return (

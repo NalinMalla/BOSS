@@ -25,7 +25,8 @@ export default function SearchInput() {
         minWidth: 250,
         marginTop: 4,
         marginRight: 3,
-        backgroundColor: "#F9F9F9",
+        border: `1px solid rgba(0,0,0, 0.5)`, 
+        borderRadius: 50,
       }}
     >
       <InputBase
@@ -33,7 +34,7 @@ export default function SearchInput() {
         placeholder="Search..."
         name="search"
       />
-      <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
+      <IconButton type="submit" aria-label="search">
         <SearchIcon />
       </IconButton>
     </Paper>

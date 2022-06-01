@@ -20,7 +20,6 @@ const Carousel = (props) => {
   const [paused, setPaused] = useState(false);
 
   const updateIndex = (newIndex) => {
-    console.log(newIndex);
     if (newIndex < 0) {
       newIndex = React.Children.count(props.children) - 1;
     } else if (newIndex > props.arrayLength - 6) {

@@ -1,27 +1,29 @@
-import { Link } from "@mui/material";
-
-export default function CategoriesCard(props) {
+export default function Component(props) {
   function MouseOver(event) {
-    event.target.style.boxShadow = '4px 6px 4px rgba(0, 0, 0, 0.5)';
+    event.target.style.boxShadow =
+      event.target.className === "container" &&
+      "4px 6px 4px rgba(0, 0, 0, 0.5)";
   }
   function MouseOut(event) {
-    event.target.style.boxShadow = '';
+    event.target.style.boxShadow = "none";
   }
+
   return (
-    <Link href={props.url} underline="none" >
-      <div
-        style={{
-          ...Styles.root,
-          background: `url(${props.image})`,
-          backgroundSize: "cover",
-          ...props.style,
-        }}
-        onMouseOver={MouseOver} 
-        onMouseOut={MouseOut}
-      >
-        <span style={Styles.title}>{props.title}</span>
-      </div>
-    </Link>
+    <div
+      style={{
+        ...Styles.root,
+        background: `url(${props.image})`,
+        backgroundSize: "cover",
+        ...props.style,
+      }}
+      onMouseOver={MouseOver}
+      onMouseOut={MouseOut}
+      className={"container"}
+    >
+      <span style={Styles.title} className={"title"}>
+        {props.title}
+      </span>
+    </div>
   );
 }
 
@@ -35,7 +37,6 @@ const Styles = {
     height: 290,
     borderRadius: 8,
     border: "1px solid #361709",
-    
   },
   title: {
     backgroundColor: "rgba(0, 0, 0, 0.4)",
@@ -44,9 +45,10 @@ const Styles = {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    color: "#FFFFFFFF",
+    color: "#FFF",
     height: 42,
     borderRadius: "8px 8px 0px 0px",
     marginTop: -1,
+    boxShadow: "none",
   },
 };

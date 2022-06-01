@@ -2,7 +2,7 @@ import * as React from "react";
 // import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import IconButton from "@mui/material/IconButton";
-import AssistantPhotoIcon from "@mui/icons-material/AssistantPhoto";
+import FlagIcon from '@mui/icons-material/Flag';
 
 import SearchInput from "../components/searchInput";
 import AvatarMenu from "../components/avatarMenu";
@@ -30,7 +30,7 @@ const Header = (props) => {
             aria-label="Tagged Items"
             sx={{ marginRight: 1, marginTop: 4 }}
           >
-            <AssistantPhotoIcon />
+            <FlagIcon />
           </IconButton>
           <IconButton
             color="primary"

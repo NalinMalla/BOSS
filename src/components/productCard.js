@@ -3,17 +3,20 @@
 import Colors from "../res/colors";
 
 export default function ProductCard(props) {
-  function MouseOver(event) {
-    event.target.style.boxShadow = "4px 4px 4px rgba(0, 0, 0, 0.5)";
-  }
-  function MouseOut(event) {
-    event.target.style.boxShadow = "";
-  }
+
+  // function MouseOver(event) {
+  //   event.target.style.boxShadow =
+  //   event.target.className === "container" &&
+  //   "4px 6px 4px rgba(0, 0, 0, 0.5)";
+  // }
+  // function MouseOut(event) {
+  //   event.target.style.boxShadow = "none";
+  // }
   return (
     <div
       style={{ ...Styles.root, ...props.style }}
-      onMouseOver={MouseOver}
-      onMouseOut={MouseOut}
+      // onMouseOver={MouseOver}
+      // onMouseOut={MouseOut}
     >
       <div
         style={{

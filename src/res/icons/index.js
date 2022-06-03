@@ -27,11 +27,11 @@ import Network from './navMenu/networking.png';
 import Verified from './verified.png';
 import Answer from './answer.png';
 import Question from './question.png';
-
-
-
-
-
+import Category from './categories/category.png';
+import Popular from './categories/popularity.png';
+import HotSale from './categories/hot-sale.png';
+import Trending from './categories/trend.png';
+import PriceFilter from './categories/priceFilter.png';
 
 const Icons = {
   Logo: Logo,
@@ -63,6 +63,11 @@ const Icons = {
   Verified: Verified,
   Answer: Answer,
   Question: Question,
+  Category: Category,
+  Popular: Popular,
+  HotSale: HotSale,
+  Trending: Trending,
+  PriceFilter: PriceFilter,
 }
 
 export default Icons;

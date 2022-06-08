@@ -34,7 +34,7 @@ export default function SearchInput() {
         placeholder="Search..."
         name="search"
       />
-      <IconButton type="submit" aria-label="search">
+      <IconButton type="submit" aria-label="search" href="search">
         <SearchIcon />
       </IconButton>
     </Paper>

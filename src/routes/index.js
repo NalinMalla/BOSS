@@ -6,6 +6,8 @@ import SignUp from "../screens/signUp";
 import HomePage from "../screens/homePage";
 import ProductPage from "../screens/productPage";
 import SearchPage from "../screens/searchPage";
+import CartPage from "../screens/cartPage";
+import CheckoutPage from "../screens/checkoutPage";
 
 const Router = () => {
   return (
@@ -15,7 +17,9 @@ const Router = () => {
         <Route path="signIn" element={<SignIn />} />
         <Route path="signUp" element={<SignUp />} />
         <Route path="product" element={<ProductPage />} />
-        <Route path="search" element={<SearchPage />}/>
+        <Route path="search" element={<SearchPage />} />
+        <Route path="cart" element={<CartPage />} />
+        <Route path="checkout" element={<CheckoutPage />} />
       </Routes>
     </BrowserRouter>
   );

@@ -32,6 +32,9 @@ import Popular from './categories/popularity.png';
 import HotSale from './categories/hot-sale.png';
 import Trending from './categories/trend.png';
 import PriceFilter from './categories/priceFilter.png';
+import Credit from './credit.png';
+import CashOnDelivery from './cash-on-delivery.png';
+import Esewa from './esewa.png';
 
 const Icons = {
   Logo: Logo,
@@ -68,6 +71,9 @@ const Icons = {
   HotSale: HotSale,
   Trending: Trending,
   PriceFilter: PriceFilter,
+  Credit: Credit,
+  CashOnDelivery: CashOnDelivery,
+  Esewa: Esewa,
 }
 
 export default Icons;

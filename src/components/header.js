@@ -29,6 +29,7 @@ const Header = (props) => {
             title="Tagged Items"
             aria-label="Tagged Items"
             sx={{ marginRight: 1, marginTop: 4 }}
+            href="taggedItem"
           >
             <FlagIcon />
           </IconButton>
@@ -37,6 +38,7 @@ const Header = (props) => {
             title="Cart"
             aria-label="shopping cart"
             sx={{ marginRight: 1, marginTop: 4 }}
+            href="cart"
           >
             <ShoppingCartIcon />
           </IconButton>

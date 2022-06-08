@@ -109,7 +109,7 @@ const ProductPage = (props) => {
             transformWidth="100"
             delay="1700"
             indicatorsStyle={{ visibility: "hidden" }}
-            carouselStyle={{ borderRadius: 3 }}
+            carouselStyle={{ borderRadius: 3,}}
           >
             {productData.image.map((element) => (
               <img
@@ -211,6 +211,8 @@ const ProductPage = (props) => {
           <Counter
             discountPrice={productData.discountPrice}
             price={productData.price}
+            style={{ fontSize: 22, marginTop: 20 }}
+            buttonStyle={{ marginLeft: 40, marginRight: 0 }}
           />
           <div style={{ display: "flex", marginTop: 40, alignItems: "center" }}>
             <Button
@@ -241,6 +243,7 @@ const ProductPage = (props) => {
           width: "80%",
           background: "#FFF",
           borderRadius: 3,
+          boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
         }}
         description={productData.description}
         specification={productData.specification}
@@ -303,6 +306,7 @@ const styles = {
     backgroundColor: "#FFF",
     borderRadius: 3,
     // border : '1px solid black',
+    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
   },
   titleUnderline: {
     height: 3,

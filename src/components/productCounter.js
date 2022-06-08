@@ -35,16 +35,17 @@ const Counter = (props) => {
 
 
   return (
-    <div style={styles.root}>
-      <div style={{ fontSize: 22, color: Colors.primary }}>
+    <div style={{...styles.root, marginTop: props.style.marginTop,}}>
+      <div style={{ fontSize: props.style.fontSize, color: Colors.primary }}>
         Subtotal: {"\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0"}Rs. {subtotal}
       </div>
       <div style={{ display: "flex", alignItems: "center", marginTop: 10 }}>
-        <span style={{ fontSize: 22, color: Colors.primary }}>Quantity:</span>
+        <span style={{ fontSize: props.style.fontSize, color: Colors.primary }}>Quantity:</span>
         <ButtonGroup
           variant="contained"
           aria-label="outlined primary button group"
-          style={{ display: "flex", alignItems: "center", marginLeft: 40 }}
+          style={{ display: "flex", alignItems: "center", marginLeft: props.buttonStyle.marginLeft, marginRight: props.buttonStyle.marginRight }}
+          size= {props.buttonStyle.size}
         >
           <Button
             onClick={() => {
@@ -55,7 +56,7 @@ const Counter = (props) => {
           </Button>
           <span
             style={{
-              fontSize: 20,
+              fontSize: props.style.fontSize,
               color: Colors.primary,
               paddingLeft: 20,
               paddingRight: 20,
@@ -87,7 +88,6 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     width: "100%",
-    marginTop: 20,
     justifyContent: "space-around",
   },
 };

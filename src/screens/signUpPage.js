@@ -22,9 +22,6 @@ import CreateIcon from "@mui/icons-material/Create";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 
-import SignIn from "../components/signIn";
-import CustomModal from "../components/CustomModal";
-
 import Colors from "../res/colors";
 import Images from "../res/images";
 
@@ -46,17 +43,13 @@ function Copyright(props) {
   );
 }
 
-export default function SignInSide() {
+export default function SignUp() {
   const [values, setValues] = React.useState({
     password: "",
     showPassword: false,
     confirmPassword: "",
     showConfirmPassword: false,
   });
-
-  const [openModal, setOpenModal] = React.useState(false);
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
 
   const [gender, setGender] = React.useState("");
 
@@ -266,7 +259,7 @@ export default function SignInSide() {
               </Grid>
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid item xs={12} style={{marginTop: 10}}>
               <FormControlLabel
                 control={<Checkbox value="allowExtraEmails" color="primary" />}
                 label="I'd like to receive new offers and promotions via email."
@@ -291,12 +284,11 @@ export default function SignInSide() {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link
-                  // href="#"
                   variant="body2"
                   sx={{ color: Colors.primary }}
                   underline="hover"
                   color={Colors.primary}
-                  onClick={handleOpenModal}
+                  href="signIn"
                 >
                   Already have an account? Sign in
                 </Link>
@@ -306,11 +298,6 @@ export default function SignInSide() {
           </Box>
         </Box>
       </Grid>
-      <CustomModal
-        open={openModal}
-        onClose={handleCloseModal}
-        component={<SignIn />}
-      />
     </Grid>
   );
 }

@@ -8,6 +8,10 @@ import ProductPage from "../screens/productPage";
 import SearchPage from "../screens/searchPage";
 import CartPage from "../screens/cartPage";
 import CheckoutPage from "../screens/checkoutPage";
+import ProfilePage from "../screens/profilePage";
+import ProfileAddressBook from "../screens/profileAddressBook";
+import ProfilePaymentOptions from "../screens/profilePaymentOptions";
+import ProfilePasswordReset from "../screens/profilePasswordReset";
 
 const Router = () => {
   return (
@@ -20,6 +24,10 @@ const Router = () => {
         <Route path="search" element={<SearchPage />} />
         <Route path="cart" element={<CartPage />} />
         <Route path="checkout" element={<CheckoutPage />} />
+        <Route path="profile" element={<ProfilePage/>} />
+        <Route path="profile/addressBook" element={<ProfileAddressBook/>} />
+        <Route path="profile/paymentOptions" element={<ProfilePaymentOptions/>} />
+        <Route path="profile/passwordReset" element={<ProfilePasswordReset/>} />
       </Routes>
     </BrowserRouter>
   );

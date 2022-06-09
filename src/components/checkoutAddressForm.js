@@ -6,11 +6,11 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import { Button } from "@mui/material";
 
-
-export default function AddressForm() {
+export default function AddressForm(props) {
   const [province, setProvince] = React.useState("");
 
   const handleChange = (event) => {
@@ -99,7 +99,7 @@ export default function AddressForm() {
             variant="standard"
           />
         </Grid>
-        
+
         <Grid item xs={12} sm={3}>
           <TextField
             id="zip"
@@ -135,13 +135,21 @@ export default function AddressForm() {
           />
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={12} style={{...props.saveCheckboxStyle,}}>
           <FormControlLabel
             control={
               <Checkbox color="primary" name="saveAddress" value="yes" />
             }
             label="Save these shipping details"
           />
+        </Grid>
+
+        <Grid
+          item
+          xs={12}
+          style={{ display: "none", ...props.saveButtonStyle,justifyContent: "flex-end"}}
+        >
+          <Button size="large" variant="contained">Save Shipping Details</Button>
         </Grid>
       </Grid>
     </React.Fragment>

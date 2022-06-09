@@ -49,6 +49,7 @@ const TabbedPane = (props) => {
     <Box style={props.style}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
+          variant="scrollable"
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
@@ -66,6 +67,7 @@ const TabbedPane = (props) => {
               ...styles.container,
               width: "48%",
               backgroundColor: "#F5F5F5",
+              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
             }}
           >
             <div style={{ fontSize: 20, fontWeight: 550 }}>Description</div>
@@ -81,6 +83,7 @@ const TabbedPane = (props) => {
               ...styles.container,
               width: "40%",
               backgroundColor: "#F5F5F5",
+              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
             }}
           >
             <div style={{ fontSize: 20, fontWeight: 550 }}>Specification</div>
@@ -385,6 +388,7 @@ const styles = {
     display: "flex",
     justifyContent: "flex-start",
     background: "rgba(0,0,0, 0.15)",
+    boxShadow: "0px 2px 2px rgba(0, 0, 0, 0.25)",
   },
   ratingIndicator: {
     height: "100%",

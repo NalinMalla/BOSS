@@ -8,6 +8,7 @@ import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
+import { Button } from "@mui/material";
 
 import Icons from "../res/icons";
 
@@ -45,15 +46,16 @@ const PaymentTab = (props) => {
       <Typography variant="h6" gutterBottom color="primary">
         Payment method
       </Typography>
-      <Box sx={{ borderBottom: 1, borderColor: "divider", marginTop: 3}}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider", marginTop: 3 }}>
         <Tabs
+          variant="scrollable"
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
           TabIndicatorProps={{ style: { background: "brown" } }}
         >
           <Tab
-            style={{ height: 100, fontSize: 16, fontWeight: 'bold' }}
+            style={{ height: 100, fontSize: 16, fontWeight: "bold" }}
             icon={
               <img
                 src={Icons.CashOnDelivery}
@@ -65,7 +67,12 @@ const PaymentTab = (props) => {
             index={0}
           />
           <Tab
-            style={{ height: 100, fontSize: 16, fontWeight: 'bold', marginLeft: 20 }}
+            style={{
+              height: 100,
+              fontSize: 16,
+              fontWeight: "bold",
+              marginLeft: 20,
+            }}
             icon={
               <img
                 src={Icons.Credit}
@@ -77,7 +84,12 @@ const PaymentTab = (props) => {
             index={1}
           />
           <Tab
-            style={{ height: 100, fontSize: 16, fontWeight: 'bold', marginLeft: 20 }}
+            style={{
+              height: 100,
+              fontSize: 16,
+              fontWeight: "bold",
+              marginLeft: 20,
+            }}
             icon={
               <img
                 src={Icons.Esewa}
@@ -91,72 +103,89 @@ const PaymentTab = (props) => {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        You can pay in cash to our delivery personnel when you receive the goods at your doorstep.
+        You can pay in cash to our delivery personnel when you receive the goods
+        at your doorstep.
       </TabPanel>
 
       <TabPanel value={value} index={1}>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
-          <TextField
-            required
-            id="cardName"
-            label="Name on card"
-            fullWidth
-            autoComplete="cc-name"
-            variant="standard"
-          />
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6}>
+            <TextField
+              required
+              id="cardName"
+              label="Name on card"
+              fullWidth
+              autoComplete="cc-name"
+              variant="standard"
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              required
+              id="cardNumber"
+              label="Card number"
+              fullWidth
+              autoComplete="cc-number"
+              variant="standard"
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              required
+              id="expDate"
+              label="Expiry date"
+              fullWidth
+              autoComplete="cc-exp"
+              variant="standard"
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              required
+              id="cvv"
+              label="CVV"
+              helperText="Last three digits on signature strip"
+              fullWidth
+              autoComplete="cc-csc"
+              variant="standard"
+            />
+          </Grid>
+          <Grid item xs={12} style={{ ...props.saveCheckboxStyle }}>
+            <FormControlLabel
+              control={
+                <Checkbox color="secondary" name="saveCard" value="yes" />
+              }
+              label="Remember credit card details for next time"
+            />
+          </Grid>
+
+          <Grid
+            item
+            xs={12}
+            style={{
+              display: "none",
+              ...props.saveButtonStyle,
+              justifyContent: "flex-end",
+            }}
+          >
+            <Button size="large" variant="contained">
+              Save Payment Method
+            </Button>
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={6}>
-          <TextField
-            required
-            id="cardNumber"
-            label="Card number"
-            fullWidth
-            autoComplete="cc-number"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <TextField
-            required
-            id="expDate"
-            label="Expiry date"
-            fullWidth
-            autoComplete="cc-exp"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <TextField
-            required
-            id="cvv"
-            label="CVV"
-            helperText="Last three digits on signature strip"
-            fullWidth
-            autoComplete="cc-csc"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <FormControlLabel
-            control={<Checkbox color="secondary" name="saveCard" value="yes" />}
-            label="Remember credit card details for next time"
-          />
-        </Grid>
-      </Grid>
       </TabPanel>
 
       <TabPanel value={value} index={2}>
         You will be redirected to your eSewa account to complete your payment:
-        <br/>
-        <br/>
+        <br />
+        <br />
         1. Login to your eSewa account using your eSewa ID and your PIN.
-        <br/>
+        <br />
         2. Ensure your eSewa account is active and has sufficient balance.
-        <br/>
+        <br />
         3. Enter OTP (one time password) sent to your registered mobile number.
-        <br/>
-        <br/>
+        <br />
+        <br />
         ***Login with your eSewa mobile and PIN.***
       </TabPanel>
     </Box>

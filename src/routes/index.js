@@ -12,6 +12,7 @@ import ProfilePage from "../screens/profilePage";
 import ProfileAddressBook from "../screens/profileAddressBook";
 import ProfilePaymentOptions from "../screens/profilePaymentOptions";
 import ProfilePasswordReset from "../screens/profilePasswordReset";
+import OrdersPage from "../screens/ordersPage";
 
 const Router = () => {
   return (
@@ -28,6 +29,7 @@ const Router = () => {
         <Route path="profile/addressBook" element={<ProfileAddressBook/>} />
         <Route path="profile/paymentOptions" element={<ProfilePaymentOptions/>} />
         <Route path="profile/passwordReset" element={<ProfilePasswordReset/>} />
+        <Route path="orders" element={<OrdersPage />} />
       </Routes>
     </BrowserRouter>
   );

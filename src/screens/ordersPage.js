@@ -80,20 +80,69 @@ const OrdersPage = (props) => {
             borderRadius: 3,
           }}
         >
-          <div style={{...styles.container, width: '90%', alignItems: 'flex-start'}}>
-            <span style={{color: Colors.primary, fontSize: 24, marginTop: 10,}}>Order #{props.orderNum}</span>
-            <span style={{color: Colors.secondary, marginBottom: 15, marginLeft: 2}}>Placed on {props.dateTime}</span>
-            <ProductList counterDisabled={true}/>
-            <hr style={{ width: '100%'}}/>
+          <div
+            style={{
+              ...styles.container,
+              width: "90%",
+              alignItems: "flex-start",
+            }}
+          >
+            <div style={{ ...styles.wrapper, justifyContent: "space-between" }}>
+              <span
+                style={{ color: Colors.primary, fontSize: 24, marginTop: 10 }}
+              >
+                Order #{props.orderNum}
+              </span>
+              <span
+                style={{ color: Colors.secondary, fontSize: 24, marginTop: 10 }}
+              >
+                Total: {props.totalPrice}
+              </span>
+            </div>
+            <span
+              style={{
+                color: Colors.secondary,
+                marginBottom: 15,
+                marginLeft: 2,
+              }}
+            >
+              Placed on {props.dateTime}
+            </span>
+            <ProductList counterDisabled={true} />
+            <hr style={{ width: "100%" }} />
           </div>
-          
-          <div style={{...styles.container, width: '90%', alignItems: 'flex-start'}}>
-            <span style={{color: Colors.primary, fontSize: 24, marginTop: 10,}}>Order #{props.orderNum}</span>
-            <span style={{color: Colors.secondary, marginBottom: 15, marginLeft: 2}}>Placed on {props.dateTime}</span>
-            <ProductList counterDisabled={true}/>
-            <hr style={{ width: '100%'}}/>
+
+          <div
+            style={{
+              ...styles.container,
+              width: "90%",
+              alignItems: "flex-start",
+            }}
+          >
+            <div style={{ ...styles.wrapper, justifyContent: "space-between" }}>
+              <span
+                style={{ color: Colors.primary, fontSize: 24, marginTop: 10 }}
+              >
+                Order #{props.orderNum}
+              </span>
+              <span
+                style={{ color: Colors.secondary, fontSize: 24, marginTop: 10 }}
+              >
+                Total: {props.totalPrice}
+              </span>
+            </div>
+            <span
+              style={{
+                color: Colors.secondary,
+                marginBottom: 15,
+                marginLeft: 2,
+              }}
+            >
+              Placed on {props.dateTime}
+            </span>
+            <ProductList counterDisabled={true} />
+            <hr style={{ width: "100%" }} />
           </div>
-          
         </div>
       </div>
 

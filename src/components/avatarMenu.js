@@ -88,51 +88,51 @@ export default function AvatartMenu(props) {
           </ListItemIcon>
           Sign In
         </MenuItem>
-        <MenuItem onClick={() => {window.location = 'signUp'}}>
+        <MenuItem onClick={() => {window.location = '/signUp'}}>
           <ListItemIcon>
             <AccountBoxIcon fontSize="small" />
           </ListItemIcon>
           Sign Up
         </MenuItem>
         <Divider />
-        <MenuItem>
+        <MenuItem onClick={() => {window.location = '/profile'}}>
           <ListItemIcon>
             <AccountBoxIcon fontSize="small" />
           </ListItemIcon>
           Profile
         </MenuItem>
-        <MenuItem>
+        <MenuItem onClick={() => {window.location = '/orders'}}>
           <ListItemIcon>
             <InventoryIcon fontSize="small" />
           </ListItemIcon>
           My Orders
         </MenuItem>
-        <MenuItem>
+        <MenuItem onClick={() => {window.location = '/orders/cancellations'}}>
           <ListItemIcon>
             <CancelIcon fontSize="small" />
           </ListItemIcon>
           My Cancellations
         </MenuItem>
-        <MenuItem>
+        <MenuItem onClick={() => {window.location = '/orders/returns'}}>
           <ListItemIcon>
             <RestartAltIcon fontSize="small" />
           </ListItemIcon>
           My Returns
         </MenuItem>
-        <MenuItem>
+        <MenuItem onClick={() => {window.location = '/profile/reviews'}}>
           <ListItemIcon>
             <StarBorderPurple500Icon fontSize="small" />
           </ListItemIcon>
           My Reviews
         </MenuItem>
         <Divider />
-        <MenuItem>
+        <MenuItem onClick={() => {window.location = '/settings'}}>
           <ListItemIcon>
             <Settings fontSize="small" />
           </ListItemIcon>
           Settings
         </MenuItem>
-        <MenuItem>
+        <MenuItem onClick={() => {window.location = '/logout'}}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>

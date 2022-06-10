@@ -51,6 +51,7 @@ const Counter = (props) => {
             onClick={() => {
               decreaseCount();
             }}
+            disabled= {props.disabled}
           >
             -
           </Button>
@@ -68,6 +69,7 @@ const Counter = (props) => {
             onClick={() => {
               increaseCount();
             }}
+            disabled= {props.disabled}
           >
             +
           </Button>
@@ -80,7 +82,10 @@ const Counter = (props) => {
 Counter.defaultProps = {
   title: "Counter",
   subtitle: "Subtitle",
-  initialCount: 0,
+  disabled: false,
+  initialCount: 1,
+  price: 0,
+  discountPrice: null,
 };
 
 const styles = {
@@ -90,12 +95,6 @@ const styles = {
     width: "100%",
     justifyContent: "space-around",
   },
-};
-
-Counter.defaultProps = {
-  initialCount: 1,
-  price: 0,
-  discountPrice: null,
 };
 
 export default Counter;

@@ -38,11 +38,11 @@ const ProductListData = [
     },
   },
 ];
-const ProductList = () => {
+const ProductList = (props) => {
   return (
     <div style={Styles.container}>
       {ProductListData.map((element) => (
-        <ProductCard2 {...element} style={Styles.card} />
+        <ProductCard2 {...element} style={Styles.card} counterDisabled={props.counterDisabled}/>
       ))}
     </div>
   );

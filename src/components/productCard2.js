@@ -97,6 +97,7 @@ export default function ProductCard2(props) {
           price={props.price}
           style={{ fontSize: 18, marginTop: 0 }}
           buttonStyle={{ size: "small", marginLeft: 32, marginRight: 10 }}
+          disabled= {props.counterDisabled}
         />
       </div>
     </div>

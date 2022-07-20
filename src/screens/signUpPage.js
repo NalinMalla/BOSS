@@ -21,6 +21,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import CreateIcon from "@mui/icons-material/Create";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import axios from "axios";
 
 import Colors from "../res/colors";
 import Images from "../res/images";
@@ -79,13 +80,35 @@ export default function SignUp() {
     event.preventDefault();
   };
 
+  let receiveOffer = true;
+
+  const handleClickReceiveOffer = () => {
+    receiveOffer= !receiveOffer;
+    console.log("receive Offer: " + receiveOffer);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    
+    const user = {
+      firstName: data.get("firstName"),
+      middleName: data.get("middleName"),
+      lastName: data.get("lastName"),
       email: data.get("email"),
       password: data.get("password"),
-    });
+      dateOfBirth: data.get("date"),
+      gender: data.get("gender"),
+      receiveOffer: data.get("receiveOffer"),
+      contact: data.get("contact"),
+    };
+
+    console.log(user);
+
+    axios
+      .post("http://localhost:5000/users/add", user)
+      .then((res) => console.log(res.data));
+
   };
 
   return (
@@ -95,14 +118,14 @@ export default function SignUp() {
         item
         xs={false}
         sm={4}
-        md={7.5}
+        md={7}
         sx={{
           backgroundImage: `url(${Images.SofaBrown})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       />
-      <Grid item xs={12} sm={8} md={4.5} component={Paper} elevation={6} square>
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <Box
           sx={{
             mx: 4,
@@ -130,15 +153,15 @@ export default function SignUp() {
             onSubmit={handleSubmit}
             sx={{
               my: 4,
-              ml: 3,
-              mr: 3,
-              mt: 3,
+              ml: 2,
+              mr: 2,
+              mt: 4,
               color: Colors.primary,
               borderColor: Colors.primary,
             }}
           >
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={4}>
                 <TextField
                   autoComplete="given-name"
                   name="firstName"
@@ -149,7 +172,18 @@ export default function SignUp() {
                   autoFocus
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  autoComplete="given-name"
+                  name="middleName"
+                  fullWidth
+                  id="middleName"
+                  label="Middle Name"
+                  autoFocus
+                  defaultValue=""
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
                 <TextField
                   required
                   fullWidth
@@ -159,7 +193,7 @@ export default function SignUp() {
                   autoComplete="family-name"
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={7}>
                 <TextField
                   required
                   fullWidth
@@ -169,8 +203,18 @@ export default function SignUp() {
                   autoComplete="email"
                 />
               </Grid>
+              <Grid item xs={5}>
+                <TextField
+                  required
+                  fullWidth
+                  id="contact"
+                  label="Contact No."
+                  name="contact"
+                  autoComplete="contact"
+                />
+              </Grid>
               <Grid item xs={12}>
-                <FormControl fullWidth variant="outlined">
+                <FormControl fullWidth variant="outlined" required>
                   <InputLabel htmlFor="outlined-adornment-password">
                     Password
                   </InputLabel>
@@ -179,6 +223,7 @@ export default function SignUp() {
                     type={values.showPassword ? "text" : "password"}
                     value={values.password}
                     onChange={handleChange("password")}
+                    name="password"
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
@@ -200,7 +245,7 @@ export default function SignUp() {
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
-                <FormControl fullWidth variant="outlined">
+                <FormControl fullWidth variant="outlined" required>
                   <InputLabel htmlFor="outlined-adornment-password">
                     Confirm Password
                   </InputLabel>
@@ -233,7 +278,9 @@ export default function SignUp() {
               <Grid item xs={12} sm={6}>
                 <TextField
                   id="date"
+                  name="date"
                   label="Date of Birth"
+                  required
                   type="date"
                   fullWidth
                   InputLabelProps={{
@@ -242,26 +289,35 @@ export default function SignUp() {
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <FormControl fullWidth>
+                <FormControl fullWidth required defaultValue="">
                   <InputLabel id="demo-simple-select-label">Gender</InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
+                    name="gender"
                     value={gender}
                     label="Gender"
                     onChange={handleGenderChange}
                   >
-                    <MenuItem value={10}>Male</MenuItem>
-                    <MenuItem value={20}>Female</MenuItem>
-                    <MenuItem value={30}>Other</MenuItem>
+                    <MenuItem value="male">Male</MenuItem>
+                    <MenuItem value="female">Female</MenuItem>
+                    <MenuItem value="other">Other</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
             </Grid>
 
-            <Grid item xs={12} style={{marginTop: 10}}>
+            <Grid item xs={12} style={{ marginTop: 10 }}>
               <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
+                control={
+                  <Checkbox
+                    value={receiveOffer}
+                    color="primary"
+                    id="receiveOffer"
+                    name="receiveOffer"
+                    onClick={handleClickReceiveOffer}
+                  />
+                }
                 label="I'd like to receive new offers and promotions via email."
               />
             </Grid>
@@ -271,7 +327,7 @@ export default function SignUp() {
               fullWidth
               variant="contained"
               sx={{
-                mt: 2,
+                mt: 1,
                 mb: 1,
                 height: "50px",
                 backgroundColor: Colors.primary,

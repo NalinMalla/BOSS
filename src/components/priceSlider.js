@@ -8,7 +8,9 @@ import FormControl from "@mui/material/FormControl";
 const minDistance = 5000;
 
 export default function PriceSlider() {
-  const [value, setValue] = React.useState([0, 100000]);
+  const [minValue, setMinValue] = React.useState(0);
+  const [maxValue, setMaxValue] = React.useState(100000);
+  const [value, setValue] = React.useState([minValue, maxValue]);
 
   const handleChange = (event, newValue, activeThumb) => {
     if (!Array.isArray(newValue)) {
@@ -19,14 +21,27 @@ export default function PriceSlider() {
       if (activeThumb === 0) {
         const clamped = Math.min(newValue[0], 100000 - minDistance);
         setValue([clamped, clamped + minDistance]);
+        setMinValue(clamped);
+        setMaxValue(clamped + minDistance);
       } else {
         const clamped = Math.max(newValue[1], minDistance);
         setValue([clamped - minDistance, clamped]);
+        setMinValue(clamped - minDistance);
+        setMaxValue(clamped);
       }
     } else {
       setValue(newValue);
+      setMinValue(newValue[0]);
+      setMaxValue(newValue[1]);
     }
   };
+
+  const handleMinChange = (event, value) => {
+    setMinValue(value);
+  }
+  const handleMaxChange = (event, value) => {
+    setMaxValue(value);
+  }
 
   return (
     <div
@@ -68,7 +83,8 @@ export default function PriceSlider() {
           </InputLabel>
           <FilledInput
             id="filled-adornment-amount"
-            value={value[0]}
+            value={minValue}
+            onChange={handleMinChange}
             startAdornment={
               <InputAdornment position="start">Rs.</InputAdornment>
             }
@@ -86,7 +102,8 @@ export default function PriceSlider() {
           </InputLabel>
           <FilledInput
             id="filled-adornment-amount"
-            value={value[1]}
+            value={maxValue}
+            onChange={handleMaxChange}
             startAdornment={
               <InputAdornment position="start">Rs.</InputAdornment>
             }

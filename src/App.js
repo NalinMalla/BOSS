@@ -1,25 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import { ThemeProvider } from "@mui/material/styles";
+import "./App.css";
 
-function App() {
+import Theme from "./theme";
+import Routes from "./routes";
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <html>
+      <head>
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <title>BOSS</title>
+      </head>
+      <body style={{background:'#F5F5F5'}}>
+        <ThemeProvider theme={Theme}>
+          <Routes />
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }
-
-export default App;

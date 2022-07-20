@@ -52,7 +52,6 @@ const NavButton = (props) => {
         }}
       >
         {props.menu.map((element) => {
-          console.log(element);
           return (
             <MenuItem
               onClick={() => {

@@ -20,8 +20,8 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
 import axios from "axios";
-import {useState, useEffect} from 'react';
-import {useNavigate} from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Colors from "../res/colors";
 import Images from "../res/images";
@@ -45,7 +45,6 @@ function Copyright(props) {
 }
 
 export default function SignInSide(props) {
-
   //password hide and show frontend
   const [values, setValues] = React.useState({
     password: "",
@@ -71,7 +70,6 @@ export default function SignInSide(props) {
       email: data.get("email"),
       password: data.get("password"),
     });
-
   };
 
   //Authentication
@@ -84,18 +82,11 @@ export default function SignInSide(props) {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isEmailInValid, setIsEmailInValid] = useState(false);
-  const [isPasswordInValid, setIsPasswordInValid] = useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = useState("");
-  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  const [isCredentialsInvalid, setIsCredentialsInvalid] = useState(false);
 
   const [rememberMe, setRememberMe] = useState(false);
 
   let user = null;
-
-  // function changeLoggedIn(loggedIn) {
-  //   props.changeLoggedIn(loggedIn);
-  // }
 
   function storeInfoToLocalStorage() {
     localStorage.setItem("rememberMe", rememberMe);
@@ -111,39 +102,8 @@ export default function SignInSide(props) {
   let navigate = useNavigate();
   const redirectToHomepage = () => {
     storeInfoToLocalStorage();
-    // changeLoggedIn(true);
     navigate("/");
   };
-
-  function emailIsIncorrect(isEmailIncorrect) {
-    if (isEmailIncorrect) {
-      setEmailErrorMessage("E-mail address is incorrect.");
-      setIsEmailInValid(true);
-    } else {
-      setEmailErrorMessage("");
-      setIsEmailInValid(false);
-    }
-  }
-
-  function passwordIsIncorrect(isPasswordIncorrect) {
-    if (isPasswordIncorrect) {
-      setPasswordErrorMessage("Password is incorrect.");
-      setIsPasswordInValid(true);
-    } else {
-      setPasswordErrorMessage("");
-      setIsPasswordInValid(false);
-    }
-  }
-
-  function emailIsNull() {
-    setEmailErrorMessage("E-mail address is required.");
-    setIsEmailInValid(true);
-  }
-
-  function passwordIsNull() {
-    setPasswordErrorMessage("Password is required.");
-    setIsPasswordInValid(true);
-  }
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -170,7 +130,6 @@ export default function SignInSide(props) {
     if (userInfo === null) {
       return null;
     } else {
-      setIsEmailInValid(false);
       if (userInfo.password === password) {
         user = {
           id: userInfo._id,
@@ -186,24 +145,18 @@ export default function SignInSide(props) {
   const handleLogin = () => {
     isUserAuthorised(email, password).then((response) => {
       if (response === true) {
-        emailIsIncorrect(false);
-        passwordIsIncorrect(false);
+        setIsCredentialsInvalid(false);
+        storeInfoToLocalStorage();
         redirectToHomepage();
-      } else if (response === false) {
-        passwordIsIncorrect(true);
-        emailIsIncorrect(false);
-      } else if (response === null) {
-        emailIsIncorrect(true);
-        passwordIsIncorrect(false);
       } else {
-        alert(`Invalid data received.`);
+        setIsCredentialsInvalid(true);
       }
 
       if (email === "") {
-        emailIsNull();
+        setIsCredentialsInvalid(true);
       }
       if (password === "") {
-        passwordIsNull();
+        setIsCredentialsInvalid(true);
       }
     });
   };
@@ -254,28 +207,30 @@ export default function SignInSide(props) {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label={"Email Address"}
               name="email"
               autoComplete="email"
               autoFocus
               color="primary"
               value={email}
               onChange={handleEmailChange}
-              error = {isEmailInValid}
-              helperText={ emailErrorMessage}
+              error={isCredentialsInvalid}
             />
 
             <FormControl fullWidth variant="outlined" required sx={{ mt: 1 }}>
               <InputLabel htmlFor="outlined-adornment-password">
-                Password
+                {isCredentialsInvalid === true ? (
+                  <span style={{ color: "#ef0000" }}>Password</span>
+                ) : (
+                  "Password"
+                )}
               </InputLabel>
               <OutlinedInput
                 id="outlined-adornment-password"
                 type={values.showPassword ? "text" : "password"}
                 value={password}
-                onChange= {handlePasswordChange}
-                error = {isPasswordInValid}
-                helperText={passwordErrorMessage}
+                onChange={handlePasswordChange}
+                error={isCredentialsInvalid}
                 name="password"
                 endAdornment={
                   <InputAdornment position="end">
@@ -293,10 +248,21 @@ export default function SignInSide(props) {
               />
             </FormControl>
 
+            <p
+              style={{
+                color: "#ef0000",
+                display: isCredentialsInvalid === false ? "none" : "flex",
+                marginLeft: 2,
+                fontWeight: 500,
+              }}
+            >
+              Invalid email or password.
+            </p>
+
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
-              onChange = {handleRememberMeChange}
+              onChange={handleRememberMeChange}
             />
 
             <Button

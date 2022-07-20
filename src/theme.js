@@ -5,6 +5,9 @@ const Theme = createTheme({
   palette: {
     primary: {
       main: Colors.primary,
+    },
+    tertiary: {
+      main: Colors.white,
     }
   },
 });

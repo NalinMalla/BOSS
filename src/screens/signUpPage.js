@@ -45,62 +45,100 @@ function Copyright(props) {
 }
 
 export default function SignUp() {
-  const [values, setValues] = React.useState({
-    password: "",
-    showPassword: false,
-    confirmPassword: "",
-    showConfirmPassword: false,
-  });
+
+  const [firstName, setFirstName] = React.useState("");
+  const [middleName, setMiddleName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+
+  const [email, setEmail] = React.useState("");
+  const [contact, setContact] = React.useState("");
+
+  const [password, setPassword] = React.useState("");
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
   const [gender, setGender] = React.useState("");
+  const [dateOfBirth, setDateOfBirth] = React.useState("");
+
+  const [receiveOffer, setReceiveOffer] = React.useState(true);
+
+  const [valid, setValid] = React.useState(false);
+
+  const handleFirstNameChange = (event) => {
+    setFirstName(event.target.value);
+  };
+  const handleMiddleNameChange = (event) => {
+    setMiddleName(event.target.value);
+  };
+  const handleLastNameChange = (event) => {
+    setLastName(event.target.value);
+  };
+
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+
+  const handleContactChange = (event) => {
+    setContact(event.target.value);
+  };
 
   const handleGenderChange = (event) => {
     setGender(event.target.value);
   };
 
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
+  const handleDateOfBirthChange = (event) => {
+    setDateOfBirth(event.target.value);
+  };
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
+
+  const handleConfirmPasswordChange = (event) => {
+    setConfirmPassword(event.target.value);
   };
 
   const handleClickShowPassword = () => {
-    setValues({
-      ...values,
-      showPassword: !values.showPassword,
-    });
+    setShowPassword(!showPassword);
   };
 
   const handleClickShowConfirmPassword = () => {
-    setValues({
-      ...values,
-      showConfirmPassword: !values.showConfirmPassword,
-    });
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
 
-  let receiveOffer = true;
-
   const handleClickReceiveOffer = () => {
-    receiveOffer= !receiveOffer;
+    receiveOffer = !receiveOffer;
     console.log("receive Offer: " + receiveOffer);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    
+    // const data = new FormData(event.currentTarget);
+
     const user = {
-      firstName: data.get("firstName"),
-      middleName: data.get("middleName"),
-      lastName: data.get("lastName"),
-      email: data.get("email"),
-      password: data.get("password"),
-      dateOfBirth: data.get("date"),
-      gender: data.get("gender"),
-      receiveOffer: data.get("receiveOffer"),
-      contact: data.get("contact"),
+      // firstName: data.get("firstName"),
+      // middleName: data.get("middleName"),
+      // lastName: data.get("lastName"),
+      // email: data.get("email"),
+      // password: data.get("password"),
+      // dateOfBirth: data.get("date"),
+      // gender: data.get("gender"),
+      // receiveOffer: data.get("receiveOffer"),
+      // contact: data.get("contact"),
+      firstName: firstName,
+      middleName: middleName,
+      lastName: lastName,
+      email: email,
+      password: password,
+      dateOfBirth: dateOfBirth,
+      gender: gender,
+      receiveOffer: receiveOffer,
+      contact: contact,
     };
 
     console.log(user);
@@ -108,7 +146,6 @@ export default function SignUp() {
     axios
       .post("http://localhost:5000/users/add", user)
       .then((res) => console.log(res.data));
-
   };
 
   return (
@@ -168,8 +205,11 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="firstName"
-                  label="First Name"
+                  label={(firstName.trim() === "")&&(valid === false) ? "Empty Field" : "First Name"}
                   autoFocus
+                  value={firstName}
+                  onChange={handleFirstNameChange}
+                  error={(firstName.trim() === "")&&(valid === false)}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -181,6 +221,8 @@ export default function SignUp() {
                   label="Middle Name"
                   autoFocus
                   defaultValue=""
+                  value={middleName}
+                  onChange={handleMiddleNameChange}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -188,9 +230,12 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="lastName"
-                  label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
+                  label={(lastName.trim() === "")&&(valid === false) ? "Empty Field" : "Last Name"}
+                  value={lastName}
+                  onChange={handleLastNameChange}
+                  error={(lastName.trim() === "")&&(valid === false)}
                 />
               </Grid>
               <Grid item xs={7}>
@@ -198,9 +243,12 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="email"
-                  label="Email Address"
                   name="email"
                   autoComplete="email"
+                  label={(email.trim() === "")&&(valid === false) ? "Empty Field" : "Email Address"}
+                  value={email}
+                  onChange={handleEmailChange}
+                  error={(email.trim() === "")&&(valid ===false)}
                 />
               </Grid>
               <Grid item xs={5}>
@@ -208,21 +256,24 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="contact"
-                  label="Contact No."
                   name="contact"
                   autoComplete="contact"
+                  label={(contact.trim() === "")&&(valid === false) ? "Empty Field" : "Contact No."}
+                  value={contact}
+                  onChange={handleContactChange}
+                  error={(contact.trim() === "")&&(valid === false)}
                 />
               </Grid>
               <Grid item xs={12}>
                 <FormControl fullWidth variant="outlined" required>
                   <InputLabel htmlFor="outlined-adornment-password">
-                    Password
+                    {(password.trim() === "")&&(valid === false) ? ((password === confirmPassword)?"Password is required." : "Password doesn't match.") : "Password"}Z
                   </InputLabel>
                   <OutlinedInput
                     id="outlined-adornment-password"
-                    type={values.showPassword ? "text" : "password"}
-                    value={values.password}
-                    onChange={handleChange("password")}
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={handlePasswordChange}
                     name="password"
                     endAdornment={
                       <InputAdornment position="end">
@@ -232,11 +283,7 @@ export default function SignUp() {
                           onMouseDown={handleMouseDownPassword}
                           edge="end"
                         >
-                          {values.showPassword ? (
-                            <Visibility />
-                          ) : (
-                            <VisibilityOff />
-                          )}
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
                         </IconButton>
                       </InputAdornment>
                     }
@@ -251,9 +298,9 @@ export default function SignUp() {
                   </InputLabel>
                   <OutlinedInput
                     id="outlined-adornment-password"
-                    type={values.showConfirmPassword ? "text" : "password"}
-                    value={values.confirmPassword}
-                    onChange={handleChange("confirmPassword")}
+                    type={showConfirmPassword ? "text" : "password"}
+                    value={confirmPassword}
+                    onChange={handleConfirmPasswordChange}
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
@@ -262,7 +309,7 @@ export default function SignUp() {
                           onMouseDown={handleMouseDownPassword}
                           edge="end"
                         >
-                          {values.showConfirmPassword ? (
+                          {showConfirmPassword ? (
                             <Visibility />
                           ) : (
                             <VisibilityOff />

@@ -220,7 +220,7 @@ export default function SignInSide(props) {
             <FormControl fullWidth variant="outlined" required sx={{ mt: 1 }}>
               <InputLabel htmlFor="outlined-adornment-password">
                 {isCredentialsInvalid === true ? (
-                  <span style={{ color: "#ef0000" }}>Password</span>
+                  <span style={{ color: "#D32F2F" }}>Password</span>
                 ) : (
                   "Password"
                 )}
@@ -250,7 +250,7 @@ export default function SignInSide(props) {
 
             <p
               style={{
-                color: "#ef0000",
+                color: "#D32F2F",
                 display: isCredentialsInvalid === false ? "none" : "flex",
                 marginLeft: 2,
                 fontWeight: 500,

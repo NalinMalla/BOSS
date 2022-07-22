@@ -22,6 +22,7 @@ import CreateIcon from "@mui/icons-material/Create";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import Colors from "../res/colors";
 import Images from "../res/images";
@@ -45,7 +46,6 @@ function Copyright(props) {
 }
 
 export default function SignUp() {
-
   const [firstName, setFirstName] = React.useState("");
   const [middleName, setMiddleName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
@@ -61,9 +61,11 @@ export default function SignUp() {
   const [gender, setGender] = React.useState("");
   const [dateOfBirth, setDateOfBirth] = React.useState("");
 
-  const [receiveOffer, setReceiveOffer] = React.useState(true);
+  const [receiveOffer, setReceiveOffer] = React.useState(false); //Initially un-ticked
 
-  const [valid, setValid] = React.useState(false);
+  let [valid, setValid] = React.useState(true);
+
+  let navigate = useNavigate();
 
   const handleFirstNameChange = (event) => {
     setFirstName(event.target.value);
@@ -112,24 +114,14 @@ export default function SignUp() {
   };
 
   const handleClickReceiveOffer = () => {
-    receiveOffer = !receiveOffer;
-    console.log("receive Offer: " + receiveOffer);
+    setReceiveOffer(!receiveOffer);
+    console.log("receive Offer: " + receiveOffer); //logs incorrectly
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // const data = new FormData(event.currentTarget);
 
     const user = {
-      // firstName: data.get("firstName"),
-      // middleName: data.get("middleName"),
-      // lastName: data.get("lastName"),
-      // email: data.get("email"),
-      // password: data.get("password"),
-      // dateOfBirth: data.get("date"),
-      // gender: data.get("gender"),
-      // receiveOffer: data.get("receiveOffer"),
-      // contact: data.get("contact"),
       firstName: firstName,
       middleName: middleName,
       lastName: lastName,
@@ -143,9 +135,23 @@ export default function SignUp() {
 
     console.log(user);
 
-    axios
-      .post("http://localhost:5000/users/add", user)
-      .then((res) => console.log(res.data));
+    axios.post("http://localhost:5000/users/add", user).then(
+      (res) => {
+        console.log(res.data);
+        console.log("Res");
+        setValid(true);
+        alert(
+          "SignUp form successfully submitted.\nClick Ok to redirect this page to LogIn."
+        );
+        navigate("/signIn");
+      },
+      (err) => {
+        console.log("Err");
+        setValid(false);
+      }
+    );
+
+    console.log("valid : " + valid);
   };
 
   return (
@@ -205,11 +211,15 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="firstName"
-                  label={(firstName.trim() === "")&&(valid === false) ? "Empty Field" : "First Name"}
+                  label={
+                    firstName.trim() === "" && valid === false
+                      ? "Unfilled"
+                      : "First Name"
+                  }
                   autoFocus
                   value={firstName}
                   onChange={handleFirstNameChange}
-                  error={(firstName.trim() === "")&&(valid === false)}
+                  error={firstName.trim() === "" && valid === false}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -232,10 +242,14 @@ export default function SignUp() {
                   id="lastName"
                   name="lastName"
                   autoComplete="family-name"
-                  label={(lastName.trim() === "")&&(valid === false) ? "Empty Field" : "Last Name"}
+                  label={
+                    lastName.trim() === "" && valid === false
+                      ? "Unfilled"
+                      : "Last Name"
+                  }
                   value={lastName}
                   onChange={handleLastNameChange}
-                  error={(lastName.trim() === "")&&(valid === false)}
+                  error={lastName.trim() === "" && valid === false}
                 />
               </Grid>
               <Grid item xs={7}>
@@ -245,10 +259,14 @@ export default function SignUp() {
                   id="email"
                   name="email"
                   autoComplete="email"
-                  label={(email.trim() === "")&&(valid === false) ? "Empty Field" : "Email Address"}
+                  label={
+                    email.trim() === "" && valid === false
+                      ? "Email Address is required."
+                      : "Email Address"
+                  }
                   value={email}
                   onChange={handleEmailChange}
-                  error={(email.trim() === "")&&(valid ===false)}
+                  error={email.trim() === "" && valid === false}
                 />
               </Grid>
               <Grid item xs={5}>
@@ -258,16 +276,29 @@ export default function SignUp() {
                   id="contact"
                   name="contact"
                   autoComplete="contact"
-                  label={(contact.trim() === "")&&(valid === false) ? "Empty Field" : "Contact No."}
+                  label={
+                    contact.trim() === "" && valid === false
+                      ? "Empty field"
+                      : "Contact No."
+                  }
                   value={contact}
                   onChange={handleContactChange}
-                  error={(contact.trim() === "")&&(valid === false)}
+                  error={contact.trim() === "" && valid === false}
                 />
               </Grid>
               <Grid item xs={12}>
                 <FormControl fullWidth variant="outlined" required>
                   <InputLabel htmlFor="outlined-adornment-password">
-                    {(password.trim() === "")&&(valid === false) ? ((password === confirmPassword)?"Password is required." : "Password doesn't match.") : "Password"}Z
+                    {(password.trim() === "" || password !== confirmPassword) &&
+                    valid === false ? (
+                      password !== confirmPassword ? (
+                        <span style={{ color: "#D32F2F" }}>Mismatched</span>
+                      ) : (
+                        <span style={{ color: "#D32F2F" }}>Empty field</span>
+                      )
+                    ) : (
+                      "Password"
+                    )}
                   </InputLabel>
                   <OutlinedInput
                     id="outlined-adornment-password"
@@ -275,6 +306,11 @@ export default function SignUp() {
                     value={password}
                     onChange={handlePasswordChange}
                     name="password"
+                    error={
+                      (password.trim() === "" ||
+                        password !== confirmPassword) &&
+                      valid === false
+                    }
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
@@ -294,13 +330,32 @@ export default function SignUp() {
               <Grid item xs={12}>
                 <FormControl fullWidth variant="outlined" required>
                   <InputLabel htmlFor="outlined-adornment-password">
-                    Confirm Password
+                    {(confirmPassword.trim() === "" ||
+                      password !== confirmPassword) &&
+                    valid === false ? (
+                      password !== confirmPassword ? (
+                        <span style={{ color: "#D32F2F" }}>
+                          Mismatch Password
+                        </span>
+                      ) : (
+                        <span style={{ color: "#D32F2F" }}>
+                          Empty required field
+                        </span>
+                      )
+                    ) : (
+                      "Confirm Password"
+                    )}
                   </InputLabel>
                   <OutlinedInput
                     id="outlined-adornment-password"
                     type={showConfirmPassword ? "text" : "password"}
                     value={confirmPassword}
                     onChange={handleConfirmPasswordChange}
+                    error={
+                      (confirmPassword.trim() === "" ||
+                        password !== confirmPassword) &&
+                      valid === false
+                    }
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
@@ -326,24 +381,39 @@ export default function SignUp() {
                 <TextField
                   id="date"
                   name="date"
-                  label="Date of Birth"
                   required
                   type="date"
                   fullWidth
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  label={
+                    dateOfBirth.trim() === "" && valid === false
+                      ? "Empty field"
+                      : "Date of Birth"
+                  }
+                  value={dateOfBirth}
+                  onChange={handleDateOfBirthChange}
+                  error={dateOfBirth.trim() === "" && valid === false}
                 />
               </Grid>
+
               <Grid item xs={12} sm={6}>
                 <FormControl fullWidth required defaultValue="">
-                  <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+                  <InputLabel id="demo-simple-select-label">
+                    {gender.trim() === "" && valid === false ? (
+                      <span style={{ color: "#D32F2F" }}>Unfilled</span>
+                    ) : (
+                      "Gender"
+                    )}
+                  </InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     name="gender"
                     value={gender}
                     label="Gender"
+                    error={gender === "" && valid === false}
                     onChange={handleGenderChange}
                   >
                     <MenuItem value="male">Male</MenuItem>

@@ -67,6 +67,9 @@ export default function SignUp() {
 
   let navigate = useNavigate();
 
+  const emailRGX = /^([a-z A-Z 0-9 \._-]+)@([a-z A-Z 0-9 -]+)\.([a-z]{2,20})$/;
+  const contactRGX = /^[0-9]{9,10}$/;
+
   const handleFirstNameChange = (event) => {
     setFirstName(event.target.value);
   };
@@ -260,13 +263,19 @@ export default function SignUp() {
                   name="email"
                   autoComplete="email"
                   label={
-                    email.trim() === "" && valid === false
-                      ? "Email Address is required."
+                    (email.trim() === "" || !emailRGX.test(email)) &&
+                    valid === false
+                      ? email.trim() === ""
+                        ? "Email Address is required."
+                        : "Invalid email address."
                       : "Email Address"
                   }
                   value={email}
                   onChange={handleEmailChange}
-                  error={email.trim() === "" && valid === false}
+                  error={
+                    (email.trim() === "" || !emailRGX.test(email)) &&
+                    valid === false
+                  }
                 />
               </Grid>
               <Grid item xs={5}>
@@ -277,13 +286,19 @@ export default function SignUp() {
                   name="contact"
                   autoComplete="contact"
                   label={
-                    contact.trim() === "" && valid === false
-                      ? "Empty field"
+                    (contact.trim() === "" || !contactRGX.test(contact)) &&
+                    valid === false
+                      ? contact.trim() === ""
+                        ? "Empty field"
+                        : "Invalid contact no."
                       : "Contact No."
                   }
                   value={contact}
                   onChange={handleContactChange}
-                  error={contact.trim() === "" && valid === false}
+                  error={
+                    (contact.trim() === "" || !contactRGX.test(contact)) &&
+                    valid === false
+                  }
                 />
               </Grid>
               <Grid item xs={12}>

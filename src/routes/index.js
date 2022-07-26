@@ -41,7 +41,7 @@ const Router = () => {
           path="profile/passwordReset"
           element={<ProfilePasswordReset />}
         />
-        <Route path="orders" element={<OrdersPage />} />
+        <Route path="profile/orders" element={<OrdersPage />} />
       </Routes>
     </BrowserRouter>
   );

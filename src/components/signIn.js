@@ -57,16 +57,6 @@ export default function SignIn() {
     event.preventDefault();
   };
 
-  //Form submit
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
-
   //Authentication
   useEffect(() => {
     document.title = "BOSS-SignIn";
@@ -135,7 +125,8 @@ export default function SignIn() {
     }
   }
 
-  const handleLogin = () => {
+  const handleLogin = (event) => {
+    event.preventDefault();
     isUserAuthorised(email, password).then((response) => {
       if (response === true) {
         setIsCredentialsInvalid(false);
@@ -174,7 +165,6 @@ export default function SignIn() {
       </Typography>
       <Box
         component="form"
-        onSubmit={handleSubmit}
         noValidate
         sx={{ mt: 2, color: Colors.primary, borderColor: Colors.primary }}
       >

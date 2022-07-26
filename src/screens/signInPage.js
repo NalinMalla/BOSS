@@ -82,7 +82,7 @@ export default function SignInSide(props) {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isCredentialsInvalid, setIsCredentialsInvalid] = useState(false);
+  const [isCredentialsInvalid, setIsCredentialsInvalid] = useState(true);
 
   const [rememberMe, setRememberMe] = useState(false);
 
@@ -96,6 +96,7 @@ export default function SignInSide(props) {
       localStorage.setItem("userFirstName", user.name.firstName);
       localStorage.setItem("userMiddleName", user.name.middleName);
       localStorage.setItem("userLastName", user.name.lastName);
+      localStorage.setItem("userContact", user.contact);
     }
   }
 
@@ -135,6 +136,7 @@ export default function SignInSide(props) {
           id: userInfo._id,
           name: userInfo.userName,
           email: userInfo.email,
+          contact: userInfo.contact,
         };
         return true;
       }

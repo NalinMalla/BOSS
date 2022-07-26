@@ -124,37 +124,46 @@ export default function SignUp() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const user = {
-      firstName: firstName,
-      middleName: middleName,
-      lastName: lastName,
-      email: email,
-      password: password,
-      dateOfBirth: dateOfBirth,
-      gender: gender,
-      receiveOffer: receiveOffer,
-      contact: contact,
-    };
+    if (
+      !(firstName.trim() === "") &&
+      !(lastName.trim() === "") &&
+      contactRGX.test(contact) &&
+      emailRGX.test(email) &&
+      !(dateOfBirth.trim() === "") &&
+      !(gender.trim() === "") &&
+      !(password.trim() === "") &&
+      password === confirmPassword
+    ) {
+      const user = {
+        firstName: firstName,
+        middleName: middleName,
+        lastName: lastName,
+        email: email,
+        password: password,
+        dateOfBirth: dateOfBirth,
+        gender: gender,
+        receiveOffer: receiveOffer,
+        contact: contact,
+      };
 
-    console.log(user);
-
-    axios.post("http://localhost:5000/users/add", user).then(
-      (res) => {
-        console.log(res.data);
-        console.log("Res");
-        setValid(true);
-        alert(
-          "SignUp form successfully submitted.\nClick Ok to redirect this page to LogIn."
-        );
-        navigate("/signIn");
-      },
-      (err) => {
-        console.log("Err");
-        setValid(false);
-      }
-    );
-
-    console.log("valid : " + valid);
+      axios.post("http://localhost:5000/users/add", user).then(
+        (res) => {
+          console.log(res.data);
+          console.log("Res");
+          setValid(true);
+          alert(
+            "SignUp form successfully submitted.\nClick Ok to redirect this page to LogIn."
+          );
+          navigate("/signIn");
+        },
+        (err) => {
+          alert("SignUp unsuccessful.\nError: " + err+ "\nThe entered email address is already taken. Please, try with a different email address.");
+          setValid(false);
+        }
+      );
+    } else {
+      setValid(false);
+    }
   };
 
   return (
@@ -290,8 +299,8 @@ export default function SignUp() {
                     valid === false
                       ? contact.trim() === ""
                         ? "Empty field"
-                        : "Invalid contact no."
-                      : "Contact No."
+                        : "Invalid contact number"
+                      : "Contact Number"
                   }
                   value={contact}
                   onChange={handleContactChange}

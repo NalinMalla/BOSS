@@ -18,7 +18,6 @@ const ProfileAddressBook = () => {
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
 
-
   return (
     <div id="root" style={styles.root}>
       <Header handleSignIn={handleOpenModal} />
@@ -79,13 +78,12 @@ const ProfileAddressBook = () => {
             background: "#FFF",
             boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
             borderRadius: 3,
-            padding: 40
+            padding: 40,
           }}
         >
-
           <AddressForm
-            saveCheckboxStyle={{display: 'none'}}
-            saveButtonStyle={{display: 'flex'}}
+            saveCheckboxStyle={{ display: "none" }}
+            saveButtonStyle={{ display: "flex" }}
           />
         </div>
       </div>

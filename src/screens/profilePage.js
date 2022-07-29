@@ -1,5 +1,4 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
@@ -21,11 +20,11 @@ import SiteMap from "../components/siteMap";
 import Copyright from "../components/copyright";
 import SignIn from "../components/signIn";
 import CustomModal from "../components/CustomModal";
+import ProfileHead from "../components/profileHead";
 import ProfileList from "../components/profileList";
 import { styled } from "@mui/material/styles";
 
 import Colors from "../res/colors";
-import Images from "../res/images";
 
 const Input = styled("input")({
   display: "none",
@@ -51,6 +50,8 @@ const ProfilePage = () => {
 
   const [password, setPassword] = React.useState(""); //for some reason using password as normal variable caused errors.
 
+  const [profilePic, setProfilePic] = React.useState(null);
+
   let navigate = useNavigate();
 
   const getUserInfoById = (userId) => {
@@ -74,6 +75,22 @@ const ProfilePage = () => {
       setDateOfBirth(userInfo.dateOfBirth.toString().substring(0, 10)); //returns in a different format
       setGender(userInfo.gender);
       setPassword(userInfo.password);
+      setProfilePic(userInfo.profilePic);
+    }
+  }
+
+  async function storeInfoToLocalStorage(userId) {
+    const user = await getUserInfoById(userId);
+    if (user !== null) {
+      localStorage.setItem("userEmail", user.email);
+      localStorage.setItem("userFirstName", user.userName.firstName);
+      localStorage.setItem("userMiddleName", user.userName.middleName);
+      localStorage.setItem("userLastName", user.userName.lastName);
+      localStorage.setItem("userContact", user.contact);
+      localStorage.setItem("userProfilePic", user.profilePic);
+    }
+    else{
+      alert("User not found.");
     }
   }
 
@@ -115,6 +132,11 @@ const ProfilePage = () => {
     setDateOfBirth(event.target.value);
   };
 
+  const handleProfilePicChange = (event) => {
+    setProfilePic(event.target.files[0]);
+    console.log(profilePic);
+  };
+
   const handleUpdate = (event) => {
     event.preventDefault();
 
@@ -126,30 +148,28 @@ const ProfilePage = () => {
       !(dateOfBirth.trim() === "") &&
       !(gender.trim() === "")
     ) {
-      const user = {
-        firstName: firstName,
-        password: password,
-        middleName: middleName,
-        lastName: lastName,
-        email: email,
-        contact: contact,
-        dateOfBirth: dateOfBirth,
-        gender: gender,
-      };
-
-      console.log(user);
+      const formData = new FormData(event.currentTarget);
+      formData.append("password", password);
+      console.log("formData");
+      console.log(formData.profilePic);
 
       if (
         window.confirm(
           "Your profile is about to be overwritten. The previous details will be lost. \nAre you ok with this?"
         )
       ) {
-        axios.put(`http://localhost:5000/users/update/${userId}`, user).then(
+        axios({
+          method: "put",
+          url: `http://localhost:5000/users/update/${userId}`,
+          data: formData,
+          headers: { "Content-Type": "multipart/form-data" },
+        }).then(
           (res) => {
+            storeInfoToLocalStorage(userId);
             console.log(res.data);
             console.log("Res");
             alert("Updated profile successfully.");
-            // navigate("/signIn");
+            window.location.href = "/profile";
           },
           (err) => {
             alert("Profile was not updated.\nError: " + err);
@@ -181,38 +201,7 @@ const ProfilePage = () => {
             flex: 0.22,
           }}
         >
-          <div
-            style={{
-              ...styles.container,
-              background: "#FFF",
-              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
-              width: "100%",
-              borderRadius: 3,
-              paddingBottom: 8,
-            }}
-          >
-            <Avatar
-              sx={{
-                width: 90,
-                height: 90,
-                m: 1,
-                bgcolor: Colors.primary,
-                mt: 2,
-              }}
-            >
-              <img
-                src={Images.Bed}
-                alt="profile pic"
-                style={{ width: 90, height: 90 }}
-              />
-            </Avatar>
-
-            <span
-              style={{ color: Colors.primary, fontSize: 22, fontWeight: 500 }}
-            >
-              Nalin Malla
-            </span>
-          </div>
+          <ProfileHead />
           <ProfileList />
         </div>
         <div
@@ -225,15 +214,25 @@ const ProfilePage = () => {
           }}
         >
           <Box
+            component="form"
+            noValidate
+            onSubmit={handleUpdate}
             sx={{
               mx: 4,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
             }}
+            enctype="multipart/form-data"
           >
             <label htmlFor="icon-button-file">
-              <Input accept="image/*" id="icon-button-file" type="file" />
+              <Input
+                accept="image/*"
+                id="icon-button-file"
+                type="file"
+                name="profilePic"
+                onClick={handleProfilePicChange}
+              />
               <IconButton
                 color="primary"
                 aria-label="upload picture"
@@ -259,9 +258,6 @@ const ProfilePage = () => {
             </Typography>
 
             <Box
-              component="form"
-              noValidate
-              onSubmit={handleUpdate}
               sx={{
                 my: 4,
                 ml: 3,
@@ -353,8 +349,8 @@ const ProfilePage = () => {
 
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    id="date"
-                    name="date"
+                    id="dateOfBirth"
+                    name="dateOfBirth"
                     required
                     type="date"
                     fullWidth

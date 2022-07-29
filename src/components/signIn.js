@@ -81,6 +81,8 @@ export default function SignIn() {
       localStorage.setItem("userFirstName", user.name.firstName);
       localStorage.setItem("userMiddleName", user.name.middleName);
       localStorage.setItem("userLastName", user.name.lastName);
+      localStorage.setItem("userContact", user.contact.toString());
+      localStorage.setItem("userProfilePic", user.profilePic);
     }
   }
 
@@ -118,6 +120,8 @@ export default function SignIn() {
           id: userInfo._id,
           name: userInfo.userName,
           email: userInfo.email,
+          contact: userInfo.contact,
+          profilePic: userInfo.profilePic,
         };
         return true;
       }

@@ -96,7 +96,8 @@ export default function SignInSide(props) {
       localStorage.setItem("userFirstName", user.name.firstName);
       localStorage.setItem("userMiddleName", user.name.middleName);
       localStorage.setItem("userLastName", user.name.lastName);
-      localStorage.setItem("userContact", user.contact);
+      localStorage.setItem("userContact", user.contact.toString());
+      localStorage.setItem("userProfilePic", user.profilePic);
     }
   }
 
@@ -137,6 +138,7 @@ export default function SignInSide(props) {
           name: userInfo.userName,
           email: userInfo.email,
           contact: userInfo.contact,
+          profilePic: userInfo.profilePic,
         };
         return true;
       }

@@ -22,9 +22,9 @@ import Copyright from "../components/copyright";
 import SignIn from "../components/signIn";
 import CustomModal from "../components/CustomModal";
 import ProfileList from "../components/profileList";
+import ProfileHead from "../components/profileHead";
 
 import Colors from "../res/colors";
-import Images from "../res/images";
 
 const ProfilePage = () => {
   const [openModal, setOpenModal] = React.useState(false);
@@ -107,6 +107,7 @@ const ProfilePage = () => {
           gender: userInfo.gender,
           receiveOffer: userInfo.receiveOffer,
           contact: userInfo.contact.toString(),
+          profilePic: userInfo.profilePic,
         };
         return true;
       }
@@ -117,36 +118,42 @@ const ProfilePage = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    isUserAuthorized(userId, currentPassword).then((response) => {
-      if (response === true) {
-        if (newPassword === confirmPassword && newPassword.trim() !== "") {
-          if (
-            window.confirm(
-              "Your are about to change your password. \nAre you sure you want to continue?"
-            )
-          ) {
-            axios
-              .put(`http://localhost:5000/users/update/${userId}`, user)
-              .then(
-                (res) => {
-                  console.log(res.data);
-                  console.log("Res");
-                  alert("Password Reset Successfully.");
-                  setValid(true);
-                },
-                (err) => {
-                  alert("Password was not reset.\nError: " + err);
-                  console.log("Err");
-                  setValid(false);
-                }
-              );
+    isUserAuthorized(userId, currentPassword)
+      .then((response) => {
+        if (response === true) {
+          if (newPassword === confirmPassword && newPassword.trim() !== "") {
+            if (
+              window.confirm(
+                "Your are about to change your password. \nAre you sure you want to continue?"
+              )
+            ) {
+              axios
+                .put(`http://localhost:5000/users/update/${userId}`, user)
+                .then(
+                  (res) => {
+                    console.log(res.data);
+                    console.log("Res");
+                    alert("Password Reset Successfully.");
+                    setValid(true);
+                    localStorage.clear();
+                    navigate("/signIn");
+                  },
+                  (err) => {
+                    alert("Password was not reset.\nError: " + err);
+                    console.log("Err");
+                    setValid(false);
+                  }
+                );
+            }
           }
+          else {
+            setValid(false);
+          }
+        } else {
+          setValid(false);
         }
-      }
-      else{
-        setValid(false);
-      }
-    }).catch((err)=>console.log(err));
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -168,38 +175,7 @@ const ProfilePage = () => {
             flex: 0.22,
           }}
         >
-          <div
-            style={{
-              ...styles.container,
-              background: "#FFF",
-              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
-              width: "100%",
-              borderRadius: 3,
-              paddingBottom: 8,
-            }}
-          >
-            <Avatar
-              sx={{
-                width: 90,
-                height: 90,
-                m: 1,
-                bgcolor: Colors.primary,
-                mt: 2,
-              }}
-            >
-              <img
-                src={Images.Bed}
-                alt="profile pic"
-                style={{ width: 90, height: 90 }}
-              />
-            </Avatar>
-
-            <span
-              style={{ color: Colors.primary, fontSize: 22, fontWeight: 500 }}
-            >
-              Nalin Malla
-            </span>
-          </div>
+          <ProfileHead />
           <ProfileList />
         </div>
         <div
@@ -316,7 +292,7 @@ const ProfilePage = () => {
                       valid === false ? (
                         confirmPassword !== newPassword ? (
                           <span style={{ color: "#D32F2F" }}>
-                            Mismatch Password
+                            Mismatched 
                           </span>
                         ) : (
                           <span style={{ color: "#D32F2F" }}>
@@ -324,7 +300,7 @@ const ProfilePage = () => {
                           </span>
                         )
                       ) : (
-                        "New  Password"
+                        "New Password"
                       )}
                     </InputLabel>
                     <OutlinedInput

@@ -157,8 +157,8 @@ export default function SignUp() {
           navigate("/signIn");
         },
         (err) => {
-          alert("SignUp unsuccessful.\nError: " + err+ "\nThe entered email address is already taken. Please, try with a different email address.");
           setValid(false);
+          alert("SignUp unsuccessful.\nError: " + err+ "\nThe entered email address is already taken. Please, try with a different email address.");
         }
       );
     } else {

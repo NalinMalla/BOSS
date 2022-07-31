@@ -36,7 +36,6 @@ const ProfilePage = () => {
   const handleCloseModal = () => setOpenModal(false);
 
   const userId = localStorage.getItem("userId");
-  console.log("UserID : " + userId);
 
   const [firstName, setFirstName] = React.useState("");
   const [middleName, setMiddleName] = React.useState("");

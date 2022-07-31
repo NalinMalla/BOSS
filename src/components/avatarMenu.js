@@ -23,7 +23,6 @@ import Colors from "../res/colors";
 
 export default function AvatartMenu(props) {
   const [profilePic] = React.useState(localStorage.getItem("userProfilePic"));
-  console.log(profilePic);
   const [userId] = React.useState(localStorage.getItem("userId"));
 
   const [anchorEl, setAnchorEl] = React.useState(null);

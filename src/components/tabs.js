@@ -39,7 +39,6 @@ const TabbedPane = (props) => {
   };
 
   let reviewsRating5 = (props.reviewsRating5 / props.reviews) * 100;
-  console.log("reviewRating5 :" + reviewsRating5);
   let reviewsRating4 = (props.reviewsRating4 / props.reviews) * 100;
   let reviewsRating3 = (props.reviewsRating3 / props.reviews) * 100;
   let reviewsRating2 = (props.reviewsRating2 / props.reviews) * 100;
@@ -411,4 +410,4 @@ TabbedPane.defaultProps = {
   answers: 0,
 };
 
-export default TabbedPane;
+export {TabPanel, TabbedPane};

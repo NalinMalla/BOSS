@@ -14,7 +14,7 @@ import SiteMap from "../components/siteMap";
 import Copyright from "../components/copyright";
 import SignIn from "../components/signIn";
 import CustomModal from "../components/CustomModal";
-import TabbedPane from "../components/tabs";
+import {TabbedPane} from "../components/tabs";
 import Counter from "../components/productCounter";
 
 const ProductPage = (props) => {

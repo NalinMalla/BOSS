@@ -3,9 +3,12 @@ import FlagIcon from "@mui/icons-material/Flag";
 import ShareIcon from "@mui/icons-material/Share";
 import Rating from "@mui/material/Rating";
 import { Button, IconButton } from "@mui/material";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import Colors from "../res/colors";
 import Images from "../res/images";
+import CheckoutPage from "./checkoutPage";
 
 import Header from "../components/header";
 import NavBar from "../components/navBar";
@@ -14,13 +17,75 @@ import SiteMap from "../components/siteMap";
 import Copyright from "../components/copyright";
 import SignIn from "../components/signIn";
 import CustomModal from "../components/CustomModal";
-import {TabbedPane} from "../components/tabs";
+import { TabbedPane } from "../components/tabs";
 import Counter from "../components/productCounter";
 
-const ProductPage = (props) => {
+const ProductPage = () => {
   const [openModal, setOpenModal] = React.useState(false);
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
+
+  const productId = window.location.href.split("?")[1];
+  console.log("productId");
+
+  console.log(productId);
+
+  const userId = localStorage.getItem("userId");
+
+  const [deals, setDeals] = React.useState("");
+  const [title, setTitle] = React.useState("");
+  const [price, setPrice] = React.useState("");
+  const [quantity, setQuantity] = React.useState("");
+  const [discountRate, setDiscountRate] = React.useState("");
+  const [description, setDescription] = React.useState([]);
+  const [specification, setSpecification] = React.useState([]);
+  const [image, setImage] = React.useState([]);
+  const [discountPrice, setDiscountPrice] = React.useState("");
+
+  let navigate = useNavigate();
+
+  const getProductInfoById = (productId) => {
+    const ApiURL = `http://localhost:5000/products/${productId}`;
+    return axios
+      .get(ApiURL)
+      .then((response) => response.data)
+      .catch((error) => null);
+  };
+
+  async function initializeProductData(productId) {
+    const productInfo = await getProductInfoById(productId);
+    if (productInfo === null) {
+      alert("Error: Unable to access server.");
+    } else {
+      setDeals(productInfo.deals);
+      setTitle(productInfo.title);
+      setPrice(productInfo.price);
+      setQuantity(productInfo.quantity);
+      setDiscountPrice(productInfo.discountPrice);
+      if (productInfo.discountRate !== undefined) {
+        setDiscountRate(productInfo.discountRate);
+      }
+
+      if (productInfo.description !== undefined) {
+        setDescription(productInfo.description.split(/\r?\n/));
+      }
+
+      if (productInfo.specification !== undefined) {
+        setSpecification(productInfo.specification.split(/\r?\n/));
+      }
+
+      setImage(productInfo.image);
+    }
+  }
+
+  React.useEffect(() => {
+    document.title = "BOSS - Product Page";
+    if (productId === undefined) {
+      navigate("/");
+    } else {
+      initializeProductData(productId); //wouldn't work without async await?
+    }
+  }, []);
 
   const productData = {
     deals: "FURNITURE MANIA",
@@ -70,32 +135,35 @@ const ProductPage = (props) => {
       'Arm height: 26.00"',
       'Minimum width of doorway for delivery: 32.00"',
     ],
-    reviewData:[
+    reviewData: [
       {
         rating: 4,
-        reviewer: 'Nalin Malla',
-        review: 'Very cozy sofa. The product built and quality of material is excellent. The brown color of the sofa matches perfectly with my side table set.'
+        reviewer: "Nalin Malla",
+        review:
+          "Very cozy sofa. The product built and quality of material is excellent. The brown color of the sofa matches perfectly with my side table set.",
       },
       {
         rating: 3.5,
-        reviewer: 'Jojan Rai',
-        review: 'Nice sofa. The brown color of the sofa matches perfectly with my side table set. The product built and quality of material is excellent.'
+        reviewer: "Jojan Rai",
+        review:
+          "Nice sofa. The brown color of the sofa matches perfectly with my side table set. The product built and quality of material is excellent.",
       },
     ],
     questionAnswerData: [
       {
-        questioner: 'Nalin Malla',
+        questioner: "Nalin Malla",
         date: new Date(),
-        question: 'How is the built quality?',
-        answer: 'Very cozy sofa. The product built and quality of material is excellent.',
+        question: "How is the built quality?",
+        answer:
+          "Very cozy sofa. The product built and quality of material is excellent.",
       },
       {
-        questioner: 'Jojan Rai',
+        questioner: "Jojan Rai",
         date: new Date(),
-        question: 'How long will it take to deliver?',
-        answer: 'Depending on where you live from 2-5 days.',
+        question: "How long will it take to deliver?",
+        answer: "Depending on where you live from 2-5 days.",
       },
-    ]
+    ],
   };
 
   return (
@@ -109,13 +177,12 @@ const ProductPage = (props) => {
             transformWidth="100"
             delay="1700"
             indicatorsStyle={{ visibility: "hidden" }}
-            carouselStyle={{ borderRadius: 3,}}
+            carouselStyle={{ borderRadius: 3 }}
           >
-            {productData.image.map((element) => (
+            {image.map((element) => (
               <img
                 style={{ width: "100%", height: "70vh" }}
-                src={element.src}
-                alt={element.alt}
+                src={"http://localhost:5000/" + element}
               />
             ))}
           </Carousel>
@@ -125,7 +192,7 @@ const ProductPage = (props) => {
           <span
             style={{ fontSize: 20, fontWeight: "bold", color: Colors.primary }}
           >
-            {productData.deals}
+            {deals}
           </span>
           <span
             style={{
@@ -135,7 +202,7 @@ const ProductPage = (props) => {
             }}
           >
             <span style={{ display: "flex", fontSize: 35, flexWrap: "wrap" }}>
-              {productData.title}
+              {title}
             </span>
             <span
               style={{
@@ -171,46 +238,44 @@ const ProductPage = (props) => {
           <span
             style={{
               fontSize: 32,
-              display: productData.discountPrice == null ? "none" : "flex",
+              display: discountPrice === "" ? "none" : "flex",
               marginTop: 20,
             }}
           >
-            Rs.{productData.discountPrice}
+            Rs.{discountPrice}
           </span>
           <span
             style={{
               display: "flex",
               alignItems: "center",
-              marginTop: productData.discountPrice == null ? 20 : 0,
+              marginTop: discountPrice === "" ? 20 : 0,
             }}
           >
             <span
               style={{
-                textDecoration:
-                  productData.discountPrice == null ? "none" : "line-through",
-                fontSize: productData.discountPrice == null ? 32 : 20,
+                textDecoration: discountPrice === "" ? "none" : "line-through",
+                fontSize: discountPrice === "" ? 32 : 20,
 
-                color:
-                  productData.discountPrice == null
-                    ? "#000"
-                    : "rgba(0,0,0,0.4)",
+                color: discountPrice === "" ? "#000" : "rgba(0,0,0,0.4)",
               }}
             >
-              Rs.{productData.price}
+              Rs.{price}
             </span>
             <span
               style={{
                 fontSize: 20,
                 marginLeft: 10,
+                color: "#ee0000",
+                display: (discountRate === ""? "none": "flex") 
               }}
             >
-              {productData.discountRate}
+              -{discountRate}%
             </span>
           </span>
 
           <Counter
-            discountPrice={productData.discountPrice}
-            price={productData.price}
+            discountPrice={discountPrice}
+            price={price}
             style={{ fontSize: 22, marginTop: 20 }}
             buttonStyle={{ marginLeft: 40, marginRight: 0 }}
           />
@@ -220,6 +285,9 @@ const ProductPage = (props) => {
               size="large"
               variant="contained"
               style={{ fontSize: 18 }}
+              onClick={() => {
+                window.location = `/checkout/?${productId}?${quantity}`;
+              }}
             >
               Buy Now
             </Button>
@@ -245,19 +313,19 @@ const ProductPage = (props) => {
           borderRadius: 3,
           boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
         }}
-        description={productData.description}
-        specification={productData.specification}
+        description={description}
+        specification={specification}
         rating={productData.rating}
         reviews={productData.reviews}
-        reviewsRating5= {productData.reviewsRating5}
-        reviewsRating4= {productData.reviewsRating4}
-        reviewsRating3= {productData.reviewsRating3}
-        reviewsRating2= {productData.reviewsRating2}
-        reviewsRating1= {productData.reviewsRating1}
-        reviewData = {productData.reviewData}
-        answers = {productData.answers}
-        questions = {productData.questions}
-        questionAnswerData= {productData.questionAnswerData}
+        reviewsRating5={productData.reviewsRating5}
+        reviewsRating4={productData.reviewsRating4}
+        reviewsRating3={productData.reviewsRating3}
+        reviewsRating2={productData.reviewsRating2}
+        reviewsRating1={productData.reviewsRating1}
+        reviewData={productData.reviewData}
+        answers={productData.answers}
+        questions={productData.questions}
+        questionAnswerData={productData.questionAnswerData}
       />
 
       <div style={styles.wrapper}>

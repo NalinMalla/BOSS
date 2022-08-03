@@ -28,11 +28,13 @@ const ProductAddPage = () => {
 
   const [deals, setDeals] = React.useState("");
   const [title, setTitle] = React.useState("");
+  const [category, setCategory] = React.useState("");
   const [price, setPrice] = React.useState("0");
   const [discountRate, setDiscountRate] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [specification, setSpecification] = React.useState("");
   const [quantity, setQuantity] = React.useState("0");
+  const [discountPrice, setDiscountPrice] = React.useState("0");
 
   let [valid, setValid] = React.useState(true);
 
@@ -51,6 +53,9 @@ const ProductAddPage = () => {
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
   };
+  const handleCategoryChange = (event) => {
+    setCategory(event.target.value);
+  };
 
   const handleDescriptionChange = (event) => {
     setDescription(event.target.value);
@@ -62,6 +67,13 @@ const ProductAddPage = () => {
 
   const handlePriceChange = (event) => {
     setPrice(event.target.value);
+    event.target.value > 0
+    ? setDiscountPrice(
+        (discountRate === "" || discountRate <=0 || discountRate > 100)
+          ? event.target.value
+          : Number(event.target.value) - (Number(discountRate) / 100) * Number(event.target.value)
+      )
+    : setDiscountPrice(event.target.value);
   };
 
   const handleQuantityChange = (event) => {
@@ -70,6 +82,13 @@ const ProductAddPage = () => {
 
   const handleDiscountRateChange = (event) => {
     setDiscountRate(event.target.value);
+    price > 0
+    ? setDiscountPrice(
+        (event.target.value === "" || event.target.value <=0 || event.target.value > 100)
+          ? price
+          : Number(price) - (Number(event.target.value) / 100) * Number(price)
+      )
+    : setDiscountPrice(price);
   };
 
   const handleSubmit = (event) => {
@@ -85,21 +104,24 @@ const ProductAddPage = () => {
       formData.get("productPic6").name !== "";
     if (
       title.trim() !== "" &&
+      category.trim() !== "" &&
       (discountRate.trim() === "" ||
         (Number(discountRate) >= 0 && Number(discountRate) <= 100)) &&
       price.trim() !== "" &&
       Number(price) >= 0 &&
       quantity.trim() !== "" &&
-      Number(quantity) >= 0 && 
+      Number(quantity) >= 0 &&
       productPicSelected
     ) {
       formData.append("title", title);
+      formData.append("category", category.toLowerCase());
       formData.append("price", price);
       formData.append("quantity", quantity);
       formData.append("deals", deals);
       formData.append("discountRate", discountRate);
       formData.append("description", description);
       formData.append("specification", specification);
+      formData.append("discountPrice", discountPrice);
 
       axios({
         method: "post",
@@ -120,7 +142,7 @@ const ProductAddPage = () => {
       );
     } else {
       setValid(false);
-      if(!productPicSelected){
+      if (!productPicSelected) {
         alert("Please select an image.");
       }
     }
@@ -147,7 +169,7 @@ const ProductAddPage = () => {
             noValidate
             onSubmit={handleSubmit}
             sx={{
-              my: 1,
+              // my: 1,
               mt: 2,
               color: Colors.primary,
               borderColor: Colors.primary,
@@ -170,16 +192,21 @@ const ProductAddPage = () => {
                   error={title.trim() === "" && valid === false}
                 />
               </Grid>
-
+              
               <Grid item xs={12} sm={7}>
                 <TextField
-                  name="deals"
+                  required
                   fullWidth
-                  id="deals"
-                  label="Offer Title"
-                  autoFocus
-                  value={deals}
-                  onChange={handleDealsChange}
+                  id="category"
+                  name="category"
+                  label={
+                    category.trim() === "" && valid === false
+                      ? "Empty field"
+                      : "Product Category"
+                  }
+                  value={category}
+                  onChange={handleCategoryChange}
+                  error={category.trim() === "" && valid === false}
                 />
               </Grid>
 
@@ -268,12 +295,23 @@ const ProductAddPage = () => {
                   }
                 />
               </Grid>
+              
+              <Grid item xs={12} sm={12}>
+                <TextField
+                  name="deals"
+                  fullWidth
+                  id="deals"
+                  label="Offer Title"
+                  autoFocus
+                  value={deals}
+                  onChange={handleDealsChange}
+                />
+              </Grid>
+
               <Grid item xs={12}>
                 <span style={{ fontSize: 22 }}>
-                  Sales Price: {"\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0"} Rs.{" "}
-                  {discountRate === ""
-                    ? price
-                    : price - (discountRate / price) * 100}
+                  Discounted Price: {"\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0"} Rs.{" "}
+                  {discountPrice}
                 </span>
               </Grid>
             </Grid>
@@ -288,14 +326,14 @@ const ProductAddPage = () => {
             justifyContent: "space-around",
             alignItems: "center",
             flex: 0.43,
-            paddingTop: 20,
-            paddingBottom: 10,
+            paddingTop: 35,
+            paddingBottom: 20,
           }}
         >
           <span
             style={{
               display: "flex",
-              fontSize: 28,
+              fontSize: 30,
               width: "100%",
               color: Colors.primary,
               fontWeight: 500,
@@ -310,7 +348,6 @@ const ProductAddPage = () => {
             style={{
               display: "flex",
               flexDirection: "column",
-              marginTop: 10,
               width: "100%",
               justifyContent: "space-between",
             }}

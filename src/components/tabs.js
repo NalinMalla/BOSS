@@ -34,8 +34,22 @@ TabPanel.propTypes = {
 
 const TabbedPane = (props) => {
   const [value, setValue] = React.useState(0);
-  const userId = localStorage.getItem('userId');
+  const userId = localStorage.getItem("userId");
   const [question, setQuestion] = React.useState("");
+  let userName;
+  if (localStorage.getItem("userMiddleName") === "") {
+    userName =
+      localStorage.getItem("userFirstName") +
+      " " +
+      localStorage.getItem("userLastName");
+  } else {
+    userName =
+      localStorage.getItem("userFirstName") +
+      " " +
+      localStorage.getItem("userMiddleName") +
+      " " +
+      localStorage.getItem("userLastName");
+  }
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -43,7 +57,7 @@ const TabbedPane = (props) => {
 
   const handleQuestionChange = (event) => {
     setQuestion(event.target.value);
-  }
+  };
 
   let reviewsRating5 = (props.reviewsRating5 / props.reviews) * 100;
   let reviewsRating4 = (props.reviewsRating4 / props.reviews) * 100;
@@ -54,22 +68,42 @@ const TabbedPane = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const questionAnswerData = {
+      userName: userName,
       userId: userId,
       question: question,
+    };
+    if (props.questionAnswerData.length !== 0) {
+      alert("Inside props.questionAnswerData.length !== 0");
+      axios
+        .put(
+          `http://localhost:5000/products/addQuestion/${props.productId}`,
+          questionAnswerData
+        )
+        .then(
+          (res) => {
+            console.log(res.data);
+          },
+          (err) => {
+            alert("Question was not submitted.\nError: " + err);
+          }
+        );
+    } else {
+      alert("Inside props.questionAnswerData.length === 0");
+      axios
+        .post(
+          `http://localhost:5000/products/createQuestionAnswer/${props.productId}`,
+          questionAnswerData
+        )
+        .then(
+          (res) => {
+            console.log(res.data);
+          },
+          (err) => {
+            alert("Question was not submitted.\nError: " + err);
+          }
+        );
     }
-    axios.put(`http://localhost:5000/products/questionAnswer/${props.productId}`, questionAnswerData).then(
-        (res) => {
-          console.log(res.data);
-          console.log("Res");
-          alert(
-            "Your question was successfully submitted."
-          );
-        },
-        (err) => {
-          alert("submittion unsuccessful.\nError: " + err);
-        }
-      );
-  }
+  };
 
   return (
     <Box style={props.style}>
@@ -282,8 +316,8 @@ const TabbedPane = (props) => {
               variant="filled"
               rows="3"
               style={{ width: "70vw" }}
-              value = {question}
-              onChange = {handleQuestionChange}
+              value={question}
+              onChange={handleQuestionChange}
             />
             <div style={{ ...styles.wrapper, justifyContent: "space-between" }}>
               <span style={{ fontSize: 14 }}>
@@ -309,75 +343,83 @@ const TabbedPane = (props) => {
             >
               Other questions which have been answered ({props.answers})
             </div>
-            {props.questionAnswerData.map((element) => (
-              <div
-                style={{
-                  ...styles.container,
-                  borderBottom: "1px solid rgb(0,0,0,0.2)",
-                }}
-              >
-                <span
+            {console.log(props.questionAnswerData)}
+            {props.questionAnswerData.length !== 0 ? (
+              props.questionAnswerData.map((element) => (
+                <div
                   style={{
-                    ...styles.wrapper,
-                    alignItems: "flex-start",
+                    ...styles.container,
+                    borderBottom: "1px solid rgb(0,0,0,0.2)",
                   }}
                 >
-                  <img
-                    src={Icons.Question}
+                  <span
                     style={{
-                      width: 20,
-                      height: 20,
-                      marginRight: 20,
-                      marginTop: 5,
+                      ...styles.wrapper,
+                      alignItems: "flex-start",
                     }}
-                    alt="Question Icon"
-                  />
-                  <div style={{ textAlign: "justify" }}>
-                    {element.question}
-                    <span
+                  >
+                    <img
+                      src={Icons.Question}
                       style={{
-                        ...styles.wrapper,
-                        fontSize: 14,
-                        color: "rgba(0,0,0, 0.5)",
+                        width: 20,
+                        height: 20,
+                        marginRight: 20,
+                        marginTop: 5,
                       }}
-                    >
-                      {element.questioner}
-                    </span>
-                  </div>
-                </span>
-                <span
-                  style={{
-                    ...styles.wrapper,
-                    alignItems: "flex-start",
-                    marginTop: 10,
-                  }}
-                >
-                  <img
-                    src={Icons.Answer}
+                      alt="Question Icon"
+                    />
+                    <div style={{ textAlign: "justify" }}>
+                      {element.question}
+                      <span
+                        style={{
+                          ...styles.wrapper,
+                          fontSize: 14,
+                          color: "rgba(0,0,0, 0.5)",
+                        }}
+                      >
+                        {element.questioner} asked on {element.date.slice(0,10)}.
+                      </span>
+                    </div>
+                  </span>
+                  <span
                     style={{
-                      width: 20,
-                      height: 20,
-                      marginRight: 20,
-                      marginTop: 5,
+                      ...styles.wrapper,
+                      alignItems: "flex-start",
+                      marginTop: 10,
+                      display: element.answer === undefined ? "none" : "flex",
                     }}
-                    alt="Answer Icon"
-                  />
-                  <div style={{ textAlign: "justify" }}>
-                    {element.answer}
-                    <br></br>
-                    <span
+                  >
+                    <img
+                      src={Icons.Answer}
                       style={{
-                        ...styles.wrapper,
-                        fontSize: 14,
-                        color: "rgba(0,0,0, 0.5)",
+                        width: 20,
+                        height: 20,
+                        marginRight: 20,
+                        marginTop: 5,
                       }}
-                    >
-                      BIRA Builders & Suppliers
-                    </span>
-                  </div>
-                </span>
-              </div>
-            ))}
+                      alt="Answer Icon"
+                    />
+                    <div style={{ textAlign: "justify" }}>
+                      {element.answer}
+                      <br></br>
+                      <span
+                        style={{
+                          ...styles.wrapper,
+                          fontSize: 14,
+                          color: "rgba(0,0,0, 0.5)",
+                        }}
+                      >
+                        BIRA Builders & Suppliers
+                      </span>
+                    </div>
+                  </span>
+                </div>
+              ))
+            ) : (
+              <span style={{ marginTop: 20 }}>
+                No question has been asked yet.
+              </span>
+            )}
           </div>
         </div>
       </TabPanel>
@@ -440,4 +482,4 @@ TabbedPane.defaultProps = {
   answers: 0,
 };
 
-export {TabPanel, TabbedPane};
+export { TabPanel, TabbedPane };

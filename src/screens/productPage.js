@@ -35,6 +35,9 @@ const ProductPage = () => {
   const [specification, setSpecification] = React.useState([]);
   const [image, setImage] = React.useState([]);
   const [discountPrice, setDiscountPrice] = React.useState("");
+  
+  const [questionAnswerData, setQuestionAnswerData] = React.useState([]);
+  const [answers, setAnswers] = React.useState(0);
 
   let navigate = useNavigate();
 
@@ -77,12 +80,12 @@ const ProductPage = () => {
       setImage(productInfo.image);
     }
 
-    const questionAnswerData = await getQuestionAnswerDataById(productId);
-    if (productInfo === null) {
-      alert("Error: Unable to access server.\nQuestion and Answer Data couldn't be retrieved.");
-    }
-    else{
-
+    const questionAnswer = await getQuestionAnswerDataById(productId);
+    console.log("questionAnswerData get");
+    console.log(questionAnswer);
+    if (questionAnswer !== null) {
+      setQuestionAnswerData(questionAnswer.questionAnswerData.reverse());
+      setAnswers(questionAnswer.answers);
     }
   }
 
@@ -332,9 +335,8 @@ const ProductPage = () => {
         reviewsRating2={productData.reviewsRating2}
         reviewsRating1={productData.reviewsRating1}
         reviewData={productData.reviewData}
-        answers={productData.answers}
-        questions={productData.questions}
-        questionAnswerData={productData.questionAnswerData}
+        answers={answers}
+        questionAnswerData={questionAnswerData}
         productId = {productId}
       />
 

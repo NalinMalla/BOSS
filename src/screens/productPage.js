@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 
 import Colors from "../res/colors";
 import Images from "../res/images";
-import CheckoutPage from "./checkoutPage";
 
 import Header from "../components/header";
 import NavBar from "../components/navBar";
@@ -26,11 +25,6 @@ const ProductPage = () => {
   const handleCloseModal = () => setOpenModal(false);
 
   const productId = window.location.href.split("?")[1];
-  console.log("productId");
-
-  console.log(productId);
-
-  const userId = localStorage.getItem("userId");
 
   const [deals, setDeals] = React.useState("");
   const [title, setTitle] = React.useState("");
@@ -52,6 +46,13 @@ const ProductPage = () => {
       .catch((error) => null);
   };
 
+  const getQuestionAnswerDataById = (productId) => {
+    return axios
+      .get(`http://localhost:5000/products/questionAnswer/${productId}`)
+      .then((response) => response.data)
+      .catch((error) => null);
+  }
+
   async function initializeProductData(productId) {
     const productInfo = await getProductInfoById(productId);
     if (productInfo === null) {
@@ -60,7 +61,6 @@ const ProductPage = () => {
       setDeals(productInfo.deals);
       setTitle(productInfo.title);
       setPrice(productInfo.price);
-      setQuantity(productInfo.quantity);
       setDiscountPrice(productInfo.discountPrice);
       if (productInfo.discountRate !== undefined) {
         setDiscountRate(productInfo.discountRate);
@@ -75,6 +75,14 @@ const ProductPage = () => {
       }
 
       setImage(productInfo.image);
+    }
+
+    const questionAnswerData = await getQuestionAnswerDataById(productId);
+    if (productInfo === null) {
+      alert("Error: Unable to access server.\nQuestion and Answer Data couldn't be retrieved.");
+    }
+    else{
+
     }
   }
 
@@ -278,6 +286,7 @@ const ProductPage = () => {
             price={price}
             style={{ fontSize: 22, marginTop: 20 }}
             buttonStyle={{ marginLeft: 40, marginRight: 0 }}
+            handleUpdate = {setQuantity}
           />
           <div style={{ display: "flex", marginTop: 40, alignItems: "center" }}>
             <Button
@@ -286,7 +295,7 @@ const ProductPage = () => {
               variant="contained"
               style={{ fontSize: 18 }}
               onClick={() => {
-                window.location = `/checkout/?${productId}?${quantity}`;
+                window.location = `/checkout/?${productId}&${quantity}`;
               }}
             >
               Buy Now
@@ -326,6 +335,7 @@ const ProductPage = () => {
         answers={productData.answers}
         questions={productData.questions}
         questionAnswerData={productData.questionAnswerData}
+        productId = {productId}
       />
 
       <div style={styles.wrapper}>

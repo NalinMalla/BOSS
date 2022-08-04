@@ -8,7 +8,7 @@ const Counter = (props) => {
   const [count, setCount] = useState(props.initialCount);
 
   let price= 0;
-  if(props.discountPrice == null)
+  if(props.discountPrice === "")
   {
     price = props.price;
   }
@@ -16,18 +16,18 @@ const Counter = (props) => {
     price = props.discountPrice;
   }
 
+  const handleChange = (value) => {
+    setCount(value);
+    props.handleUpdate(value);
+  }
   const increaseCount = (increment = 1) => {
-    setCount(count + increment);
+    handleChange(count + increment);
   };
 
   const decreaseCount = (decrement = 1) => {
-    if(count===1)
+    if(count > 1)
     {
-      setCount(1)
-    }
-    else
-    {
-      setCount(count - decrement);
+      handleChange(count - decrement);
     }
   };
 
@@ -96,5 +96,11 @@ const styles = {
     justifyContent: "space-around",
   },
 };
+
+Counter.defaultProps = {
+  initialCount: 1,
+  handleChange : (value) => {
+  }
+}
 
 export default Counter;

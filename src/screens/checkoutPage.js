@@ -1,4 +1,6 @@
 import * as React from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import Header from "../components/header";
 import NavBar from "../components/navBar";
@@ -8,6 +10,7 @@ import SignIn from "../components/signIn";
 import CustomModal from "../components/CustomModal";
 import Checkout from "../components/checkout";
 
+
 import Colors from "../res/colors";
 
 const CheckoutPage = () => {
@@ -15,8 +18,59 @@ const CheckoutPage = () => {
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
 
-  let items = 3;
-  let grossTotalPrice = 5500000;
+  let navigate = useNavigate();
+
+  const order = window.location.href.split("?")[1];
+  // for(let index = 0; i < order.length; i++)
+  // {
+  //   if(index%2 === 0)
+  //   {
+  //     product
+  //   }
+  // }
+  const productId = order.split("&")[0];
+  const quantity = order.split("&")[1];
+  console.log(productId);
+  console.log(quantity);
+
+  const [title, setTitle] = React.useState("");
+  const [discountPrice, setDiscountPrice] = React.useState("");
+  const [discountRate, setDiscountRate] = React.useState("");
+  const [price, setPrice] = React.useState("");
+
+  const getProductInfoById = (productId) => {
+    const ApiURL = `http://localhost:5000/products/${productId}`;
+    return axios
+      .get(ApiURL)
+      .then((response) => response.data)
+      .catch((error) => null);
+  };
+
+  async function initializeProductData(productId) {
+    const productInfo = await getProductInfoById(productId);
+    if (productInfo === null) {
+      alert("Error: Unable to access server.");
+    } else {
+      setTitle(productInfo.title);
+      setPrice(productInfo.price);
+      setDiscountPrice(productInfo.discountPrice);
+      if (productInfo.discountRate !== undefined) {
+        setDiscountRate(productInfo.discountRate);
+      }
+    }
+  }
+
+  React.useEffect(() => {
+    document.title = "BOSS - Checkout Page";
+    if (productId === "" || quantity === "" || productId === undefined || quantity === undefined) {
+      navigate("/cart");
+    } else {
+      initializeProductData(productId); //wouldn't work without async await?
+    }
+  }, []);
+
+
+  let grossTotalPrice = quantity * discountPrice;
   let shippingFee = 2000;
   let netTotalPrice = grossTotalPrice + shippingFee;
 
@@ -71,7 +125,7 @@ const CheckoutPage = () => {
                 width: '100%',
               }}
             >
-              <span>Gross Total ({items} items) :</span>
+              <span>Gross Total ({quantity} items) :</span>
               <span>Rs. {grossTotalPrice}</span>
             </div>
 

@@ -5,6 +5,7 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import TextField from "@mui/material/TextField";
+import axios from "axios";
 
 import Icons from "../res/icons";
 import { Button } from "@mui/material";
@@ -33,16 +34,42 @@ TabPanel.propTypes = {
 
 const TabbedPane = (props) => {
   const [value, setValue] = React.useState(0);
+  const userId = localStorage.getItem('userId');
+  const [question, setQuestion] = React.useState("");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const handleQuestionChange = (event) => {
+    setQuestion(event.target.value);
+  }
 
   let reviewsRating5 = (props.reviewsRating5 / props.reviews) * 100;
   let reviewsRating4 = (props.reviewsRating4 / props.reviews) * 100;
   let reviewsRating3 = (props.reviewsRating3 / props.reviews) * 100;
   let reviewsRating2 = (props.reviewsRating2 / props.reviews) * 100;
   let reviewsRating1 = (props.reviewsRating1 / props.reviews) * 100;
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const questionAnswerData = {
+      userId: userId,
+      question: question,
+    }
+    axios.put(`http://localhost:5000/products/questionAnswer/${props.productId}`, questionAnswerData).then(
+        (res) => {
+          console.log(res.data);
+          console.log("Res");
+          alert(
+            "Your question was successfully submitted."
+          );
+        },
+        (err) => {
+          alert("submittion unsuccessful.\nError: " + err);
+        }
+      );
+  }
 
   return (
     <Box style={props.style}>
@@ -255,6 +282,8 @@ const TabbedPane = (props) => {
               variant="filled"
               rows="3"
               style={{ width: "70vw" }}
+              value = {question}
+              onChange = {handleQuestionChange}
             />
             <div style={{ ...styles.wrapper, justifyContent: "space-between" }}>
               <span style={{ fontSize: 14 }}>
@@ -267,6 +296,7 @@ const TabbedPane = (props) => {
                 sx={{
                   borderRadius: "0px 0px 5px 5px",
                 }}
+                onClick={handleSubmit}
               >
                 ASK QUESTION
               </Button>

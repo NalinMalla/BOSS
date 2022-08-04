@@ -2,8 +2,6 @@ import * as React from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
@@ -344,21 +342,21 @@ export default function AddressForm(props) {
             error={email.trim() === "" || !emailRGX.test(email)}
           />
         </Grid>
-
-        <Grid item xs={12} style={{ ...props.saveCheckboxStyle }}>
-          <FormControlLabel
-            control={
-              <Checkbox color="primary" name="saveAddress" value="yes" />
-            }
-            label="Save these shipping details"
-          />
-        </Grid>
-
         <Grid
           item
           xs={12}
           style={{
-            display: "none",
+            ...props.saveButtonStyle,
+            justifyContent: "flex-end",
+          }}
+        >
+          <span
+          style={{color: "#Ef0000", fontSize: 18}}>**Please save your shipping details if you haven't setup your shipping address.**</span>
+        </Grid>
+        <Grid
+          item
+          xs={6}
+          style={{
             ...props.saveButtonStyle,
             justifyContent: "flex-end",
           }}

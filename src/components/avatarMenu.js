@@ -174,7 +174,7 @@ export default function AvatartMenu(props) {
           </MenuItem>
           <MenuItem
             onClick={() => {
-              window.location = "/orders";
+              window.location = "/profile/orders";
             }}
           >
             <ListItemIcon>
@@ -184,7 +184,7 @@ export default function AvatartMenu(props) {
           </MenuItem>
           <MenuItem
             onClick={() => {
-              window.location = "/orders/cancellations";
+              window.location = "/profile/orders/cancellations";
             }}
           >
             <ListItemIcon>
@@ -194,7 +194,7 @@ export default function AvatartMenu(props) {
           </MenuItem>
           <MenuItem
             onClick={() => {
-              window.location = "/orders/returns";
+              window.location = "/profile/orders/returns";
             }}
           >
             <ListItemIcon>

@@ -3,12 +3,12 @@ import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
+// import Grid from "@mui/material/Grid";
+// import TextField from "@mui/material/TextField";
+// import FormControlLabel from "@mui/material/FormControlLabel";
+// import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
-import { Button } from "@mui/material";
+// import { Button } from "@mui/material";
 
 import Icons from "../res/icons";
 
@@ -66,7 +66,7 @@ const PaymentTab = (props) => {
             label="Cash On Delivery"
             index={0}
           />
-          <Tab
+          {/* <Tab
             style={{
               height: 100,
               fontSize: 16,
@@ -99,7 +99,7 @@ const PaymentTab = (props) => {
             }
             label="Esewa"
             index={2}
-          />
+          /> */}
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
@@ -107,7 +107,7 @@ const PaymentTab = (props) => {
         at your doorstep.
       </TabPanel>
 
-      <TabPanel value={value} index={1}>
+      {/* <TabPanel value={value} index={1}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
             <TextField
@@ -187,7 +187,7 @@ const PaymentTab = (props) => {
         <br />
         <br />
         ***Login with your eSewa mobile and PIN.***
-      </TabPanel>
+      </TabPanel> */}
     </Box>
   );
 };

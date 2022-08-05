@@ -81,6 +81,7 @@ const TabbedPane = (props) => {
         )
         .then(
           (res) => {
+            window.location.reload();
             console.log(res.data);
           },
           (err) => {
@@ -96,6 +97,7 @@ const TabbedPane = (props) => {
         )
         .then(
           (res) => {
+            window.location.reload();
             console.log(res.data);
           },
           (err) => {

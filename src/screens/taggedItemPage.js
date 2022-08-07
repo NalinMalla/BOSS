@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -43,7 +43,7 @@ const TaggedItemPage = (props) => {
   function initializeProductData(userId) {
     getTaggedItemById(userId).then((response) => {
       if (response === null) {
-        alert("No taggedItem created for this user.");
+        navigate("/signIn");
       } else {
         console.log(userId, "'s Tagged Items Info");
         console.log(response);
@@ -52,7 +52,7 @@ const TaggedItemPage = (props) => {
 
         var tempProducts = [];
         response.products.forEach((element, index) => {
-          console.log(index, ' For item ', element);
+          console.log(index, " For item ", element);
           getProductInfoById(element)
             .then((response) => {
               if (response !== null) {
@@ -68,7 +68,6 @@ const TaggedItemPage = (props) => {
     });
   }
 
- 
   useEffect(() => {
     console.log("products");
     console.log(products);
@@ -78,7 +77,7 @@ const TaggedItemPage = (props) => {
     document.title = "BOSS - Tagged Item Page";
     if (userId === undefined) {
       navigate("/");
-    } else if(products === null) {
+    } else if (products === null) {
       initializeProductData(userId);
     }
   }, []);
@@ -113,7 +112,11 @@ const TaggedItemPage = (props) => {
           }}
         >
           <div style={{ ...styles.wrapper }}>
-            <ProductList counterDisabled={true} counterDisplay={"none"} />
+            <ProductList
+              counterDisabled={true}
+              counterDisplay={"none"}
+              products = {products}
+            />
           </div>
         </div>
       </div>

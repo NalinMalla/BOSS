@@ -21,8 +21,14 @@ import { useNavigate } from "react-router-dom";
 
 import Colors from "../res/colors";
 
-export default function AvatartMenu(props) {
-  const [profilePic] = React.useState(localStorage.getItem("userProfilePic"));
+export default function AvatarMenu(props) {
+  const [profilePic] = React.useState(
+    localStorage.getItem("userProfilePic") !== "undefined" &&
+      localStorage.getItem("userProfilePic") !== undefined
+      ? localStorage.getItem("userProfilePic")
+      : ""
+  );
+
   const [userId] = React.useState(localStorage.getItem("userId"));
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -39,6 +45,8 @@ export default function AvatartMenu(props) {
   const handleSignUp = () => {
     navigate("/signUp");
   };
+  console.log("typeof profilePic");
+  console.log(typeof profilePic);
 
   return (
     <React.Fragment>
@@ -52,7 +60,7 @@ export default function AvatartMenu(props) {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            {(profilePic == null) ? (
+            {profilePic === "" ? (
               <Avatar
                 sx={{ width: 28, height: 28, backgroundColor: Colors.primary }}
               >

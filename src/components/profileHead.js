@@ -8,7 +8,12 @@ export default function ProfileHead() {
   const [middleName] = React.useState(localStorage.getItem("userMiddleName"));
   const [lastName] = React.useState(localStorage.getItem("userLastName"));
 
-  const [profilePic] = React.useState(localStorage.getItem("userProfilePic"));
+  const [profilePic] = React.useState(
+    localStorage.getItem("userProfilePic") !== "undefined" &&
+      localStorage.getItem("userProfilePic") !== undefined
+      ? localStorage.getItem("userProfilePic")
+      : ""
+  );
 
   return (
     <div
@@ -23,7 +28,7 @@ export default function ProfileHead() {
         paddingBottom: 8,
       }}
     >
-      {profilePic == "" ? (
+      {profilePic === "" ? (
         <Avatar
           sx={{
             width: 90,

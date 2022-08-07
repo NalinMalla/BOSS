@@ -42,7 +42,7 @@ const ProductList = (props) => {
   return (
     <div style={Styles.container}>
       {ProductListData.map((element) => (
-        <ProductCard2 {...element} style={Styles.card} counterDisabled={props.counterDisabled}/>
+        <ProductCard2 {...element} style={Styles.card} counterDisabled={props.counterDisabled} counterDisplay={props.counterDisplay} />
       ))}
     </div>
   );

@@ -35,7 +35,7 @@ const Counter = (props) => {
 
 
   return (
-    <div style={{...styles.root, marginTop: props.style.marginTop,}}>
+    <div style={{...styles.root, marginTop: props.style.marginTop, display: props.display}}>
       <div style={{ fontSize: props.style.fontSize, color: Colors.primary }}>
         Subtotal: {"\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0"}Rs. {subtotal}
       </div>

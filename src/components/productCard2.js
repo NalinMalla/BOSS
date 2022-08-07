@@ -1,7 +1,8 @@
 import Rating from "@mui/material/Rating";
 import FlagIcon from "@mui/icons-material/Flag";
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { IconButton } from "@mui/material";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { Button, IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import Counter from "../components/productCounter";
 
@@ -9,10 +10,10 @@ import Colors from "../res/colors";
 import Images from "../res/images";
 
 export default function ProductCard2(props) {
+  
+
   return (
-    <div
-      style={{ ...Styles.root, ...props.style }}
-    >
+    <div style={{ ...Styles.root, ...props.style }}>
       <img
         style={{
           width: 100,
@@ -23,10 +24,14 @@ export default function ProductCard2(props) {
         src={props.image.src}
         alt={props.image.alt}
       />
-      <div style={{ ...Styles.container, flex: 0.4, marginTop: -15, }}>
-        <span style={{ fontSize: 20, fontWeight: 500 }}>
-          {props.title}
+      <div style={{ ...Styles.container, flex: 0.4, marginTop: -10 }}>
+        <span style={{ fontSize: 20, fontWeight: 500 }}>{props.title}</span>
+        <span
+          style={{ fontSize: 12, fontWeight: 500, color: Colors.secondary }}
+        >
+          {props.deals}
         </span>
+
         <div style={{ ...Styles.wrapper, marginTop: 8 }}>
           <span style={{ fontSize: 14, color: Colors.primary }}>
             Rating: {"\u00A0"}
@@ -42,7 +47,7 @@ export default function ProductCard2(props) {
         </div>
       </div>
 
-      <div style={{ ...Styles.container, flex: 0.2 }}>
+      <div style={{ ...Styles.container, flex: 0.25 }}>
         <span
           style={{
             fontSize: 18,
@@ -66,8 +71,7 @@ export default function ProductCard2(props) {
               fontSize: props.discountPrice == null ? 18 : 16,
               fontWeight: props.discountPrice == null ? 500 : "medium",
               marginTop: props.discountPrice == null ? -14 : 0,
-              color:
-                props.discountPrice == null ? "#000" : "rgba(0,0,0,0.4)",
+              color: props.discountPrice == null ? "#000" : "rgba(0,0,0,0.4)",
             }}
           >
             Rs.{props.price}
@@ -86,19 +90,34 @@ export default function ProductCard2(props) {
             <FlagIcon color="none" style={{ width: 23, height: 23 }} />
           </IconButton>
           <IconButton style={{ marginLeft: 10 }}>
-            <ShoppingCartIcon color="primary" style={{ width: 23, height: 23 }} />
+            <ShoppingCartIcon
+              color="primary"
+              style={{ width: 23, height: 23 }}
+            />
           </IconButton>
         </span>
       </div>
 
-      <div style={{ ...Styles.container, flex: 0.2 }}>
-        <Counter
-          discountPrice={props.discountPrice}
-          price={props.price}
-          style={{ fontSize: 18, marginTop: 0 }}
-          buttonStyle={{ size: "small", marginLeft: 32, marginRight: 10 }}
-          disabled= {props.counterDisabled}
-        />
+      <div style={{ ...Styles.container, flex: 0.25 }}>
+        {props.counterDisplay === "none" ? (
+          <div style={{ marginRight: 20, display: "flex", flexDirection: "column", justifyContent: "space-between"}}>
+            <Button variant="outlined" startIcon={<ShoppingCartIcon />} >
+              Add To Cart
+            </Button>
+            <Button variant="outlined" startIcon={<DeleteIcon />} style={{ marginTop: 8}}>
+              Delete
+            </Button>
+          </div>
+        ) : (
+          <Counter
+            discountPrice={props.discountPrice}
+            price={props.price}
+            style={{ fontSize: 18, marginTop: 0 }}
+            buttonStyle={{ size: "small", marginLeft: 32, marginRight: 10 }}
+            disabled={props.counterDisabled}
+            display={props.counterDisplay}
+          />
+        )}
       </div>
     </div>
   );
@@ -120,7 +139,7 @@ const Styles = {
     // height: 100,
     borderRadius: "8px",
     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-    background: '#FFF'
+    background: "#FFF",
   },
   wrapper: {
     display: "flex",

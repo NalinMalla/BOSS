@@ -99,8 +99,6 @@ const ProductPage = () => {
   }, []);
 
   const productData = {
-    deals: "FURNITURE MANIA",
-    title: "Brown Kasmir Sofa",
     rating: 3.5,
     reviewsRating5: 5,
     reviewsRating4: 83,
@@ -110,42 +108,6 @@ const ProductPage = () => {
     reviews: 307,
     questions: 26,
     answers: 12,
-    price: 102000,
-    discountPrice: 100000,
-    discountRate: "-2%",
-    image: [
-      {
-        src: Images.SofaBrown,
-        alt: "SofaBrown",
-      },
-      {
-        src: Images.Chair,
-        alt: "Chair",
-      },
-    ],
-    description: [
-      "In the chicest shade of brown, Calion sofa’s linen-weave upholstery complements so many color schemes and aesthetics. Flared arms, prominent welting and flamestitch-print pillows add just enough panache to this sweet and simple sofa. Supportive seat cushions make for one comfortable landing pad.",
-
-      "Corner-blocked frame",
-
-      "Attached back and loose seat cushions",
-
-      "High-resiliency foam cushions wrapped in thick poly fiber",
-
-      "Body & Cushion Fabric: Polyester (100)%",
-    ],
-    specification: [
-      'Length: 28.00"',
-      'Width: 87.00"',
-      'Height: 28.00"',
-      "Weight: 61.69 kg",
-      'Seat depth: 22.00"',
-      'Seat height: 19.00"',
-      'Distance between arms: 69.00"',
-      'Top of cushion to top of back: 18.00"',
-      'Arm height: 26.00"',
-      'Minimum width of doorway for delivery: 32.00"',
-    ],
     reviewData: [
       {
         rating: 4,
@@ -158,21 +120,6 @@ const ProductPage = () => {
         reviewer: "Jojan Rai",
         review:
           "Nice sofa. The brown color of the sofa matches perfectly with my side table set. The product built and quality of material is excellent.",
-      },
-    ],
-    questionAnswerData: [
-      {
-        questioner: "Nalin Malla",
-        date: new Date(),
-        question: "How is the built quality?",
-        answer:
-          "Very cozy sofa. The product built and quality of material is excellent.",
-      },
-      {
-        questioner: "Jojan Rai",
-        date: new Date(),
-        question: "How long will it take to deliver?",
-        answer: "Depending on where you live from 2-5 days.",
       },
     ],
   };

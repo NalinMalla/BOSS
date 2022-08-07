@@ -8,9 +8,10 @@ import Copyright from "../components/copyright";
 import SignIn from "../components/signIn";
 import CustomModal from "../components/CustomModal";
 import ProfileList from "../components/profileList";
+import ProfileHead from "../components/profileHead";
+
 
 import Colors from "../res/colors";
-import Images from "../res/images";
 import ProductList from "../components/productList";
 
 const OrdersPage = (props) => {
@@ -37,38 +38,7 @@ const OrdersPage = (props) => {
             flex: 0.22,
           }}
         >
-          <div
-            style={{
-              ...styles.container,
-              background: "#FFF",
-              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
-              width: "100%",
-              borderRadius: 3,
-              paddingBottom: 8,
-            }}
-          >
-            <Avatar
-              sx={{
-                width: 90,
-                height: 90,
-                m: 1,
-                bgcolor: Colors.primary,
-                mt: 2,
-              }}
-            >
-              <img
-                src={Images.Bed}
-                alt="profile pic"
-                style={{ width: 90, height: 90 }}
-              />
-            </Avatar>
-
-            <span
-              style={{ color: Colors.primary, fontSize: 22, fontWeight: 500 }}
-            >
-              Nalin Malla
-            </span>
-          </div>
+          <ProfileHead />
           <ProfileList />
         </div>
         <div

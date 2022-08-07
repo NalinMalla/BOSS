@@ -10,7 +10,7 @@ import Colors from "../res/colors";
 import Images from "../res/images";
 
 export default function ProductCard2(props) {
-  
+
 
   return (
     <div style={{ ...Styles.root, ...props.style }}>
@@ -21,8 +21,7 @@ export default function ProductCard2(props) {
           backgroundSize: "cover",
           borderRadius: "8px 0px 0px 8px",
         }}
-        src={props.image.src}
-        alt={props.image.alt}
+        src={"http://localhost:5000/" + props.image[0]}
       />
       <div style={{ ...Styles.container, flex: 0.4, marginTop: -10 }}>
         <span style={{ fontSize: 20, fontWeight: 500 }}>{props.title}</span>
@@ -79,10 +78,12 @@ export default function ProductCard2(props) {
           <span
             style={{
               fontSize: 16,
-              marginLeft: 10,
+              marginLeft: 8,
+              color: "#ee0000",
+              display: (props.discountRate === null ? "none": "flex") 
             }}
           >
-            {props.discountRate}
+            -{props.discountRate}%
           </span>
         </span>
         <span>

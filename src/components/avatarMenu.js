@@ -22,9 +22,11 @@ import { useNavigate } from "react-router-dom";
 import Colors from "../res/colors";
 
 export default function AvatarMenu(props) {
+  console.log(localStorage.getItem("userProfilePic"));
   const [profilePic] = React.useState(
     localStorage.getItem("userProfilePic") !== "undefined" &&
-      localStorage.getItem("userProfilePic") !== undefined
+      localStorage.getItem("userProfilePic") !== undefined &&
+      localStorage.getItem("userProfilePic") !== null
       ? localStorage.getItem("userProfilePic")
       : ""
   );
@@ -45,8 +47,6 @@ export default function AvatarMenu(props) {
   const handleSignUp = () => {
     navigate("/signUp");
   };
-  console.log("typeof profilePic");
-  console.log(typeof profilePic);
 
   return (
     <React.Fragment>

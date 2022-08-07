@@ -10,7 +10,8 @@ export default function ProfileHead() {
 
   const [profilePic] = React.useState(
     localStorage.getItem("userProfilePic") !== "undefined" &&
-      localStorage.getItem("userProfilePic") !== undefined
+      localStorage.getItem("userProfilePic") !== undefined &&
+      localStorage.getItem("userProfilePic") !== null
       ? localStorage.getItem("userProfilePic")
       : ""
   );

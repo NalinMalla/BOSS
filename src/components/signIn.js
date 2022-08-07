@@ -125,8 +125,8 @@ export default function SignIn() {
         };
         axios
           .post(`http://localhost:5000/users/taggedItem/create/${userInfo._id}`)
-          .then()
-          .catch();
+          .then((res)=> {console.log(res)})
+          .catch((err)=> {console.log(err)});
         return true;
       }
       return false;

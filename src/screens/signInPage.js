@@ -82,7 +82,7 @@ export default function SignInSide(props) {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isCredentialsInvalid, setIsCredentialsInvalid] = useState(true);
+  const [isCredentialsInvalid, setIsCredentialsInvalid] = useState(false);
 
   const [rememberMe, setRememberMe] = useState(false);
 

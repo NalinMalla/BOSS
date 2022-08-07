@@ -15,6 +15,7 @@ import ProfilePaymentOptions from "../screens/profilePaymentOptions";
 import ProfilePasswordReset from "../screens/profilePasswordReset";
 import OrdersPage from "../screens/ordersPage";
 import ProductAddPage from "../screens/productAddPage";
+import TaggedItemPage from "../screens/taggedItemPage";
 // import Header from "../components/header";
 // import NavBar from "../components/navBar";
 
@@ -43,6 +44,7 @@ const Router = () => {
           element={<ProfilePasswordReset />}
         />
         <Route path="profile/orders" element={<OrdersPage />} />
+        <Route path="profile/taggedItem" element={<TaggedItemPage />} />
         <Route path="product/add" element={<ProductAddPage />} />
       </Routes>
     </BrowserRouter>

@@ -127,7 +127,7 @@ export default function SignInSide(props) {
       .catch((error) => null);
   };
 
-  async function isUserAuthorised(email, password) {
+  async function isUserAuthorized(email, password) {
     const userInfo = await getUserInfoByEmail(email);
     if (userInfo === null) {
       return null;
@@ -140,6 +140,10 @@ export default function SignInSide(props) {
           contact: userInfo.contact,
           profilePic: userInfo.profilePic,
         };
+        axios
+          .post(`http://localhost:5000/users/taggedItem/create/${userInfo._id}`)
+          .then()
+          .catch();
         return true;
       }
       return false;
@@ -147,7 +151,7 @@ export default function SignInSide(props) {
   }
 
   const handleLogin = () => {
-    isUserAuthorised(email, password).then((response) => {
+    isUserAuthorized(email, password).then((response) => {
       if (response === true) {
         setIsCredentialsInvalid(false);
         storeInfoToLocalStorage();

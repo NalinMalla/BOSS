@@ -15,6 +15,7 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import PersonIcon from "@mui/icons-material/Person";
 import ShareLocationIcon from "@mui/icons-material/ShareLocation";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import FlagIcon from '@mui/icons-material/Flag';
 import { Link } from "@mui/material";
 
 export default function ProfileList() {
@@ -83,6 +84,14 @@ export default function ProfileList() {
       </Collapse>
 
       <Divider />
+      <Link href="/profile/taggedItem" underline="none" style={{ color: "#000" }}>
+        <ListItemButton>
+          <ListItemIcon>
+            <FlagIcon style={{ height: 25, width: 25, marginTop: -2 }} />
+          </ListItemIcon>
+          <ListItemText primary="My Tagged Items" />
+        </ListItemButton>
+      </Link>
 
       <Link href="/profile/orders" underline="none" style={{ color: "#000" }}>
         <ListItemButton>

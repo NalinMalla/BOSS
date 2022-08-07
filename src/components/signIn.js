@@ -123,6 +123,10 @@ export default function SignIn() {
           contact: userInfo.contact,
           profilePic: userInfo.profilePic,
         };
+        axios
+          .post(`http://localhost:5000/users/taggedItem/create/${userInfo._id}`)
+          .then()
+          .catch();
         return true;
       }
       return false;
@@ -228,7 +232,7 @@ export default function SignIn() {
         >
           Invalid email or password.
         </p>
-        
+
         <FormControlLabel
           control={<Checkbox value="remember" color="primary" />}
           label="Remember me"

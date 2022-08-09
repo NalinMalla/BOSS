@@ -1,3 +1,4 @@
+import * as React from "react";
 import Rating from "@mui/material/Rating";
 import FlagIcon from "@mui/icons-material/Flag";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -8,23 +9,69 @@ import axios from "axios";
 import Counter from "../components/productCounter";
 
 import Colors from "../res/colors";
-import Images from "../res/images";
 
 export default function ProductCard2(props) {
+  const userId = localStorage.getItem("userId");
+  const userTaggedItem = localStorage.getItem("userTaggedItem").split(",");
+  const userTaggedItemId = localStorage.getItem("userTaggedItemId");
+  const [productId] = React.useState(props._id);
+  console.log(productId);
+
+  const [isTagged, setIsTagged] = React.useState(
+    userTaggedItem.includes(props._id) ? true : false
+  );
+
   const handleClickTaggedItem = (event) => {
     event.preventDefault();
 
-  const userId = localStorage.getItem("userId");
+    if (isTagged !== true) {
+      console.log("isTagged !== true");
+      axios
+        .put(`http://localhost:5000/users/taggedItem/add/${userId}`, {
+          productId,
+        })
+        .then(
+          (res) => {
+            localStorage.setItem(
+              "userTaggedItem",
+              localStorage.getItem("userTaggedItem") + "," + productId
+            );
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+    } else {
+      console.log("isTagged === true");
+      axios
+        .put(
+          `http://localhost:5000/users/taggedItem/delete/${userTaggedItemId}`,
+          { productId }
+        )
+        .then(
+          (res) => {
+            console.log(res);
+            localStorage.setItem(
+              "userTaggedItem",
+              localStorage
+                .getItem("userTaggedItem")
+                .replace("," + productId, "")
+            );
 
-    axios.put(`http://localhost:5000/users/taggedItem/add/${userId}`, props._id).then(
-      (res) => {
-        storeInfoToLocalStorage(userId);
-        console.log(res.data);
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+            console.log(localStorage.getItem("userTaggedItem") === productId);
+
+            if (localStorage.getItem("userTaggedItem") === productId) {
+              localStorage.setItem("userTaggedItem", "");
+            }
+            if (window.location.href.slice(-10) === "taggedItem") {
+              window.location.reload();
+            }
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+    }
   };
 
   return (
@@ -102,8 +149,14 @@ export default function ProductCard2(props) {
           </span>
         </span>
         <span>
-          <IconButton style={{ marginLeft: -10 }}>
-            <FlagIcon color="none" style={{ width: 23, height: 23 }} />
+          <IconButton
+            style={{ marginLeft: -10 }}
+            onClick={handleClickTaggedItem}
+          >
+            <FlagIcon
+              color={isTagged ? "primary" : "none"}
+              style={{ width: 23, height: 23 }}
+            />
           </IconButton>
           <IconButton style={{ marginLeft: 10 }}>
             <ShoppingCartIcon
@@ -131,6 +184,7 @@ export default function ProductCard2(props) {
               variant="outlined"
               startIcon={<DeleteIcon />}
               style={{ marginTop: 8 }}
+              onClick={handleClickTaggedItem}
             >
               Delete
             </Button>
@@ -150,12 +204,12 @@ export default function ProductCard2(props) {
   );
 }
 
-ProductCard2.defaultProps = {
-  price: 0,
-  discountedPrice: 0,
-  image: Images.Bed,
-  title: "Product Title",
-};
+// ProductCard2.defaultProps = {
+//   price: 0,
+//   discountedPrice: 0,
+//   image: Images.Bed,
+//   title: "Product Title",
+// };
 
 const Styles = {
   root: {

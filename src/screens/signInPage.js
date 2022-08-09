@@ -98,6 +98,8 @@ export default function SignInSide(props) {
       localStorage.setItem("userLastName", user.name.lastName);
       localStorage.setItem("userContact", user.contact.toString());
       localStorage.setItem("userProfilePic", user.profilePic);
+      localStorage.setItem("userTaggedItemId", user.taggedItemId);
+      localStorage.setItem("userTaggedItem", user.taggedItem);
     }
   }
 
@@ -124,6 +126,14 @@ export default function SignInSide(props) {
     return axios
       .get(ApiURL)
       .then((response) => response.data)
+      .catch((error) => alert(error));
+  };
+
+  const getTaggedItemById = (userId) => {
+    const ApiURL = `http://localhost:5000/users/taggedItem/${userId}`;
+    return axios
+      .get(ApiURL)
+      .then((response) => response.data)
       .catch((error) => null);
   };
 
@@ -142,8 +152,16 @@ export default function SignInSide(props) {
         };
         axios
           .post(`http://localhost:5000/users/taggedItem/create/${userInfo._id}`)
-          .then()
-          .catch();
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+
+        const userTaggedItem = await getTaggedItemById(user.id);
+        user.taggedItem = userTaggedItem.products;
+        user.taggedItemId = userTaggedItem._id;
         return true;
       }
       return false;

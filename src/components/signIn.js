@@ -83,6 +83,8 @@ export default function SignIn() {
       localStorage.setItem("userLastName", user.name.lastName);
       localStorage.setItem("userContact", user.contact.toString());
       localStorage.setItem("userProfilePic", user.profilePic);
+      localStorage.setItem("userTaggedItemId", user.taggedItemId);
+      localStorage.setItem("userTaggedItem", user.taggedItem);
     }
   }
 
@@ -110,7 +112,15 @@ export default function SignIn() {
       .catch((error) => null);
   };
 
-  async function isUserAuthorised(email, password) {
+  const getTaggedItemById = (userId) => {
+    const ApiURL = `http://localhost:5000/users/taggedItem/${userId}`;
+    return axios
+      .get(ApiURL)
+      .then((response) => response.data)
+      .catch((error) => null);
+  };
+
+  async function isUserAuthorized(email, password) {
     const userInfo = await getUserInfoByEmail(email);
     if (userInfo === null) {
       return null;
@@ -127,6 +137,10 @@ export default function SignIn() {
           .post(`http://localhost:5000/users/taggedItem/create/${userInfo._id}`)
           .then((res)=> {console.log(res)})
           .catch((err)=> {console.log(err)});
+
+        const userTaggedItem = await getTaggedItemById(user.id);
+        user.taggedItem = userTaggedItem.products;
+        user.taggedItemId = userTaggedItem._id;
         return true;
       }
       return false;
@@ -135,7 +149,7 @@ export default function SignIn() {
 
   const handleLogin = (event) => {
     event.preventDefault();
-    isUserAuthorised(email, password).then((response) => {
+    isUserAuthorized(email, password).then((response) => {
       if (response === true) {
         setIsCredentialsInvalid(false);
         storeInfoToLocalStorage();

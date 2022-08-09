@@ -5,11 +5,12 @@ import ProductCard2 from "./productCard2";
 import Colors from "../res/colors";
 
 const ProductList = (props) => {
-  // console.log("props.products");
-  // console.log(props.products);
-  // let products = props.products;
-  let products = JSON.parse(props.products);
-  // console.log(products);
+
+  let products = props.products;
+  console.log("props.products");
+  console.log(props.products);
+  console.log(products);
+  // let products = JSON.parse(props.products);
 
   return (
     <div style={Styles.container}>
@@ -34,7 +35,7 @@ const ProductList = (props) => {
             color: Colors.primary,
           }}
         >
-          Zero Items Tagged.
+          Items Not Found
         </span>
       )}
     </div>
@@ -50,6 +51,10 @@ const Styles = {
   card: {
     marginBottom: 20,
   },
+};
+
+ProductList.defaultProps = {
+  products: [],
 };
 
 export default ProductList;

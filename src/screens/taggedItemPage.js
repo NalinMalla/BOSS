@@ -25,6 +25,9 @@ const TaggedItemPage = (props) => {
   let navigate = useNavigate();
 
   const userId = localStorage.getItem("userId");
+  const [userTaggedItem] = useState(
+    localStorage.getItem("userTaggedItem").split(",")
+  );
 
   const getProductInfoById = (productId) => {
     const ApiURL = `http://localhost:5000/products/${productId}`;
@@ -34,91 +37,33 @@ const TaggedItemPage = (props) => {
       .catch((error) => null);
   };
 
-  const getTaggedItemById = (userId) => {
-    const ApiURL = `http://localhost:5000/users/taggedItem/${userId}`;
-    return axios
-      .get(ApiURL)
-      .then((response) => response.data)
-      .catch((error) => null);
-  };
-
-  // function initializeProductData(userId) {
-  //   getTaggedItemById(userId).then((response) => {
-  //     if (response === null) {
-  //       navigate("/signIn");
-  //     } else {
-  //       console.log(userId, "'s Tagged Items Info");
-  //       console.log(response);
-  //       console.log("Items");
-  //       console.log(response.products);
-
-  //       var tempProducts = [];
-  //       response.products.forEach((element, index) => {
-  //         console.log(index, " For item ", element);
-  //         getProductInfoById(element)
-  //           .then((response) => {
-  //             if (response !== null) {
-  //               tempProducts.push(response);
-  //             }
-  //           })
-  //           .catch((err) => {
-  //             console.log("Error", err);
-  //           });
-  //       });
-  //       setProducts(tempProducts);
-  //     }
-  //   });
-  // }
-
-  const initializeProductData = (userId) => {
-    getTaggedItemById(userId)
-      .then((response) => {
-        console.log("Get Tagged item by id.");
-        console.log(response.products);
-
-        if (response === null) {
-          navigate("/signIn");
-        } else {
-          var tempProducts = [];
-          response.products.forEach((element, index) => {
-            getProductInfoById(element)
-              .then((response) => {
-                if (response !== null) {
-                  tempProducts[index] = response;
-                }
-              })
-              .catch((err) => {
-                console.log("Error", err);
-              });
-          });
-          setProducts(tempProducts);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  function initializeProductData(userTaggedItem) {
+    var tempProducts = [];
+    userTaggedItem.forEach((element) => {
+      getProductInfoById(element)
+        .then((response) => {
+          if (response !== null) {
+            tempProducts.push(response);
+          }
+        })
+        .catch((err) => {
+          console.log("Error", err);
+        });
+    });
+    setProducts(tempProducts);
+  }
 
   useEffect(() => {
-    setTimeout(() => {setIsLoaded(true)}, 2000);
+    setTimeout(() => {
+      setIsLoaded(true);
+    }, 2000);
     document.title = "BOSS - Tagged Item Page";
-    if (userId === undefined) {
-      navigate("/");
-    } else if (products.length === 0) {
-      initializeProductData(userId);
+    if (userId === undefined || userId === null) {
+      navigate("/signIn");
+    } else {
+      initializeProductData(userTaggedItem);
     }
   }, []);
-
-  useEffect(() => {
-
-    if (products.length > 0) {
-      setIsLoaded(true);
-    }
-    else{
-      setIsLoaded(false);
-    }
-  }, [products]);
-
 
   return (
     <div id="root" style={styles.root}>
@@ -159,7 +104,7 @@ const TaggedItemPage = (props) => {
                   alignItems: "center",
                   width: "100%",
                   height: "100%",
-                  marginTop: 20
+                  marginTop: 20,
                 }}
               >
                 <Audio
@@ -171,19 +116,19 @@ const TaggedItemPage = (props) => {
                   wrapperStyle
                   wrapperClass
                 />
-                <div style={{fontSize: 22, fontWeight: 500, marginTop: 10}}>Loading...</div>
+
+                <div style={{ fontSize: 22, fontWeight: 500, marginTop: 10 }}>
+                  Loading...
+                </div>
               </div>
             ) : (
               <ProductList
                 counterDisabled={true}
                 counterDisplay={"none"}
-                products={JSON.stringify(products)}
-                // products={products}
+                // products={JSON.stringify(products)}
+                products={products}
               />
             )}
-            {/* {console.log("products")}
-            {console.log(products)}
-            {console.log(JSON.stringify(products))} */}
           </div>
         </div>
       </div>

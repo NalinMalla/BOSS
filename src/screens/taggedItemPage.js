@@ -2,6 +2,7 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Audio } from "react-loader-spinner";
 
 import Header from "../components/header";
 import NavBar from "../components/navBar";
@@ -19,7 +20,8 @@ const TaggedItemPage = (props) => {
   const [openModal, setOpenModal] = useState(false);
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
-  const [products, setProducts] = useState(null);
+  const [products, setProducts] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
   let navigate = useNavigate();
 
   const userId = localStorage.getItem("userId");
@@ -40,47 +42,83 @@ const TaggedItemPage = (props) => {
       .catch((error) => null);
   };
 
-  function initializeProductData(userId) {
-    getTaggedItemById(userId).then((response) => {
-      if (response === null) {
-        navigate("/signIn");
-      } else {
-        console.log(userId, "'s Tagged Items Info");
-        console.log(response);
-        console.log("Items");
+  // function initializeProductData(userId) {
+  //   getTaggedItemById(userId).then((response) => {
+  //     if (response === null) {
+  //       navigate("/signIn");
+  //     } else {
+  //       console.log(userId, "'s Tagged Items Info");
+  //       console.log(response);
+  //       console.log("Items");
+  //       console.log(response.products);
+
+  //       var tempProducts = [];
+  //       response.products.forEach((element, index) => {
+  //         console.log(index, " For item ", element);
+  //         getProductInfoById(element)
+  //           .then((response) => {
+  //             if (response !== null) {
+  //               tempProducts.push(response);
+  //             }
+  //           })
+  //           .catch((err) => {
+  //             console.log("Error", err);
+  //           });
+  //       });
+  //       setProducts(tempProducts);
+  //     }
+  //   });
+  // }
+
+  const initializeProductData = (userId) => {
+    getTaggedItemById(userId)
+      .then((response) => {
+        console.log("Get Tagged item by id.");
         console.log(response.products);
 
-        var tempProducts = [];
-        response.products.forEach((element, index) => {
-          console.log(index, " For item ", element);
-          getProductInfoById(element)
-            .then((response) => {
-              if (response !== null) {
-                tempProducts.push(response);
-              }
-            })
-            .catch((err) => {
-              console.log("Error", err);
-            });
-        });
-        setProducts(tempProducts);
-      }
-    });
-  }
+        if (response === null) {
+          navigate("/signIn");
+        } else {
+          var tempProducts = [];
+          response.products.forEach((element, index) => {
+            getProductInfoById(element)
+              .then((response) => {
+                if (response !== null) {
+                  tempProducts[index] = response;
+                }
+              })
+              .catch((err) => {
+                console.log("Error", err);
+              });
+          });
+          setProducts(tempProducts);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
-    console.log("products");
-    console.log(products);
-  }, [products]);
-
-  useEffect(() => {
+    setTimeout(() => {setIsLoaded(true)}, 2000);
     document.title = "BOSS - Tagged Item Page";
     if (userId === undefined) {
       navigate("/");
-    } else if (products === null) {
+    } else if (products.length === 0) {
       initializeProductData(userId);
     }
   }, []);
+
+  useEffect(() => {
+
+    if (products.length > 0) {
+      setIsLoaded(true);
+    }
+    else{
+      setIsLoaded(false);
+    }
+  }, [products]);
+
 
   return (
     <div id="root" style={styles.root}>
@@ -112,11 +150,40 @@ const TaggedItemPage = (props) => {
           }}
         >
           <div style={{ ...styles.wrapper }}>
-            <ProductList
-              counterDisabled={true}
-              counterDisplay={"none"}
-              products = {products}
-            />
+            {!isLoaded ? (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  height: "100%",
+                  marginTop: 20
+                }}
+              >
+                <Audio
+                  height="100"
+                  width="100"
+                  radius="12"
+                  color={Colors.primary}
+                  ariaLabel="three-dots-loading"
+                  wrapperStyle
+                  wrapperClass
+                />
+                <div style={{fontSize: 22, fontWeight: 500, marginTop: 10}}>Loading...</div>
+              </div>
+            ) : (
+              <ProductList
+                counterDisabled={true}
+                counterDisplay={"none"}
+                products={JSON.stringify(products)}
+                // products={products}
+              />
+            )}
+            {/* {console.log("products")}
+            {console.log(products)}
+            {console.log(JSON.stringify(products))} */}
           </div>
         </div>
       </div>

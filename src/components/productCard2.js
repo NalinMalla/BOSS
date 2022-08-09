@@ -3,6 +3,7 @@ import FlagIcon from "@mui/icons-material/Flag";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Button, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import axios from "axios";
 
 import Counter from "../components/productCounter";
 
@@ -10,7 +11,21 @@ import Colors from "../res/colors";
 import Images from "../res/images";
 
 export default function ProductCard2(props) {
+  const handleClickTaggedItem = (event) => {
+    event.preventDefault();
 
+  const userId = localStorage.getItem("userId");
+
+    axios.put(`http://localhost:5000/users/taggedItem/add/${userId}`, props._id).then(
+      (res) => {
+        storeInfoToLocalStorage(userId);
+        console.log(res.data);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  };
 
   return (
     <div style={{ ...Styles.root, ...props.style }}>
@@ -80,7 +95,7 @@ export default function ProductCard2(props) {
               fontSize: 16,
               marginLeft: 8,
               color: "#ee0000",
-              display: (props.discountRate === null ? "none": "flex") 
+              display: props.discountRate === null ? "none" : "flex",
             }}
           >
             -{props.discountRate}%
@@ -101,11 +116,22 @@ export default function ProductCard2(props) {
 
       <div style={{ ...Styles.container, flex: 0.25 }}>
         {props.counterDisplay === "none" ? (
-          <div style={{ marginRight: 20, display: "flex", flexDirection: "column", justifyContent: "space-between"}}>
-            <Button variant="outlined" startIcon={<ShoppingCartIcon />} >
+          <div
+            style={{
+              marginRight: 20,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+            }}
+          >
+            <Button variant="outlined" startIcon={<ShoppingCartIcon />}>
               Add To Cart
             </Button>
-            <Button variant="outlined" startIcon={<DeleteIcon />} style={{ marginTop: 8}}>
+            <Button
+              variant="outlined"
+              startIcon={<DeleteIcon />}
+              style={{ marginTop: 8 }}
+            >
               Delete
             </Button>
           </div>

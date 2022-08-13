@@ -13,35 +13,52 @@ import Review from "./checkoutReview";
 
 const steps = ["Shipping address", "Payment details", "Review your order"];
 
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <AddressForm />;
-    case 1:
-      return <PaymentTab />;
-    case 2:
-      return <Review />;
-    default:
-      throw new Error("Unknown step");
-  }
-}
-
 export default function Checkout(props) {
   const [activeStep, setActiveStep] = React.useState(0);
-
+  const [addressValid, setAddressValid] = React.useState(false);
   const handleNext = () => {
-    setActiveStep(activeStep + 1);
+    if(activeStep === (steps.length - 1))
+    {
+      console.log("Place Order");
+    }
+    else
+    {
+      if(addressValid)
+      {
+        setActiveStep(activeStep + 1);
+      }
+      else
+      {
+        alert("No usable shipping address is specified.")
+      }
+    }
   };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
 
+  function getStepContent(step) {
+    console.log("props.products");
+    console.log(props.products);
+    console.log(step);
+    switch (step) {
+      case 0:
+        return <AddressForm handleAddressValidation = {setAddressValid}/>;
+      case 1:
+        return <PaymentTab />;
+      case 2:
+        return <Review products={props.products}/>;
+      default:
+        throw new Error("Unknown step");
+    }
+  }
+
   return (
     <div style={{width: '100%',}}>
       <Paper
         variant="outlined"
-        style={{boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)", paddingTop: 40,}}
+        style={{boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)", paddingTop: 40, backgroundColor: "#FdFdFd"}}
         sx={{ my: { xs: 3, md: 0 }, p: { xs: 2, md: 8 } }}
       >
         <Typography component="h1" variant="h4" align="center" color="primary" >

@@ -131,6 +131,7 @@ export default function AddressForm(props) {
       !(city.trim() === "") &&
       !(addressDetail.trim() === "")
     ) {
+      props.handleAddressValidation(true);
       const address = {
         firstName: firstName,
         middleName: middleName,
@@ -157,7 +158,7 @@ export default function AddressForm(props) {
       } else {
         if (
           window.confirm(
-            "Your address information is about to be overwritten. The previous details will be lost. \nAre you ok with this?"
+            "Any new information will overwrite the previous details. \nAre you ok with this?"
           )
         ) {
           axios
@@ -350,8 +351,10 @@ export default function AddressForm(props) {
             justifyContent: "flex-end",
           }}
         >
-          <span
-          style={{color: "#Ef0000", fontSize: 18}}>**Please save your shipping details if you haven't setup your shipping address.**</span>
+          {/* <span style={{ color: "#d00000", fontSize: 18 }}>
+            ** Please fill all the required fields and save your shipping
+            details if you haven't setup your shipping address. **
+          </span> */}
         </Grid>
         <Grid
           item
@@ -362,7 +365,7 @@ export default function AddressForm(props) {
           }}
         >
           <Button size="large" variant="contained" onClick={handleUpdate}>
-            Save Shipping Details
+            Use these Shipping Details
           </Button>
         </Grid>
       </Grid>

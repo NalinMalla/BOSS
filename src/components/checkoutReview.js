@@ -1,87 +1,115 @@
-import * as React from 'react';
-import Typography from '@mui/material/Typography';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import Grid from '@mui/material/Grid';
+import React from "react";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import axios from "axios";
+import { Audio } from "react-loader-spinner";
 
-const products = [
-  {
-    name: 'Product 1',
-    desc: 'A nice thing',
-    price: 9.99,
-  },
-  {
-    name: 'Product 2',
-    desc: 'Another thing',
-    price: 3.45,
-  },
-  {
-    name: 'Product 3',
-    desc: 'Something else',
-    price: 6.51,
-  },
-  {
-    name: 'Product 4',
-    desc: 'Best thing of all',
-    price: 14.11,
-  },
-  { name: 'Shipping', desc: '', price: 0 },
-];
+import ProductList from "../components/productList";
+import Colors from "../res/colors";
+import Icons from "../res/icons";
 
-const addresses = ['1 MUI Drive', 'Reactville', 'Anytown', '99999', 'USA'];
-const payments = [
-  { name: 'Card type', detail: 'Visa' },
-  { name: 'Card holder', detail: 'Mr John Smith' },
-  { name: 'Card number', detail: 'xxxx-xxxx-xxxx-1234' },
-  { name: 'Expiry date', detail: '04/2024' },
-];
+export default function Review(props) {
+  const userId = localStorage.getItem("userId");
+  const [addressInfo, setAddressInfo] = React.useState(null);
+  const [isLoaded, setIsLoaded] = React.useState(false);
 
-export default function Review() {
-  return (
+  const getAddressInfoByUserId = (userId) => {
+    const ApiURL = `http://localhost:5000/users/address/${userId}`;
+    return axios
+      .get(ApiURL)
+      .then((response) => response.data)
+      .catch((error) => null);
+  };
+
+  async function initializeAddressData(userId) {
+    console.log("await getAddressInfoByUserId(userId)");
+    console.log(await getAddressInfoByUserId(userId));
+    setAddressInfo(await getAddressInfoByUserId(userId));
+  }
+
+  React.useEffect(() => {
+    console.log("in useEffect");
+    setTimeout(() => {
+      setIsLoaded(true);
+    }, 2000);
+    initializeAddressData(userId);
+  }, []);
+
+  console.log("addressInfo");
+  console.log(addressInfo);
+
+  return !isLoaded ? (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "89%",
+        borderRadius: 3,
+        boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+        padding: 20,
+        background: "#FFFFFF",
+      }}
+    >
+      <Audio
+        height="100"
+        width="100"
+        radius="12"
+        color={Colors.primary}
+        ariaLabel="three-dots-loading"
+        wrapperStyle
+        wrapperClass
+      />
+
+      <div style={{ fontSize: 22, fontWeight: 500, marginTop: 10 }}>
+        Loading...
+      </div>
+    </div>
+  ) : (
     <React.Fragment>
-      <Typography variant="h6" gutterBottom color="primary">
-        Order summary
+      <Typography variant="h5" gutterBottom color="primary">
+        Order Details:
       </Typography>
-      <List disablePadding>
-        {products.map((product) => (
-          <ListItem key={product.name} sx={{ py: 1, px: 0 }}>
-            <ListItemText primary={product.name} secondary={product.desc} />
-            <Typography variant="body1">Rs. {product.price}</Typography>
-          </ListItem>
-        ))}
 
-        <ListItem sx={{ py: 1, px: 0 }}>
-          <ListItemText primary="Total" />
-          <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            Rs. 34.06
-          </Typography>
-        </ListItem>
-      </List>
+      <ProductList products={props.products} counterDisabled={true} />
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={8}>
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-            Shipping
+            Shipping Details
           </Typography>
-          <Typography gutterBottom>John Smith</Typography>
-          <Typography gutterBottom>{addresses.join(', ')}</Typography>
+          <div>
+            Receivers Name:{" "}
+            {addressInfo.receiversName.firstName +
+              " " +
+              addressInfo.receiversName.lastName}
+          </div>
+          <div>Email Address: {addressInfo.email}</div>
+          <div>Contact Number: {addressInfo.contact}</div>
+          <div>Address: Province {addressInfo.province}, {addressInfo.city}</div>
+          <div>Address Details: {addressInfo.addressDetail}</div>
         </Grid>
-        <Grid item container direction="column" xs={12} sm={6}>
-          <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-            Payment details
-          </Typography>
-          <Grid container>
-            {payments.map((payment) => (
-              <React.Fragment key={payment.name}>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.name}</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.detail}</Typography>
-                </Grid>
-              </React.Fragment>
-            ))}
-          </Grid>
+        <Grid item container direction="column" xs={12} sm={4}>
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+              Payment details
+            </Typography>
+            <img
+              src={Icons.CashOnDelivery}
+              alt="Cash On Delivery"
+              style={{ width: 70, height: 70, marginTop: 10 }}
+            />
+            <div style={{ marginTop: 10 }}>Cash on Delivery</div>
+          </div>
+
+          <Grid container></Grid>
         </Grid>
       </Grid>
     </React.Fragment>

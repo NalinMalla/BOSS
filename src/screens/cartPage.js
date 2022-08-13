@@ -21,18 +21,18 @@ const CartPage = () => {
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
 
-  let items = 3;
-  let grossTotalPrice = 5500000;
-  let shippingFee = 2000;
-  let netTotalPrice = grossTotalPrice + shippingFee;
-
   const [products, setProducts] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [items, setItems] = useState(0);
+  const [grossTotalPrice, setGrossTotalPrice] = useState(0);
+  const [shippingFee, setShippingFee] = useState(0);
+  const [netTotalPrice, setNetTotalPrice] = useState(0);  
+
   let navigate = useNavigate();
 
   const userId = localStorage.getItem("userId");
   // const [userCart] = useState(JSON.parse(localStorage.getItem("userCart")));
-  const userCart = JSON.parse(localStorage.getItem("userCart"));
+  const userCart = JSON.parse(localStorage.getItem("userCart")); 
 
   const getProductInfoById = (productId) => {
     const ApiURL = `http://localhost:5000/products/${productId}`;
@@ -73,6 +73,9 @@ const CartPage = () => {
       }, 2000);
     }
   }, []);
+
+  console.log("products");
+  console.log(products);
 
   return (
     <div id="root" style={styles.root}>
@@ -115,9 +118,6 @@ const CartPage = () => {
               </div>
             ) : (
               <ProductList
-                // counterDisabled={true}
-                // counterDisplay={"none"}
-                // products={JSON.stringify(products)}
                 products={products}
               />
             )}
@@ -143,7 +143,7 @@ const CartPage = () => {
             }}
           >
             <span
-              style={{ fontSize: 28,  color: Colors.primary }}
+              style={{ fontSize: 28, color: Colors.primary }}
             >
               Order Summary
             </span>
@@ -152,7 +152,7 @@ const CartPage = () => {
               style={{
                 ...styles.wrapper,
                 justifyContent: "space-between",
-                fontSize: 20,
+                fontSize: 18,
                 marginTop: 10,
                 width: '100%',
               }}
@@ -165,7 +165,7 @@ const CartPage = () => {
               style={{
                 ...styles.wrapper,
                 justifyContent: "space-between",
-                fontSize: 20,
+                fontSize: 18,
                 marginTop: 10,
                 width: '100%',
               }}
@@ -192,7 +192,9 @@ const CartPage = () => {
               fullWidth
               variant="contained"
               style={{ marginTop: 20 }}
-              href="checkout"
+              onClick={() => {
+                window.location = `/checkout/?cart`;
+              }}
             >
               PROCEED TO CHECKOUT
             </Button>

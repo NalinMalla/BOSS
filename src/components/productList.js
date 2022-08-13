@@ -7,9 +7,6 @@ import Colors from "../res/colors";
 const ProductList = (props) => {
 
   let products = props.products;
-  console.log("props.products");
-  console.log(props.products);
-  console.log(products);
   // let products = JSON.parse(props.products);
 
   return (

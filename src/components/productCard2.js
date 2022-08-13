@@ -36,24 +36,18 @@ export default function ProductCard2(props) {
       if (userCart[i].productId === productId && userCart[i].count !== count && count !== undefined) {
         console.log("count");
         console.log(count);
-        axios
-          .put(`http://localhost:5000/users/cart/updateCount/${userCartId}`, {
-            product: { productId: productId, count: count },
-          })
-          .then((res) => {
-            console.log(res);
-            localStorage.setItem(
-              "userCart",
-              JSON.stringify(userCart.splice(i, 1))
-            );
-            localStorage.setItem(
-              "userCart",
-              JSON.stringify([
-                ...userCart,
-                { productId: productId, count: count },
-              ])
-            );
-          });
+
+        localStorage.setItem(
+          "userCart",
+          JSON.stringify(userCart.splice(i, 1))
+        );
+        localStorage.setItem(
+          "userCart",
+          JSON.stringify([
+            ...userCart,
+            { productId: productId, count: count },
+          ])
+        );
       }
     }
   }, [count]);
@@ -101,9 +95,7 @@ export default function ProductCard2(props) {
             if (localStorage.getItem("userTaggedItem") === productId) {
               localStorage.setItem("userTaggedItem", "");
             }
-            // if (window.location.href.slice(-10) === "taggedItem") {
-            //   window.location.reload();
-            // }
+
             window.location.reload();
           },
           (err) => {
@@ -115,10 +107,10 @@ export default function ProductCard2(props) {
 
   const handleClickCart = (event) => {
     if (isInCart !== true) {
-      console.log("isInCard !== true");
+      console.log("isInCart !== true");
       axios
         .put(`http://localhost:5000/users/cart/add/${userId}`, {
-          product: { productId: productId, count: count },
+          product: { productId: productId, count: 1 },
         })
         .then(
           (res) => {
@@ -126,10 +118,10 @@ export default function ProductCard2(props) {
               "userCart",
               JSON.stringify([
                 ...userCart,
-                { productId: productId, count: count },
+                { productId: productId, count: 1 },
               ])
             );
-            // window.location.reload();
+            window.location.reload();
           },
           (err) => {
             console.log(err);
@@ -143,21 +135,12 @@ export default function ProductCard2(props) {
         })
         .then(
           (res) => {
-            console.log(res);
-            console.log("delete from cart");
-            console.log("userCart");
-            console.log(userCart);
             for (let i = 0; i < userCart.length; i++) {
               if (userCart[i].productId === productId) {
-                console.log("userCart[i].productId");
-                console.log(userCart[i].productId);
-                console.log(i);
-                console.log(userCart[i].productId === productId);
-
-                console.log(userCart.splice(i, 1));
+                userCart.splice(i, 1);
                 localStorage.setItem(
                   "userCart",
-                  JSON.stringify(userCart.splice(i, 1))
+                  JSON.stringify(userCart)
                 );
               }
             }

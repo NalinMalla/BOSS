@@ -1,5 +1,9 @@
 import * as React from "react";
 import { Button } from "@mui/material";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { Audio } from "react-loader-spinner";
 
 import Header from "../components/header";
 import NavBar from "../components/navBar";
@@ -22,6 +26,54 @@ const CartPage = () => {
   let shippingFee = 2000;
   let netTotalPrice = grossTotalPrice + shippingFee;
 
+  const [products, setProducts] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+  let navigate = useNavigate();
+
+  const userId = localStorage.getItem("userId");
+  // const [userCart] = useState(JSON.parse(localStorage.getItem("userCart")));
+  const userCart = JSON.parse(localStorage.getItem("userCart"));
+
+  const getProductInfoById = (productId) => {
+    const ApiURL = `http://localhost:5000/products/${productId}`;
+    return axios
+      .get(ApiURL)
+      .then((response) => response.data)
+      .catch((error) => null);
+  };
+
+  function initializeProductData(userCart) {
+    var tempProducts = [];
+    userCart.forEach((element) => {
+      getProductInfoById(element.productId)
+        .then((response) => {
+          if (response !== null) {
+            response = {...response, count: element.count};
+            tempProducts.push(response);
+          }
+        })
+        .catch((err) => {
+          console.log("Error", err);
+        });
+    });
+    setProducts(tempProducts);
+  }
+
+  useEffect(() => {
+    // setTimeout(() => {
+    //   setIsLoaded(true);
+    // }, 2000);
+    document.title = "BOSS - Cart Page";
+    if (userId === undefined || userId === null) {
+      navigate("/signIn");
+    } else {
+      initializeProductData(userCart);
+      setTimeout(() => {
+        setIsLoaded(true);
+      }, 2000);
+    }
+  }, []);
+
   return (
     <div id="root" style={styles.root}>
       <Header handleSignIn={handleOpenModal} />
@@ -34,7 +86,42 @@ const CartPage = () => {
         }}
       >
         <div style={{ ...styles.wrapper, flex: 0.65 }}>
-          <ProductList />
+        <div style={{ ...styles.wrapper }}>
+            {!isLoaded ? (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  height: "100%",
+                  marginTop: 20,
+                }}
+              >
+                <Audio
+                  height="100"
+                  width="100"
+                  radius="12"
+                  color={Colors.primary}
+                  ariaLabel="three-dots-loading"
+                  wrapperStyle
+                  wrapperClass
+                />
+
+                <div style={{ fontSize: 22, fontWeight: 500, marginTop: 10 }}>
+                  Loading...
+                </div>
+              </div>
+            ) : (
+              <ProductList
+                // counterDisabled={true}
+                // counterDisplay={"none"}
+                // products={JSON.stringify(products)}
+                products={products}
+              />
+            )}
+          </div>
         </div>
         <div
           style={{

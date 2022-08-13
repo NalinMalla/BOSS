@@ -85,6 +85,8 @@ export default function SignIn() {
       localStorage.setItem("userProfilePic", user.profilePic);
       localStorage.setItem("userTaggedItemId", user.taggedItemId);
       localStorage.setItem("userTaggedItem", user.taggedItem);
+      localStorage.setItem("userCartId", user.cartId);
+      localStorage.setItem("userCart", JSON.stringify(user.cart));
     }
   }
 
@@ -120,6 +122,14 @@ export default function SignIn() {
       .catch((error) => null);
   };
 
+  const getCartById = (userId) => {
+    const ApiURL = `http://localhost:5000/users/cart/${userId}`;
+    return axios
+      .get(ApiURL)
+      .then((response) => response.data)
+      .catch((error) => null);
+  };
+
   async function isUserAuthorized(email, password) {
     const userInfo = await getUserInfoByEmail(email);
     if (userInfo === null) {
@@ -133,14 +143,27 @@ export default function SignIn() {
           contact: userInfo.contact,
           profilePic: userInfo.profilePic,
         };
+
         axios
           .post(`http://localhost:5000/users/taggedItem/create/${userInfo._id}`)
           .then((res)=> {console.log(res)})
           .catch((err)=> {console.log(err)});
-
         const userTaggedItem = await getTaggedItemById(user.id);
         user.taggedItem = userTaggedItem.products;
         user.taggedItemId = userTaggedItem._id;
+
+        axios
+        .post(`http://localhost:5000/users/cart/create/${userInfo._id}`)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+        const userCart = await getCartById(user.id);
+        user.cart = userCart.products;
+        user.cartId = userCart._id;
+
         return true;
       }
       return false;

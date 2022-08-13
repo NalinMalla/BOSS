@@ -14,15 +14,52 @@ export default function ProductCard2(props) {
   const userId = localStorage.getItem("userId");
   const userTaggedItem = localStorage.getItem("userTaggedItem").split(",");
   const userTaggedItemId = localStorage.getItem("userTaggedItemId");
+  const userCartId = localStorage.getItem("userCartId");
+  const userCart = JSON.parse(localStorage.getItem("userCart"));
   const [productId] = React.useState(props._id);
   console.log(productId);
 
-  const [isTagged, setIsTagged] = React.useState(
+  const [isTagged] = React.useState(
     userTaggedItem.includes(props._id) ? true : false
   );
 
+  const userCartItem = userCart.map((x) => x.productId);
+
+  const [isInCart] = React.useState(
+    userCartItem.includes(props._id) ? true : false
+  );
+
+  const [count, setCount] = React.useState(props.count);
+
+  React.useEffect(() => {
+    for (let i = 0; i < userCart.length; i++) {
+      if (userCart[i].productId === productId && userCart[i].count !== count && count !== undefined) {
+        console.log("count");
+        console.log(count);
+        axios
+          .put(`http://localhost:5000/users/cart/updateCount/${userCartId}`, {
+            product: { productId: productId, count: count },
+          })
+          .then((res) => {
+            console.log(res);
+            localStorage.setItem(
+              "userCart",
+              JSON.stringify(userCart.splice(i, 1))
+            );
+            localStorage.setItem(
+              "userCart",
+              JSON.stringify([
+                ...userCart,
+                { productId: productId, count: count },
+              ])
+            );
+          });
+      }
+    }
+  }, [count]);
+
   const handleClickTaggedItem = (event) => {
-    event.preventDefault();
+    // event.preventDefault();
 
     if (isTagged !== true) {
       console.log("isTagged !== true");
@@ -36,6 +73,7 @@ export default function ProductCard2(props) {
               "userTaggedItem",
               localStorage.getItem("userTaggedItem") + "," + productId
             );
+            window.location.reload();
           },
           (err) => {
             console.log(err);
@@ -55,7 +93,7 @@ export default function ProductCard2(props) {
               "userTaggedItem",
               localStorage
                 .getItem("userTaggedItem")
-                .replace("," + productId, "")
+                .replace(`,${productId}`, "")
             );
 
             console.log(localStorage.getItem("userTaggedItem") === productId);
@@ -63,9 +101,67 @@ export default function ProductCard2(props) {
             if (localStorage.getItem("userTaggedItem") === productId) {
               localStorage.setItem("userTaggedItem", "");
             }
-            if (window.location.href.slice(-10) === "taggedItem") {
-              window.location.reload();
+            // if (window.location.href.slice(-10) === "taggedItem") {
+            //   window.location.reload();
+            // }
+            window.location.reload();
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+    }
+  };
+
+  const handleClickCart = (event) => {
+    if (isInCart !== true) {
+      console.log("isInCard !== true");
+      axios
+        .put(`http://localhost:5000/users/cart/add/${userId}`, {
+          product: { productId: productId, count: count },
+        })
+        .then(
+          (res) => {
+            localStorage.setItem(
+              "userCart",
+              JSON.stringify([
+                ...userCart,
+                { productId: productId, count: count },
+              ])
+            );
+            // window.location.reload();
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+    } else {
+      console.log("isInCart === true");
+      axios
+        .put(`http://localhost:5000/users/cart/delete/${userCartId}`, {
+          productId,
+        })
+        .then(
+          (res) => {
+            console.log(res);
+            console.log("delete from cart");
+            console.log("userCart");
+            console.log(userCart);
+            for (let i = 0; i < userCart.length; i++) {
+              if (userCart[i].productId === productId) {
+                console.log("userCart[i].productId");
+                console.log(userCart[i].productId);
+                console.log(i);
+                console.log(userCart[i].productId === productId);
+
+                console.log(userCart.splice(i, 1));
+                localStorage.setItem(
+                  "userCart",
+                  JSON.stringify(userCart.splice(i, 1))
+                );
+              }
             }
+            window.location.reload();
           },
           (err) => {
             console.log(err);
@@ -158,9 +254,9 @@ export default function ProductCard2(props) {
               style={{ width: 23, height: 23 }}
             />
           </IconButton>
-          <IconButton style={{ marginLeft: 10 }}>
+          <IconButton style={{ marginLeft: 10 }} onClick={handleClickCart}>
             <ShoppingCartIcon
-              color="primary"
+              color={isInCart ? "primary" : "none"}
               style={{ width: 23, height: 23 }}
             />
           </IconButton>
@@ -177,8 +273,12 @@ export default function ProductCard2(props) {
               justifyContent: "space-between",
             }}
           >
-            <Button variant="outlined" startIcon={<ShoppingCartIcon />}>
-              Add To Cart
+            <Button
+              variant="outlined"
+              startIcon={<ShoppingCartIcon />}
+              onClick={handleClickCart}
+            >
+              {isInCart ? "Delete Cart" : "Add To Cart"}
             </Button>
             <Button
               variant="outlined"
@@ -197,6 +297,8 @@ export default function ProductCard2(props) {
             buttonStyle={{ size: "small", marginLeft: 32, marginRight: 10 }}
             disabled={props.counterDisabled}
             display={props.counterDisplay}
+            initialCount={count}
+            handleUpdate={setCount}
           />
         )}
       </div>
@@ -204,20 +306,12 @@ export default function ProductCard2(props) {
   );
 }
 
-// ProductCard2.defaultProps = {
-//   price: 0,
-//   discountedPrice: 0,
-//   image: Images.Bed,
-//   title: "Product Title",
-// };
-
 const Styles = {
   root: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
-    // height: 100,
     borderRadius: "8px",
     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
     background: "#FFF",

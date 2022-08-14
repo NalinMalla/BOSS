@@ -145,6 +145,8 @@ export default function AddressForm(props) {
         userId: userId,
       };
 
+      props.setAddress(address);
+
       if (addNewAddress) {
         axios.post(`http://localhost:5000/users/address/add`, address).then(
           (res) => {
@@ -176,9 +178,7 @@ export default function AddressForm(props) {
             );
         }
       }
-    } else {
-      alert("Invalid input.");
-    }
+    } 
   };
 
   return (

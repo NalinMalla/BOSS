@@ -66,8 +66,14 @@ const CheckoutPage = () => {
       alert("Error: Unable to access server.");
     } else {
       console.log("{ ...productInfo, count: count }");
-      console.log({ ...productInfo, count: window.location.href.split("&")[1] });
-      products[0] = { ...productInfo, count: Number(window.location.href.split("&")[1]) };
+      console.log({
+        ...productInfo,
+        count: window.location.href.split("&")[1],
+      });
+      products[0] = {
+        ...productInfo,
+        count: Number(window.location.href.split("&")[1]),
+      };
     }
   }
 
@@ -120,54 +126,57 @@ const CheckoutPage = () => {
       <Header handleSignIn={handleOpenModal} />
       <NavBar />
 
-      <div
-        style={{
-          ...styles.wrapper,
-          justifyContent: "space-between",
-          marginTop: 20,
-          flex: 1,
-        }}
-      >
-        <div style={{ display: "flex", flex: 0.68 }}>
-          <Checkout products={products} />
-        </div>
-
+      {!isLoaded ? (
         <div
           style={{
-            ...styles.container,
-            flex: 0.28,
-            justifyContent: "flex-start",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "89%",
+            borderRadius: 3,
+            boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+            padding: 20,
+            paddingTop: 60,
+            paddingBottom: 40,
+            background: "#FFFFFF",
+            marginTop: 32
           }}
         >
-          {!isLoaded ? (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "89%",
-                borderRadius: 3,
-                boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-                padding: 20,
-                background: "#FFFFFF",
-              }}
-            >
-              <Audio
-                height="100"
-                width="100"
-                radius="12"
-                color={Colors.primary}
-                ariaLabel="three-dots-loading"
-                wrapperStyle
-                wrapperClass
-              />
+          <Audio
+            height="100"
+            width="100"
+            radius="12"
+            color={Colors.primary}
+            ariaLabel="three-dots-loading"
+            wrapperStyle
+            wrapperClass
+          />
 
-              <div style={{ fontSize: 22, fontWeight: 500, marginTop: 10 }}>
-                Loading...
-              </div>
-            </div>
-          ) : (
+          <div style={{ fontSize: 22, fontWeight: 500, marginTop: 10 }}>
+            Loading...
+          </div>
+        </div>
+      ) : (
+        <div
+          style={{
+            ...styles.wrapper,
+            justifyContent: "space-between",
+            marginTop: 20,
+            flex: 1,
+          }}
+        >
+          <div style={{ display: "flex", flex: 0.68 }}>
+            <Checkout products={products} />
+          </div>
+
+          <div
+            style={{
+              ...styles.container,
+              flex: 0.28,
+              justifyContent: "flex-start",
+            }}
+          >
             <div
               style={{
                 ...styles.container,
@@ -223,9 +232,9 @@ const CheckoutPage = () => {
                 <span>Rs. {netTotalPrice}</span>
               </div>
             </div>
-          )}
+          </div>
         </div>
-      </div>
+      )}
 
       <div
         style={{

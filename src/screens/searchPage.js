@@ -40,7 +40,7 @@ const SearchPage = () => {
     console.log(search1 + "/" + search2);
   }
 
-  const getProductInfo = () => {
+  const getProductsInfo = () => {
     let ApiURL;
 
     if (search1 === "all") {
@@ -58,35 +58,38 @@ const SearchPage = () => {
   };
 
   function initializeProductData() {
-    getProductInfo()
+    let tempProducts = [];
+    getProductsInfo()
       .then((response) => {
         if (response !== null) {
-          setProducts(response);
+          response.forEach((product) => {
+            if (product.discountPrice <= maxPrice && product.discountPrice >= minPrice) {
+              tempProducts.push(product);
+            }
+          });
         }
       })
       .catch((err) => {
         console.log("Error", err);
       });
+    setProducts(tempProducts);
   }
 
   useEffect(() => {
     document.title = "BOSS - Search Page";
+    setIsLoaded(false);
     initializeProductData(search2);
     setTimeout(() => {
       setIsLoaded(true);
     }, 2000);
-  }, []);
-
-  console.log(products);
-  console.log(minPrice);
-  console.log(maxPrice);
+  }, [minPrice, maxPrice]);
 
   return (
     <div id="root" style={styles.root}>
       <Header handleSignIn={handleOpenModal} />
       <NavBar />
       <div style={styles.wrapper}>
-        <FilterList setMaxPrice={setMaxPrice} setMinPrice={setMinPrice}/>
+        <FilterList setMaxPrice={setMaxPrice} setMinPrice={setMinPrice} />
         <div
           style={{
             ...styles.container,
@@ -112,20 +115,47 @@ const SearchPage = () => {
           >
             Search Result for "{search}" :
           </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              width: "92%",
-              marginTop: 20,
-            }}
-          >
-            <ProductList
-              products={products}
-              counterDisabled={true}
-              counterDisplay={"none"}
-            />
-          </div>
+          {!isLoaded ? (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                marginTop: 80,
+              }}
+            >
+              <Audio
+                height="100"
+                width="100"
+                radius="12"
+                color={Colors.primary}
+                ariaLabel="three-dots-loading"
+                wrapperStyle
+                wrapperClass
+              />
+
+              <div style={{ fontSize: 22, fontWeight: 500, marginTop: 10 }}>
+                Loading...
+              </div>
+            </div>
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                width: "92%",
+                marginTop: 20,
+              }}
+            >
+              <ProductList
+                products={products}
+                counterDisabled={true}
+                counterDisplay={"none"}
+              />
+            </div>
+          )}
         </div>
       </div>
 

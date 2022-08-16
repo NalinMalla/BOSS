@@ -26,16 +26,36 @@ const ProductPage = () => {
 
   const productId = window.location.href.split("?")[1];
 
+  const userId = localStorage.getItem("userId");
+  const userTaggedItem = localStorage.getItem("userTaggedItem").split(",");
+  const userTaggedItemId = localStorage.getItem("userTaggedItemId");
+  const userCartId = localStorage.getItem("userCartId");
+  const userCart = JSON.parse(localStorage.getItem("userCart"));
+
+  const [isTagged] = React.useState(
+    userTaggedItem.includes(productId) ? true : false
+  );
+
+  const userCartItem = userCart.map((x) => x.productId);
+
+  const [isInCart] = React.useState(
+    userCartItem.includes(productId) ? true : false
+  );
+
+  console.log("isInCart");
+  console.log(isInCart);
+
   const [deals, setDeals] = React.useState("");
   const [title, setTitle] = React.useState("");
   const [price, setPrice] = React.useState("");
+  const [count, setCount] = React.useState(1);
   const [quantity, setQuantity] = React.useState("");
   const [discountRate, setDiscountRate] = React.useState("");
   const [description, setDescription] = React.useState([]);
   const [specification, setSpecification] = React.useState([]);
   const [image, setImage] = React.useState([]);
   const [discountPrice, setDiscountPrice] = React.useState("");
-  
+
   const [questionAnswerData, setQuestionAnswerData] = React.useState([]);
   const [answers, setAnswers] = React.useState(0);
 
@@ -54,7 +74,7 @@ const ProductPage = () => {
       .get(`http://localhost:5000/products/questionAnswer/${productId}`)
       .then((response) => response.data)
       .catch((error) => null);
-  }
+  };
 
   async function initializeProductData(productId) {
     const productInfo = await getProductInfoById(productId);
@@ -64,6 +84,7 @@ const ProductPage = () => {
       setDeals(productInfo.deals);
       setTitle(productInfo.title);
       setPrice(productInfo.price);
+      setQuantity(productInfo.quantity);
       setDiscountPrice(productInfo.discountPrice);
       if (productInfo.discountRate !== undefined) {
         setDiscountRate(productInfo.discountRate);
@@ -97,6 +118,101 @@ const ProductPage = () => {
       initializeProductData(productId); //wouldn't work without async await?
     }
   }, []);
+
+  const handleClickTaggedItem = (event) => {
+    // event.preventDefault();
+
+    if (isTagged !== true) {
+      console.log("isTagged !== true");
+      axios
+        .put(`http://localhost:5000/users/taggedItem/add/${userId}`, {
+          productId,
+        })
+        .then(
+          (res) => {
+            localStorage.setItem(
+              "userTaggedItem",
+              localStorage.getItem("userTaggedItem") + "," + productId
+            );
+            window.location.reload();
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+    } else {
+      console.log("isTagged === true");
+      axios
+        .put(
+          `http://localhost:5000/users/taggedItem/delete/${userTaggedItemId}`,
+          { productId }
+        )
+        .then(
+          (res) => {
+            console.log(res);
+            localStorage.setItem(
+              "userTaggedItem",
+              localStorage
+                .getItem("userTaggedItem")
+                .replace(`,${productId}`, "")
+            );
+
+            console.log(localStorage.getItem("userTaggedItem") === productId);
+
+            if (localStorage.getItem("userTaggedItem") === productId) {
+              localStorage.setItem("userTaggedItem", "");
+            }
+
+            window.location.reload();
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+    }
+  };
+
+  const handleClickCart = (event) => {
+    if (isInCart !== true) {
+      console.log("isInCart !== true");
+      axios
+        .put(`http://localhost:5000/users/cart/add/${userId}`, {
+          product: { productId: productId, count: count },
+        })
+        .then(
+          (res) => {
+            localStorage.setItem(
+              "userCart",
+              JSON.stringify([...userCart, { productId: productId, count: count }])
+            );
+            window.location.reload();
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+    } else {
+      console.log("isInCart === true");
+      axios
+        .put(`http://localhost:5000/users/cart/delete/${userCartId}`, {
+          productId,
+        })
+        .then(
+          (res) => {
+            for (let i = 0; i < userCart.length; i++) {
+              if (userCart[i].productId === productId) {
+                userCart.splice(i, 1);
+                localStorage.setItem("userCart", JSON.stringify(userCart));
+              }
+            }
+            window.location.reload();
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+    }
+  };
 
   const productData = {
     rating: 3.5,
@@ -173,7 +289,7 @@ const ProductPage = () => {
                 <ShareIcon color="none" style={{ width: 30, height: 30 }} />
               </IconButton>
               <IconButton>
-                <FlagIcon color="primary" style={{ width: 35, height: 35 }} />
+                <FlagIcon color={(isTagged)? "primary": "none"} style={{ width: 35, height: 35 }} onClick={handleClickTaggedItem}/>
               </IconButton>
             </span>
           </span>
@@ -224,7 +340,7 @@ const ProductPage = () => {
                 fontSize: 20,
                 marginLeft: 10,
                 color: "#ee0000",
-                display: (discountRate === ""? "none": "flex") 
+                display: discountRate === "" ? "none" : "flex",
               }}
             >
               -{discountRate}%
@@ -236,16 +352,27 @@ const ProductPage = () => {
             price={price}
             style={{ fontSize: 22, marginTop: 20 }}
             buttonStyle={{ marginLeft: 40, marginRight: 0 }}
-            handleUpdate = {setQuantity}
+            handleUpdate={setCount}
+            quantity={quantity}
           />
-          <div style={{ display: "flex", marginTop: 40, alignItems: "center" }}>
+          <div
+            style={{
+              display: quantity < 11 ? "flex" : "none",
+              marginTop: 20,
+              alignItems: "center",
+              color: "#ee0000",
+            }}
+          >
+            ** Only {quantity} {title} left. **
+          </div>
+          <div style={{ display: "flex", marginTop: 30, alignItems: "center" }}>
             <Button
               fullWidth
               size="large"
               variant="contained"
               style={{ fontSize: 18 }}
               onClick={() => {
-                window.location = `/checkout/?${productId}&${quantity}`;
+                window.location = `/checkout/?${productId}&${count}`;
               }}
             >
               Buy Now
@@ -256,8 +383,9 @@ const ProductPage = () => {
               size="large"
               variant="contained"
               style={{ fontSize: 18 }}
+              onClick={handleClickCart}
             >
-              Add to Cart
+              {isInCart ? "Undo Cart":"Add to Cart"}
             </Button>
           </div>
         </div>
@@ -284,7 +412,7 @@ const ProductPage = () => {
         reviewData={productData.reviewData}
         answers={answers}
         questionAnswerData={questionAnswerData}
-        productId = {productId}
+        productId={productId}
       />
 
       <div style={styles.wrapper}>

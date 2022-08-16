@@ -12,7 +12,7 @@ import Icons from "../res/icons";
 import { Divider } from "@mui/material";
 import PriceSlider from "./priceSlider";
 
-export default function FilterList() {
+export default function FilterList(props) {
   const [open, setOpen] = React.useState(true);
 
   const handleClick = () => {
@@ -46,7 +46,7 @@ export default function FilterList() {
         <ListItemText primary="Price Filter" />
       </ListItem>
       <div style={{ display: "flex", justifyContent: "center", marginBottom:15, marginTop:-5 }}>
-        <PriceSlider />
+        <PriceSlider setMaxValue={props.setMaxPrice} setMinValue={props.setMinPrice}/>
       </div>
 
       <Divider/>

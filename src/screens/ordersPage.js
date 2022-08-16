@@ -1,5 +1,8 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { Audio } from "react-loader-spinner";
 
 import Header from "../components/header";
 import NavBar from "../components/navBar";
@@ -9,15 +12,101 @@ import SignIn from "../components/signIn";
 import CustomModal from "../components/CustomModal";
 import ProfileList from "../components/profileList";
 import ProfileHead from "../components/profileHead";
-
+import ProductList from "../components/productList";
+import OrderList from "../components/orderList";
 
 import Colors from "../res/colors";
-import ProductList from "../components/productList";
 
 const OrdersPage = (props) => {
-  const [openModal, setOpenModal] = React.useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
+
+  const [orders, setOrders] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const userId = localStorage.getItem("userId");
+  let navigate = useNavigate();
+
+  const getProductInfoById = (productId) => {
+    const ApiURL = `http://localhost:5000/products/${productId}`;
+    return axios
+      .get(ApiURL)
+      .then((response) => response.data)
+      .catch((error) => null);
+  };
+
+  const getOrdersByUserId = (userId) => {
+    const ApiURL = `http://localhost:5000/users/order/${userId}`;
+    return axios
+      .get(ApiURL)
+      .then((response) => response.data)
+      .catch((error) => null);
+  };
+
+  function initializeOrderData(userCart) {
+    getOrdersByUserId(userId).then((response) => {
+      if (response !== null) {
+        console.log("response");
+        console.log(response);
+        let tempOrders = new Array();
+        // setOrders(response);
+        // console.log("orders");
+        // console.log(orders);
+        response.forEach((order) => {
+          let tempProducts = [];
+          order.products.forEach((product) => {
+            getProductInfoById(product._id)
+              .then((response) => {
+                if (response !== null) {
+                  response = { ...response, count: product.count };
+                  tempProducts.push(response);
+                }
+              })
+              .catch((err) => {
+                console.log("Error", err);
+              });
+          });
+          // console.log("tempProducts");
+          // console.log(tempProducts);
+          order.products = tempProducts;
+          // console.log("order");
+          // console.log(order);
+          tempOrders.push(order);
+        });
+        setOrders(tempOrders);
+      }
+    });
+    // let tempProducts = [];
+    // userCart.forEach((element) => {
+    //   getProductInfoById(element.productId)
+    //     .then((response) => {
+    //       if (response !== null) {
+    //         response = { ...response, count: element.count };
+    //         tempProducts.push(response);
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       console.log("Error", err);
+    //     });
+    // });
+    // setProducts(tempProducts);
+  }
+
+  useEffect(() => {
+    // setTimeout(() => {
+    //   setIsLoaded(true);
+    // }, 2000);
+    document.title = "BOSS - Order Page";
+    if (userId === undefined || userId === null) {
+      navigate("/signIn");
+    } else {
+      initializeOrderData(userId);
+      setTimeout(() => {
+        setIsLoaded(true);
+      }, 2000);
+    }
+  }, []);
 
   return (
     <div id="root" style={styles.root}>
@@ -50,69 +139,40 @@ const OrdersPage = (props) => {
             borderRadius: 3,
           }}
         >
-          <div
+          {!isLoaded ? (
+            <div
             style={{
-              ...styles.container,
-              width: "90%",
-              alignItems: "flex-start",
+              display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  height: "100%",
+              padding: 20,
+              paddingTop: 60,
+              paddingBottom: 40,
+              marginTop: 32
             }}
           >
-            <div style={{ ...styles.wrapper, justifyContent: "space-between" }}>
-              <span
-                style={{ color: Colors.primary, fontSize: 24, marginTop: 10 }}
-              >
-                Order #{props.orderNum}
-              </span>
-              <span
-                style={{ color: Colors.secondary, fontSize: 24, marginTop: 10 }}
-              >
-                Total: {props.totalPrice}
-              </span>
+            <Audio
+              height="100"
+              width="100"
+              radius="12"
+              color={Colors.primary}
+              ariaLabel="three-dots-loading"
+              wrapperStyle
+              wrapperClass
+            />
+  
+            <div style={{ fontSize: 22, fontWeight: 500, marginTop: 10 }}>
+              Loading...
             </div>
-            <span
-              style={{
-                color: Colors.secondary,
-                marginBottom: 15,
-                marginLeft: 2,
-              }}
-            >
-              Placed on {props.dateTime}
-            </span>
-            <ProductList counterDisabled={true} />
-            <hr style={{ width: "100%" }} />
           </div>
-
-          <div
-            style={{
-              ...styles.container,
-              width: "90%",
-              alignItems: "flex-start",
-            }}
-          >
-            <div style={{ ...styles.wrapper, justifyContent: "space-between" }}>
-              <span
-                style={{ color: Colors.primary, fontSize: 24, marginTop: 10 }}
-              >
-                Order #{props.orderNum}
-              </span>
-              <span
-                style={{ color: Colors.secondary, fontSize: 24, marginTop: 10 }}
-              >
-                Total: {props.totalPrice}
-              </span>
-            </div>
-            <span
-              style={{
-                color: Colors.secondary,
-                marginBottom: 15,
-                marginLeft: 2,
-              }}
-            >
-              Placed on {props.dateTime}
-            </span>
-            <ProductList counterDisabled={true} />
-            <hr style={{ width: "100%" }} />
-          </div>
+          ) : (
+            orders.map((element) => (
+            <OrderList order={element} />
+            ))
+          )}
         </div>
       </div>
 

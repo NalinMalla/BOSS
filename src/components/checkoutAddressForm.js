@@ -9,6 +9,8 @@ import FormControl from "@mui/material/FormControl";
 import { Button } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 
 export default function AddressForm(props) {
   const userId = localStorage.getItem("userId");
@@ -27,7 +29,15 @@ export default function AddressForm(props) {
 
   const [addNewAddress, setAddNewAddress] = React.useState(true);
 
+  const [saveAddress, setSaveAddress] = React.useState(false);
+
   let navigate = useNavigate();
+
+  const handleClickSaveAddress = (event) => {
+    console.log("!saveAddress");
+    console.log(!saveAddress);
+    setSaveAddress(!saveAddress);
+  };
 
   const getUserInfoById = (userId) => {
     const ApiURL = `http://localhost:5000/users/${userId}`;
@@ -132,6 +142,8 @@ export default function AddressForm(props) {
       !(addressDetail.trim() === "")
     ) {
       props.handleAddressValidation(true);
+      console.log("saveAddress");
+      console.log(saveAddress);
       const address = {
         firstName: firstName,
         middleName: middleName,
@@ -146,39 +158,40 @@ export default function AddressForm(props) {
       };
 
       props.setAddress(address);
-
-      if (addNewAddress) {
-        axios.post(`http://localhost:5000/users/address/add`, address).then(
-          (res) => {
-            console.log(res.data);
-            alert("Successfully added the new address.");
-          },
-          (err) => {
-            alert("Address was not added.\nError: " + err);
-          }
-        );
-      } else {
-        if (
-          window.confirm(
-            "Any new information will overwrite the previous details. \nAre you ok with this?"
-          )
-        ) {
-          axios
-            .put(
-              `http://localhost:5000/users/address/update/${userId}`,
-              address
+      if (saveAddress || addNewAddress) {
+        if (addNewAddress) {
+          axios.post(`http://localhost:5000/users/address/add`, address).then(
+            (res) => {
+              console.log(res.data);
+              alert("Successfully added the new address.");
+            },
+            (err) => {
+              alert("Address was not added.\nError: " + err);
+            }
+          );
+        } else {
+          if (
+            window.confirm(
+              "Any new information will overwrite the previous details. \nAre you ok with this?"
             )
-            .then(
-              (res) => {
-                alert("Successfully updated Address Book.");
-              },
-              (err) => {
-                alert("Address Book was not updated.\nError: " + err);
-              }
-            );
+          ) {
+            axios
+              .put(
+                `http://localhost:5000/users/address/update/${userId}`,
+                address
+              )
+              .then(
+                (res) => {
+                  alert("Successfully updated Address Book.");
+                },
+                (err) => {
+                  alert("Address Book was not updated.\nError: " + err);
+                }
+              );
+          }
         }
       }
-    } 
+    }
   };
 
   return (
@@ -343,18 +356,19 @@ export default function AddressForm(props) {
             error={email.trim() === "" || !emailRGX.test(email)}
           />
         </Grid>
-        <Grid
-          item
-          xs={12}
-          style={{
-            ...props.saveButtonStyle,
-            justifyContent: "flex-end",
-          }}
-        >
-          {/* <span style={{ color: "#d00000", fontSize: 18 }}>
-            ** Please fill all the required fields and save your shipping
-            details if you haven't setup your shipping address. **
-          </span> */}
+       
+        <Grid item xs={12}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                color="primary"
+                name="saveAddress"
+                value={saveAddress}
+                onClick={handleClickSaveAddress}
+              />
+            }
+            label="Save this as your primary address"
+          />
         </Grid>
         <Grid
           item

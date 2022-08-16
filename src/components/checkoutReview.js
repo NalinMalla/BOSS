@@ -10,29 +10,29 @@ import Icons from "../res/icons";
 
 export default function Review(props) {
   const userId = localStorage.getItem("userId");
-  const [addressInfo, setAddressInfo] = React.useState(null);
+  const [addressInfo, setAddressInfo] = React.useState(props.address);
   const [isLoaded, setIsLoaded] = React.useState(false);
 
-  const getAddressInfoByUserId = (userId) => {
-    const ApiURL = `http://localhost:5000/users/address/${userId}`;
-    return axios
-      .get(ApiURL)
-      .then((response) => response.data)
-      .catch((error) => null);
-  };
+  // const getAddressInfoByUserId = (userId) => {
+  //   const ApiURL = `http://localhost:5000/users/address/${userId}`;
+  //   return axios
+  //     .get(ApiURL)
+  //     .then((response) => response.data)
+  //     .catch((error) => null);
+  // };
 
-  async function initializeAddressData(userId) {
-    console.log("await getAddressInfoByUserId(userId)");
-    console.log(await getAddressInfoByUserId(userId));
-    setAddressInfo(await getAddressInfoByUserId(userId));
-  }
+  // async function initializeAddressData(userId) {
+  //   console.log("await getAddressInfoByUserId(userId)");
+  //   console.log(await getAddressInfoByUserId(userId));
+  //   setAddressInfo(await getAddressInfoByUserId(userId));
+  // }
 
   React.useEffect(() => {
     console.log("in useEffect");
     setTimeout(() => {
       setIsLoaded(true);
     }, 2000);
-    initializeAddressData(userId);
+    // initializeAddressData(userId);
   }, []);
 
   console.log("addressInfo");
@@ -45,11 +45,8 @@ export default function Review(props) {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        width: "89%",
-        borderRadius: 3,
-        boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+        width: "100%",
         padding: 20,
-        background: "#FFFFFF",
       }}
     >
       <Audio
@@ -80,9 +77,9 @@ export default function Review(props) {
           </Typography>
           <div>
             Receivers Name:{" "}
-            {addressInfo.receiversName.firstName +
+            {addressInfo.firstName +
               " " +
-              addressInfo.receiversName.lastName}
+              addressInfo.lastName}
           </div>
           <div>Email Address: {addressInfo.email}</div>
           <div>Contact Number: {addressInfo.contact}</div>

@@ -20,7 +20,14 @@ export default function Checkout(props) {
   const [addressValid, setAddressValid] = React.useState(false);
   const userId = localStorage.getItem("userId");
   const [address, setAddress] = React.useState(null);
-  const [order] = React.useState({ userId: userId,products: props.products, payment: "cash on delivery" });
+  const [order] = React.useState({
+    userId: userId,
+    products: props.products,
+    payment: "cash on delivery",
+    grossTotalPrice: props.grossTotalPrice,
+    shippingFee: props.shippingFee,
+    netTotalPrice: props.netTotalPrice,
+  });
   const [orderNumber, setOrderNumber] = React.useState("");
 
   let navigate = useNavigate();
@@ -57,11 +64,16 @@ export default function Checkout(props) {
     console.log(step);
     switch (step) {
       case 0:
-        return <AddressForm handleAddressValidation={setAddressValid} setAddress={setAddress}/>;
+        return (
+          <AddressForm
+            handleAddressValidation={setAddressValid}
+            setAddress={setAddress}
+          />
+        );
       case 1:
         return <PaymentTab />;
       case 2:
-        return <Review products={props.products} />;
+        return <Review products={props.products} address={order.address}/>;
       default:
         throw new Error("Unknown step");
     }
@@ -74,7 +86,7 @@ export default function Checkout(props) {
       if (address !== null) {
         order.address = address;
       }
-    } 
+    }
   }, [address]);
 
   console.log("order");
@@ -108,7 +120,8 @@ export default function Checkout(props) {
                 Thank you for your order.
               </Typography>
               <Typography variant="subtitle1">
-                Your order number is #{orderNumber}. We will keep you updated about your order status.
+                Your Order ID is {orderNumber}. We will keep you updated about
+                your order status.
               </Typography>
             </React.Fragment>
           ) : (

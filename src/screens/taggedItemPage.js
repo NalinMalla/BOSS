@@ -12,9 +12,9 @@ import SignIn from "../components/signIn";
 import CustomModal from "../components/CustomModal";
 import ProfileList from "../components/profileList";
 import ProfileHead from "../components/profileHead";
+import ProductList from "../components/productList";
 
 import Colors from "../res/colors";
-import ProductList from "../components/productList";
 
 const TaggedItemPage = (props) => {
   const [openModal, setOpenModal] = useState(false);

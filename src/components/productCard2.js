@@ -2,6 +2,7 @@ import * as React from "react";
 import Rating from "@mui/material/Rating";
 import FlagIcon from "@mui/icons-material/Flag";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import { Button, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
@@ -33,20 +34,18 @@ export default function ProductCard2(props) {
 
   React.useEffect(() => {
     for (let i = 0; i < userCart.length; i++) {
-      if (userCart[i].productId === productId && userCart[i].count !== count && count !== undefined) {
+      if (
+        userCart[i].productId === productId &&
+        userCart[i].count !== count &&
+        count !== undefined
+      ) {
         console.log("count");
         console.log(count);
 
+        localStorage.setItem("userCart", JSON.stringify(userCart.splice(i, 1)));
         localStorage.setItem(
           "userCart",
-          JSON.stringify(userCart.splice(i, 1))
-        );
-        localStorage.setItem(
-          "userCart",
-          JSON.stringify([
-            ...userCart,
-            { productId: productId, count: count },
-          ])
+          JSON.stringify([...userCart, { productId: productId, count: count }])
         );
       }
     }
@@ -116,10 +115,7 @@ export default function ProductCard2(props) {
           (res) => {
             localStorage.setItem(
               "userCart",
-              JSON.stringify([
-                ...userCart,
-                { productId: productId, count: 1 },
-              ])
+              JSON.stringify([...userCart, { productId: productId, count: 1 }])
             );
             window.location.reload();
           },
@@ -138,10 +134,7 @@ export default function ProductCard2(props) {
             for (let i = 0; i < userCart.length; i++) {
               if (userCart[i].productId === productId) {
                 userCart.splice(i, 1);
-                localStorage.setItem(
-                  "userCart",
-                  JSON.stringify(userCart)
-                );
+                localStorage.setItem("userCart", JSON.stringify(userCart));
               }
             }
             window.location.reload();
@@ -164,7 +157,7 @@ export default function ProductCard2(props) {
         }}
         src={"http://localhost:5000/" + props.image[0]}
       />
-      <div style={{ ...Styles.container, flex: 0.4, marginTop: -10 }}>
+      <div style={{ ...Styles.container, flex: 0.3, marginTop: -10 }}>
         <span style={{ fontSize: 20, fontWeight: 500 }}>{props.title}</span>
         <span
           style={{ fontSize: 12, fontWeight: 500, color: Colors.secondary }}
@@ -187,7 +180,7 @@ export default function ProductCard2(props) {
         </div>
       </div>
 
-      <div style={{ ...Styles.container, flex: 0.25 }}>
+      <div style={{ ...Styles.container, flex: 0.28 }}>
         <span
           style={{
             fontSize: 18,
@@ -229,11 +222,22 @@ export default function ProductCard2(props) {
         </span>
         <span>
           <IconButton
-            style={{ marginLeft: -10 }}
+            style={{ marginLeft: -20 }}
             onClick={handleClickTaggedItem}
           >
             <FlagIcon
               color={isTagged ? "primary" : "none"}
+              style={{ width: 23, height: 23 }}
+            />
+          </IconButton>
+          <IconButton
+            style={{ marginLeft: 10 }}
+            onClick={() => {
+              window.location = `/product/?${productId}`;
+            }}
+          >
+            <LibraryBooksIcon
+              color="primary"
               style={{ width: 23, height: 23 }}
             />
           </IconButton>
@@ -246,7 +250,7 @@ export default function ProductCard2(props) {
         </span>
       </div>
 
-      <div style={{ ...Styles.container, flex: 0.25 }}>
+      <div style={{ ...Styles.container, flex: 0.28 }}>
         {props.counterDisplay === "none" ? (
           <div
             style={{
@@ -258,19 +262,29 @@ export default function ProductCard2(props) {
           >
             <Button
               variant="outlined"
-              startIcon={<ShoppingCartIcon />}
-              onClick={handleClickCart}
+              startIcon={<LibraryBooksIcon />}
+              onClick={() => {
+                window.location = `/product/?${productId}`;
+              }}
             >
-              {isInCart ? "Delete Cart" : "Add To Cart"}
+              View Details
             </Button>
             <Button
+              variant="outlined"
+              startIcon={<ShoppingCartIcon />}
+              style={{ marginTop: 8 }}
+              onClick={handleClickCart}
+            >
+              {isInCart ? "Undo Cart" : "Add To Cart"}
+            </Button>
+            {/* <Button
               variant="outlined"
               startIcon={<DeleteIcon />}
               style={{ marginTop: 8 }}
               onClick={handleClickTaggedItem}
             >
-              Delete
-            </Button>
+              {isTagged ? "Remove Tag" : "Tag This Item"}
+            </Button> */}
           </div>
         ) : (
           <Counter
@@ -282,6 +296,7 @@ export default function ProductCard2(props) {
             display={props.counterDisplay}
             initialCount={count}
             handleUpdate={setCount}
+            quantity={props.quantity}
           />
         )}
       </div>

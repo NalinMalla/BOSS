@@ -10,7 +10,7 @@ const NavButtonData = [
     menu: [
       {
         title: 'All',
-        url: "categories/prefab",
+        url: "/search/?all",
         icon: (
           <img
             alt="Product Catalog"
@@ -21,7 +21,7 @@ const NavButtonData = [
       },
       {
         title: 'Sofa',
-        url: "categories/sofa",
+        url: "/search/?categories/sofa",
         icon: (
           <img
             alt="Sofa"
@@ -33,7 +33,7 @@ const NavButtonData = [
 
       {
         title: 'Chair',
-        url: "categories/chair",
+        url: "/search/?categories/chair",
         icon: (
           <img
             alt="Chair"
@@ -45,7 +45,7 @@ const NavButtonData = [
 
       {
         title: 'Bed',
-        url: "categories/bed",
+        url: "/search/?categories/bed",
         icon: (
           <img
             alt="Bed"
@@ -57,7 +57,7 @@ const NavButtonData = [
 
       {
         title: 'Wardrobe',
-        url: "categories/wardrobe",
+        url: "/search/?categories/wardrobe",
         icon: (
           <img
             alt="Wardrobe"
@@ -69,7 +69,7 @@ const NavButtonData = [
 
       {
         title: 'Decoration',
-        url: "categories/decoration",
+        url: "/search/?categories/decoration",
         icon: (
           <img
             alt="Decoration"
@@ -81,7 +81,7 @@ const NavButtonData = [
 
       {
         title: 'Table',
-        url: "categories/table",
+        url: "/search/?categories/table",
         icon: (
           <img
             alt="Table"
@@ -93,7 +93,7 @@ const NavButtonData = [
 
       {
         title: 'Shelf',
-        url: "categories/shelf",
+        url: "/search/?categories/shelf",
         icon: (
           <img
             alt="Shelf"
@@ -105,7 +105,7 @@ const NavButtonData = [
 
       {
         title: 'Window',
-        url: "categories/window",
+        url: "/search/?categories/window",
         icon: (
           <img
             alt="Window"
@@ -117,7 +117,7 @@ const NavButtonData = [
 
       {
         title: 'Door',
-        url: "categories/door",
+        url: "/search/?categories/door",
         icon: (
           <img
             alt="Door"
@@ -129,7 +129,7 @@ const NavButtonData = [
 
       {
         title: 'Prefab',
-        url: "categories/prefab",
+        url: "/search/?categories/prefab",
         icon: (
           <img
             alt="Prefab"
@@ -154,7 +154,7 @@ const NavButtonData = [
     menu: [
       {
         title: 'Our Company',
-        url: "aboutUs/company",
+        url: "/aboutUs/company",
         icon: (
           <img
             alt="Company"
@@ -165,7 +165,7 @@ const NavButtonData = [
       },
       {
         title: 'Our Designs',
-        url: "aboutUs/designs",
+        url: "/aboutUs/designs",
         icon: (
           <img
             alt="Designs"
@@ -176,7 +176,7 @@ const NavButtonData = [
       },
       {
         title: 'Our Projects',
-        url: "aboutUs/projects",
+        url: "/aboutUs/projects",
         icon: (
           <img
             alt="Prefab"
@@ -187,7 +187,7 @@ const NavButtonData = [
       },
       {
         title: 'Our Team',
-        url: "aboutUs/team",
+        url: "/aboutUs/team",
         icon: (
           <img
             alt="Team"
@@ -198,7 +198,7 @@ const NavButtonData = [
       },
       {
         title: 'Connect With Us',
-        url: "aboutUs/contact",
+        url: "/aboutUs/contact",
         icon: (
           <img
             alt="Contact"
@@ -215,7 +215,7 @@ const NavButtonData = [
     menu: [
       {
         title: 'Join',
-        url: "careers/join",
+        url: "/careers/join",
         icon: (
           <img
             alt="Join"
@@ -226,7 +226,7 @@ const NavButtonData = [
       },
       {
         title: 'Internship',
-        url: "careers/internship",
+        url: "/careers/internship",
         icon: (
           <img
             alt="Internship"
@@ -244,7 +244,7 @@ const NavButtonData = [
     menu: [
       {
         title: 'Help Center',
-        url: "customerSupport/help",
+        url: "/customerSupport/help",
         icon: (
           <img
             alt="Help Center"
@@ -255,7 +255,7 @@ const NavButtonData = [
       },
       {
         title: 'FAQ',
-        url: "customerSupport/faq",
+        url: "/customerSupport/faq",
         icon: (
           <img
             alt="FAQ"
@@ -266,7 +266,7 @@ const NavButtonData = [
       },
       {
         title: 'Feedback',
-        url: "customerSupport/feedback",
+        url: "/customerSupport/feedback",
         icon: (
           <img
             alt="Feedback"

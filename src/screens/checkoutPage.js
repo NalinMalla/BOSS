@@ -140,7 +140,7 @@ const CheckoutPage = () => {
             paddingTop: 60,
             paddingBottom: 40,
             background: "#FFFFFF",
-            marginTop: 32
+            marginTop: 32,
           }}
         >
           <Audio
@@ -167,7 +167,12 @@ const CheckoutPage = () => {
           }}
         >
           <div style={{ display: "flex", flex: 0.68 }}>
-            <Checkout products={products} />
+            <Checkout
+              products={products}
+              grossTotalPrice={grossTotalPrice}
+              shippingFee={shippingFee}
+              netTotalPrice={netTotalPrice}
+            />
           </div>
 
           <div

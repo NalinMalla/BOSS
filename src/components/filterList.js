@@ -65,39 +65,45 @@ export default function FilterList(props) {
       </div>
 
       <Divider />
+      <Link href="/search/?trending" underline="none" style={{ color: "#000" }}>
+        <ListItemButton>
+          <ListItemIcon>
+            <img
+              src={Icons.Trending}
+              style={{ height: 25, width: 25, marginTop: -10 }}
+              alt="trending"
+            />
+          </ListItemIcon>
+          <ListItemText primary="Trending Products" />
+        </ListItemButton>
+      </Link>
 
-      <ListItemButton>
-        <ListItemIcon>
-          <img
-            src={Icons.Trending}
-            style={{ height: 25, width: 25, marginTop: -10 }}
-            alt="trending"
-          />
-        </ListItemIcon>
-        <ListItemText primary="Trending Products" />
-      </ListItemButton>
+      <Link href="/search/?hotDeals" underline="none" style={{ color: "#000" }}>
+        <ListItemButton>
+          <ListItemIcon>
+            <img
+              src={Icons.HotSale}
+              style={{ height: 25, width: 25, marginTop: -10 }}
+              alt="hot sale"
+            />
+          </ListItemIcon>
+          <ListItemText primary="Hot Deals" />
+        </ListItemButton>
+      </Link>
 
-      <ListItemButton>
-        <ListItemIcon>
-          <img
-            src={Icons.HotSale}
-            style={{ height: 25, width: 25, marginTop: -10 }}
-            alt="hot sale"
-          />
-        </ListItemIcon>
-        <ListItemText primary="Hot Deals" />
-      </ListItemButton>
+      <Link href="/search/?popular" underline="none" style={{ color: "#000" }}>
+        <ListItemButton>
+          <ListItemIcon>
+            <img
+              src={Icons.Popular}
+              style={{ height: 25, width: 25, marginTop: -10 }}
+              alt="popular"
+            />
+          </ListItemIcon>
+          <ListItemText primary="Popular Products" />
+        </ListItemButton>
+      </Link>
 
-      <ListItemButton>
-        <ListItemIcon>
-          <img
-            src={Icons.Popular}
-            style={{ height: 25, width: 25, marginTop: -10 }}
-            alt="popular"
-          />
-        </ListItemIcon>
-        <ListItemText primary="Popular Products" />
-      </ListItemButton>
       <Link href="/search/?all" underline="none" style={{ color: "#000" }}>
         <ListItemButton>
           <ListItemIcon>

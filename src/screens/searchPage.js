@@ -16,7 +16,10 @@ const SearchPage = () => {
 
   let search = window.location.href.split("?")[1];
   let category = search.split(":")[0];
-  let categoriesCheck = category.split("/")[0];
+  const searchType = category.split("/")[0];
+  console.log("searchType");
+  console.log(searchType);
+  console.log(searchType==="hotDeals");
 
   let searchText;
   if (search.split(":")[1] !== undefined && search.split(":")[1] !== "") {
@@ -34,10 +37,20 @@ const SearchPage = () => {
 
   const getProductsInfo = () => {
     let ApiURL;
-    if (categoriesCheck === "categories") {
+    if (searchType === "categories") {
       ApiURL = `http://localhost:5000/products/${search.split(":")[0]}`;
-    } else {
-      ApiURL = `http://localhost:5000/products/all`;
+    }
+    
+    else if(searchType==="hotDeals"){
+      console.log("in hotDeals");
+      return axios
+      .get(`http://localhost:5000/products/all/${searchType}`)
+      .then((response) => response.data)
+      .catch((error) => null);
+    }
+
+    else {
+      ApiURL = `http://localhost:5000/products/all/none`;
     }
 
     return axios
@@ -57,10 +70,12 @@ const SearchPage = () => {
               product.discountPrice <= maxPrice &&
               product.discountPrice >= minPrice
             ) {
+              // console.log("product.title.split()");
+              // console.log(product.title.split(" "));
               if (searchText !== undefined) {
                 let flag = false;
                 searchText.forEach((searchWord) => {
-                  if (product.tags.split("#").includes(searchWord)) {
+                  if (product.tags.split("#").includes(searchWord) || product.title.split(" ").includes(searchWord)) {
                     flag = true;
                   }
                 });

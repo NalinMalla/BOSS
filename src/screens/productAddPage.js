@@ -1,7 +1,6 @@
 import React from "react";
 import { Button } from "@mui/material";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -11,20 +10,10 @@ import Tab from "@mui/material/Tab";
 
 import Colors from "../res/colors";
 
-import Header from "../components/header";
-import NavBar from "../components/navBar";
-import SiteMap from "../components/siteMap";
-import Copyright from "../components/copyright";
-import SignIn from "../components/signIn";
-import CustomModal from "../components/CustomModal";
 import { TabPanel } from "../components/tabs";
 
 const ProductAddPage = () => {
   const userId = localStorage.getItem("userId");
-
-  const [openModal, setOpenModal] = React.useState(false);
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
 
   const [deals, setDeals] = React.useState("");
   const [title, setTitle] = React.useState("");
@@ -38,12 +27,10 @@ const ProductAddPage = () => {
 
   let [valid, setValid] = React.useState(true);
 
-  let navigate = useNavigate();
-
   React.useEffect(() => {
     document.title = "BOSS - Product Add Page";
     if (userId == null) {
-      navigate("/signIn");
+      window.location = "/signIn";
     }
   }, []);
 
@@ -150,8 +137,6 @@ const ProductAddPage = () => {
 
   return (
     <div id="root" style={styles.root}>
-      <Header handleSignIn={handleOpenModal} />
-      <NavBar />
       <div style={styles.container}>
         <div style={{ ...styles.control, flex: 0.5 }}>
           <span
@@ -496,17 +481,6 @@ const ProductAddPage = () => {
           </div>
         </TabPanel>
       </Box>
-
-      <div style={styles.wrapper}>
-        <SiteMap />
-        <Copyright />
-      </div>
-
-      <CustomModal
-        open={openModal}
-        onClose={handleCloseModal}
-        component={<SignIn />}
-      />
     </div>
   );
 };

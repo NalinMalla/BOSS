@@ -2,24 +2,14 @@ import * as React from "react";
 import { Button } from "@mui/material";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { Audio } from "react-loader-spinner";
 
-import Header from "../components/header";
-import NavBar from "../components/navBar";
-import SiteMap from "../components/siteMap";
-import Copyright from "../components/copyright";
-import SignIn from "../components/signIn";
-import CustomModal from "../components/CustomModal";
 import ProductList from "../components/productList";
 
 import Colors from "../res/colors";
 
 
 const CartPage = () => {
-  const [openModal, setOpenModal] = React.useState(false);
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
 
   const [products, setProducts] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -28,10 +18,7 @@ const CartPage = () => {
   const [shippingFee, setShippingFee] = useState(0);
   const [netTotalPrice, setNetTotalPrice] = useState(0);  
 
-  let navigate = useNavigate();
-
   const userId = localStorage.getItem("userId");
-  // const [userCart] = useState(JSON.parse(localStorage.getItem("userCart")));
   const userCart = JSON.parse(localStorage.getItem("userCart")); 
 
   const getProductInfoById = (productId) => {
@@ -60,12 +47,9 @@ const CartPage = () => {
   }
 
   useEffect(() => {
-    // setTimeout(() => {
-    //   setIsLoaded(true);
-    // }, 2000);
     document.title = "BOSS - Cart Page";
     if (userId === undefined || userId === null) {
-      navigate("/signIn");
+      window.location = "/signIn";
     } else {
       initializeProductData(userCart);
       setTimeout(() => {
@@ -79,8 +63,6 @@ const CartPage = () => {
 
   return (
     <div id="root" style={styles.root}>
-      <Header handleSignIn={handleOpenModal} />
-      <NavBar />
       <div
         style={{
           ...styles.wrapper,
@@ -201,24 +183,6 @@ const CartPage = () => {
           </div>
         </div>
       </div>
-
-      <div
-        style={{
-          ...styles.container,
-          backgroundColor: Colors.primary,
-          width: "100%",
-          marginTop: 60,
-        }}
-      >
-        <SiteMap />
-        <Copyright />
-      </div>
-
-      <CustomModal
-        open={openModal}
-        onClose={handleCloseModal}
-        component={<SignIn />}
-      />
     </div>
   );
 };

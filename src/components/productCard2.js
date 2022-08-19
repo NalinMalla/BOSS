@@ -13,10 +13,21 @@ import Colors from "../res/colors";
 
 export default function ProductCard2(props) {
   const userId = localStorage.getItem("userId");
-  const userTaggedItem = localStorage.getItem("userTaggedItem").split(",");
+  const userTaggedItem =
+    localStorage.getItem("userId") !== "undefined" &&
+    localStorage.getItem("userId") !== undefined &&
+    localStorage.getItem("userId") !== null
+      ? localStorage.getItem("userTaggedItem").split(",")
+      : [];
   const userTaggedItemId = localStorage.getItem("userTaggedItemId");
   const userCartId = localStorage.getItem("userCartId");
-  const userCart = JSON.parse(localStorage.getItem("userCart"));
+  const userCart =
+  localStorage.getItem("userId") !== "undefined" &&
+  localStorage.getItem("userId") !== undefined &&
+  localStorage.getItem("userId") !== null
+    ? JSON.parse(localStorage.getItem("userCart"))
+    : [];
+  // const userCart = JSON.parse(localStorage.getItem("userCart"));
   const [productId] = React.useState(props._id);
   console.log(productId);
 

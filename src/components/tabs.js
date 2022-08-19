@@ -73,7 +73,6 @@ const TabbedPane = (props) => {
       question: question,
     };
     if (props.questionAnswerData.length !== 0) {
-      alert("Inside props.questionAnswerData.length !== 0");
       axios
         .put(
           `http://localhost:5000/products/addQuestion/${props.productId}`,
@@ -89,7 +88,6 @@ const TabbedPane = (props) => {
           }
         );
     } else {
-      alert("Inside props.questionAnswerData.length === 0");
       axios
         .post(
           `http://localhost:5000/products/createQuestionAnswer/${props.productId}`,

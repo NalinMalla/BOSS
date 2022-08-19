@@ -1,4 +1,4 @@
-import { createTheme} from '@mui/material/styles';
+import { createTheme } from "@mui/material/styles";
 import Colors from "./res/colors";
 
 const Theme = createTheme({
@@ -8,7 +8,19 @@ const Theme = createTheme({
     },
     tertiary: {
       main: Colors.white,
-    }
+    },
+    green: {
+      main: Colors.green,
+    },
+    green2: {
+      main: Colors.green2,
+    },
+    biraRed: {
+      main: Colors.biraRed,
+    },
+    biraOlive: {
+      main: Colors.biraOlive,
+    },
   },
 });
 

@@ -1,32 +1,18 @@
 import * as React from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Audio } from "react-loader-spinner";
 
-import Header from "../components/header";
-import NavBar from "../components/navBar";
-import SiteMap from "../components/siteMap";
-import Copyright from "../components/copyright";
-import SignIn from "../components/signIn";
-import CustomModal from "../components/CustomModal";
 import Checkout from "../components/checkout";
 
 import Colors from "../res/colors";
 
 const CheckoutPage = () => {
-  const [openModal, setOpenModal] = React.useState(false);
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
-
-  let navigate = useNavigate();
 
   const userCart = JSON.parse(localStorage.getItem("userCart"));
 
   const order = window.location.href.split("?")[1];
 
-  // const products = JSON.parse(order);
-  // console.log(products);
   const productId = order.split("&")[0];
   let count = order.split("&")[1];
   console.log(productId);
@@ -77,7 +63,7 @@ const CheckoutPage = () => {
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     document.title = "BOSS - Checkout Page";
     if (productId === "cart") {
       console.log("Cart checkout");
@@ -92,7 +78,7 @@ const CheckoutPage = () => {
         productId === undefined ||
         count === undefined
       ) {
-        navigate("/cart");
+        window.location = "/signIn";
       } else {
         console.log("Single product checkout");
         if (products.length === 0) {
@@ -123,9 +109,6 @@ const CheckoutPage = () => {
 
   return (
     <div id="root" style={styles.root}>
-      <Header handleSignIn={handleOpenModal} />
-      <NavBar />
-
       {!isLoaded ? (
         <div
           style={{
@@ -240,24 +223,6 @@ const CheckoutPage = () => {
           </div>
         </div>
       )}
-
-      <div
-        style={{
-          ...styles.container,
-          backgroundColor: Colors.primary,
-          width: "100%",
-          marginTop: 60,
-        }}
-      >
-        <SiteMap />
-        <Copyright />
-      </div>
-
-      <CustomModal
-        open={openModal}
-        onClose={handleCloseModal}
-        component={<SignIn />}
-      />
     </div>
   );
 };

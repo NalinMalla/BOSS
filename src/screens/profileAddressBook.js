@@ -1,10 +1,5 @@
 import * as React from "react";
-import Header from "../components/header";
-import NavBar from "../components/navBar";
-import SiteMap from "../components/siteMap";
-import Copyright from "../components/copyright";
-import SignIn from "../components/signIn";
-import CustomModal from "../components/CustomModal";
+
 import ProfileList from "../components/profileList";
 import ProfileHead from "../components/profileHead";
 import AddressForm from "../components/checkoutAddressForm";
@@ -12,14 +7,8 @@ import AddressForm from "../components/checkoutAddressForm";
 import Colors from "../res/colors";
 
 const ProfileAddressBook = () => {
-  const [openModal, setOpenModal] = React.useState(false);
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
-
   return (
     <div id="root" style={styles.root}>
-      <Header handleSignIn={handleOpenModal} />
-      <NavBar />
       <div
         style={{
           ...styles.wrapper,
@@ -54,24 +43,6 @@ const ProfileAddressBook = () => {
           />
         </div>
       </div>
-
-      <div
-        style={{
-          ...styles.container,
-          backgroundColor: Colors.primary,
-          width: "100%",
-          marginTop: 60,
-        }}
-      >
-        <SiteMap />
-        <Copyright />
-      </div>
-
-      <CustomModal
-        open={openModal}
-        onClose={handleCloseModal}
-        component={<SignIn />}
-      />
     </div>
   );
 };

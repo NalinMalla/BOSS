@@ -12,8 +12,19 @@ import Colors from "../res/colors";
 import Icons from "../res/icons";
 
 const Header = (props) => {
-  const userTaggedItem = localStorage.getItem("userTaggedItem").split(",");
-  const userCart = JSON.parse(localStorage.getItem("userCart"));
+  const [userTaggedItem, setUserTaggedItem] = React.useState(0);
+  const [userCart, setUserCart] = React.useState(0);
+  // if (
+  //   localStorage.getItem("userId") !== "undefined" &&
+  //   localStorage.getItem("userId") !== undefined &&
+  //   localStorage.getItem("userId") !== null
+  // ) {
+  //   setUserTaggedItem(localStorage.getItem("userTaggedItem").split(","));
+  //   setUserCart(JSON.parse(localStorage.getItem("userCart")));
+  // }
+
+  console.log(userTaggedItem);
+  console.log(userCart);
 
   return (
     <div style={styles.root}>

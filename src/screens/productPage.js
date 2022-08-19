@@ -7,30 +7,30 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import Colors from "../res/colors";
-import Images from "../res/images";
 
-import Header from "../components/header";
-import NavBar from "../components/navBar";
 import Carousel from "../components/carousel";
-import SiteMap from "../components/siteMap";
-import Copyright from "../components/copyright";
-import SignIn from "../components/signIn";
-import CustomModal from "../components/CustomModal";
 import { TabbedPane } from "../components/tabs";
 import Counter from "../components/productCounter";
 
 const ProductPage = () => {
-  const [openModal, setOpenModal] = React.useState(false);
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
 
   const productId = window.location.href.split("?")[1];
 
   const userId = localStorage.getItem("userId");
-  const userTaggedItem = localStorage.getItem("userTaggedItem").split(",");
+  const userTaggedItem =
+    localStorage.getItem("userId") !== "undefined" &&
+    localStorage.getItem("userId") !== undefined &&
+    localStorage.getItem("userId") !== null
+      ? localStorage.getItem("userTaggedItem").split(",")
+      : [];
   const userTaggedItemId = localStorage.getItem("userTaggedItemId");
   const userCartId = localStorage.getItem("userCartId");
-  const userCart = JSON.parse(localStorage.getItem("userCart"));
+  const userCart =
+  localStorage.getItem("userId") !== "undefined" &&
+  localStorage.getItem("userId") !== undefined &&
+  localStorage.getItem("userId") !== null
+    ? JSON.parse(localStorage.getItem("userCart"))
+    : [];
 
   const [isTagged] = React.useState(
     userTaggedItem.includes(productId) ? true : false
@@ -242,8 +242,6 @@ const ProductPage = () => {
 
   return (
     <div id="root" style={styles.root}>
-      <Header handleSignIn={handleOpenModal} />
-      <NavBar />
       <div style={styles.container}>
         <div style={{ display: "flex", flex: 0.53 }}>
           <Carousel
@@ -415,16 +413,6 @@ const ProductPage = () => {
         productId={productId}
       />
 
-      <div style={styles.wrapper}>
-        <SiteMap />
-        <Copyright />
-      </div>
-
-      <CustomModal
-        open={openModal}
-        onClose={handleCloseModal}
-        component={<SignIn />}
-      />
     </div>
   );
 };

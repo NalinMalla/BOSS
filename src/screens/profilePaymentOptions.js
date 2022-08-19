@@ -1,25 +1,13 @@
 import * as React from "react";
-import Header from "../components/header";
-import NavBar from "../components/navBar";
-import SiteMap from "../components/siteMap";
-import Copyright from "../components/copyright";
-import SignIn from "../components/signIn";
-import CustomModal from "../components/CustomModal";
+
 import ProfileHead from "../components/profileHead";
 import ProfileList from "../components/profileList";
 import PaymentTab from "../components/checkoutPaymentTabs";
 
-import Colors from "../res/colors";
-
 const ProfilePaymentOptions = () => {
-  const [openModal, setOpenModal] = React.useState(false);
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
 
   return (
     <div id="root" style={styles.root}>
-      <Header handleSignIn={handleOpenModal} />
-      <NavBar />
       <div
         style={{
           ...styles.wrapper,
@@ -54,24 +42,6 @@ const ProfilePaymentOptions = () => {
           />
         </div>
       </div>
-
-      <div
-        style={{
-          ...styles.container,
-          backgroundColor: Colors.primary,
-          width: "100%",
-          marginTop: 60,
-        }}
-      >
-        <SiteMap />
-        <Copyright />
-      </div>
-
-      <CustomModal
-        open={openModal}
-        onClose={handleCloseModal}
-        component={<SignIn />}
-      />
     </div>
   );
 };

@@ -3,22 +3,12 @@ import { Audio } from "react-loader-spinner";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-import Header from "../components/header";
-import NavBar from "../components/navBar";
-import ProductGrid from "../components/productGrid";
-import SiteMap from "../components/siteMap";
-import Copyright from "../components/copyright";
-import SignIn from "../components/signIn";
-import CustomModal from "../components/CustomModal";
 import FilterList from "../components/filterList";
 import ProductList from "../components/productList";
 
 import Colors from "../res/colors";
 
 const SearchPage = () => {
-  const [openModal, setOpenModal] = React.useState(false);
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
 
   const [products, setProducts] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -43,12 +33,16 @@ const SearchPage = () => {
   const getProductsInfo = () => {
     let ApiURL;
 
-    if (search1 === "all") {
-      ApiURL = `http://localhost:5000/products/all`;
-    }
+    // if (search1 === "all") {
+    //   ApiURL = `http://localhost:5000/products/all`;
+    // }
 
     if (search1 === "categories") {
       ApiURL = `http://localhost:5000/products/${search}`;
+    }
+
+    else{
+      ApiURL = `http://localhost:5000/products/all`;
     }
 
     return axios
@@ -86,8 +80,6 @@ const SearchPage = () => {
 
   return (
     <div id="root" style={styles.root}>
-      <Header handleSignIn={handleOpenModal} />
-      <NavBar />
       <div style={styles.wrapper}>
         <FilterList setMaxPrice={setMaxPrice} setMinPrice={setMinPrice} />
         <div
@@ -158,24 +150,6 @@ const SearchPage = () => {
           )}
         </div>
       </div>
-
-      <div
-        style={{
-          ...styles.container,
-          backgroundColor: Colors.primary,
-          width: "100%",
-          marginTop: 60,
-        }}
-      >
-        <SiteMap />
-        <Copyright />
-      </div>
-
-      <CustomModal
-        open={openModal}
-        onClose={handleCloseModal}
-        component={<SignIn />}
-      />
     </div>
   );
 };

@@ -17,7 +17,6 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import PersonIcon from "@mui/icons-material/Person";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import CreateIcon from "@mui/icons-material/Create";
-import { useNavigate } from "react-router-dom";
 
 import Colors from "../res/colors";
 
@@ -40,12 +39,6 @@ export default function AvatarMenu(props) {
   };
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  let navigate = useNavigate();
-
-  const handleSignUp = () => {
-    navigate("/signUp");
   };
 
   return (
@@ -120,7 +113,9 @@ export default function AvatarMenu(props) {
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
-          <MenuItem onClick={handleSignUp}>
+          <MenuItem onClick={() => {
+              window.location = "/signUp";
+            }}>
             <ListItemIcon>
               <CreateIcon fontSize="small" />
             </ListItemIcon>

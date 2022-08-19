@@ -45,9 +45,7 @@ const Styles = {
     display: "flex",
     flex: 1,
     width: '93%',
-
     paddingTop: 32,
-    // marginTop: 5,
     justifyContent: "space-between",
     backgroundColor: Colors.primary,
     alignItems: "flex-start"

@@ -1,32 +1,20 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { Audio } from "react-loader-spinner";
 
-import Header from "../components/header";
-import NavBar from "../components/navBar";
-import SiteMap from "../components/siteMap";
-import Copyright from "../components/copyright";
-import SignIn from "../components/signIn";
-import CustomModal from "../components/CustomModal";
 import ProfileList from "../components/profileList";
 import ProfileHead from "../components/profileHead";
-import ProductList from "../components/productList";
 import OrderList from "../components/orderList";
 
 import Colors from "../res/colors";
 
 const OrdersPage = (props) => {
-  const [openModal, setOpenModal] = useState(false);
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
 
   const [orders, setOrders] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   const userId = localStorage.getItem("userId");
-  let navigate = useNavigate();
 
   const getProductInfoById = (productId) => {
     const ApiURL = `http://localhost:5000/products/${productId}`;
@@ -50,9 +38,7 @@ const OrdersPage = (props) => {
         console.log("response");
         console.log(response);
         let tempOrders = new Array();
-        // setOrders(response);
-        // console.log("orders");
-        // console.log(orders);
+
         response.forEach((order) => {
           let tempProducts = [];
           order.products.forEach((product) => {
@@ -67,39 +53,19 @@ const OrdersPage = (props) => {
                 console.log("Error", err);
               });
           });
-          // console.log("tempProducts");
-          // console.log(tempProducts);
+
           order.products = tempProducts;
-          // console.log("order");
-          // console.log(order);
           tempOrders.push(order);
         });
         setOrders(tempOrders);
       }
     });
-    // let tempProducts = [];
-    // userCart.forEach((element) => {
-    //   getProductInfoById(element.productId)
-    //     .then((response) => {
-    //       if (response !== null) {
-    //         response = { ...response, count: element.count };
-    //         tempProducts.push(response);
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       console.log("Error", err);
-    //     });
-    // });
-    // setProducts(tempProducts);
   }
 
   useEffect(() => {
-    // setTimeout(() => {
-    //   setIsLoaded(true);
-    // }, 2000);
     document.title = "BOSS - Order Page";
     if (userId === undefined || userId === null) {
-      navigate("/signIn");
+      window.location = "/signIn";
     } else {
       initializeOrderData(userId);
       setTimeout(() => {
@@ -110,8 +76,6 @@ const OrdersPage = (props) => {
 
   return (
     <div id="root" style={styles.root}>
-      <Header handleSignIn={handleOpenModal} />
-      <NavBar />
       <div
         style={{
           ...styles.wrapper,
@@ -176,23 +140,6 @@ const OrdersPage = (props) => {
         </div>
       </div>
 
-      <div
-        style={{
-          ...styles.container,
-          backgroundColor: Colors.primary,
-          width: "100%",
-          marginTop: 60,
-        }}
-      >
-        <SiteMap />
-        <Copyright />
-      </div>
-
-      <CustomModal
-        open={openModal}
-        onClose={handleCloseModal}
-        component={<SignIn />}
-      />
     </div>
   );
 };

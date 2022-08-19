@@ -1,15 +1,8 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { Audio } from "react-loader-spinner";
 
-import Header from "../components/header";
-import NavBar from "../components/navBar";
-import SiteMap from "../components/siteMap";
-import Copyright from "../components/copyright";
-import SignIn from "../components/signIn";
-import CustomModal from "../components/CustomModal";
 import ProfileList from "../components/profileList";
 import ProfileHead from "../components/profileHead";
 import ProductList from "../components/productList";
@@ -17,17 +10,16 @@ import ProductList from "../components/productList";
 import Colors from "../res/colors";
 
 const TaggedItemPage = (props) => {
-  const [openModal, setOpenModal] = useState(false);
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
   const [products, setProducts] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  let navigate = useNavigate();
 
   const userId = localStorage.getItem("userId");
-  const [userTaggedItem] = useState(
-    localStorage.getItem("userTaggedItem").split(",")
-  );
+  const userTaggedItem =
+    localStorage.getItem("userId") !== "undefined" &&
+    localStorage.getItem("userId") !== undefined &&
+    localStorage.getItem("userId") !== null
+      ? localStorage.getItem("userTaggedItem").split(",")
+      : [];
 
   const getProductInfoById = (productId) => {
     const ApiURL = `http://localhost:5000/products/${productId}`;
@@ -59,7 +51,7 @@ const TaggedItemPage = (props) => {
     }, 2000);
     document.title = "BOSS - Tagged Item Page";
     if (userId === undefined || userId === null) {
-      navigate("/signIn");
+      window.location = "/signIn";
     } else {
       initializeProductData(userTaggedItem);
     }
@@ -67,8 +59,6 @@ const TaggedItemPage = (props) => {
 
   return (
     <div id="root" style={styles.root}>
-      <Header handleSignIn={handleOpenModal} />
-      <NavBar />
       <div
         style={{
           ...styles.wrapper,
@@ -125,31 +115,12 @@ const TaggedItemPage = (props) => {
               <ProductList
                 counterDisabled={true}
                 counterDisplay={"none"}
-                // products={JSON.stringify(products)}
                 products={products}
               />
             )}
           </div>
         </div>
       </div>
-
-      <div
-        style={{
-          ...styles.container,
-          backgroundColor: Colors.primary,
-          width: "100%",
-          marginTop: 60,
-        }}
-      >
-        <SiteMap />
-        <Copyright />
-      </div>
-
-      <CustomModal
-        open={openModal}
-        onClose={handleCloseModal}
-        component={<SignIn />}
-      />
     </div>
   );
 };

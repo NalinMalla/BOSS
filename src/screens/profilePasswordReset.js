@@ -13,24 +13,13 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
-import Header from "../components/header";
-import NavBar from "../components/navBar";
-import SiteMap from "../components/siteMap";
-import Copyright from "../components/copyright";
-import SignIn from "../components/signIn";
-import CustomModal from "../components/CustomModal";
 import ProfileList from "../components/profileList";
 import ProfileHead from "../components/profileHead";
 
 import Colors from "../res/colors";
 
 const ProfilePage = () => {
-  const [openModal, setOpenModal] = React.useState(false);
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
-
   const userId = localStorage.getItem("userId");
 
   const [currentPassword, setCurrentPassword] = React.useState("");
@@ -40,12 +29,10 @@ const ProfilePage = () => {
   const [confirmPassword, setConfirmPassword] = React.useState("");
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
-  let navigate = useNavigate();
-
   React.useEffect(() => {
     document.title = "BOSS - Password Reset";
     if (userId == null) {
-      navigate("/signIn");
+      window.location = "/signIn";
     }
   }, []);
 
@@ -136,7 +123,7 @@ const ProfilePage = () => {
                     alert("Password Reset Successfully.");
                     setValid(true);
                     localStorage.clear();
-                    navigate("/signIn");
+                    window.location = "/signIn";
                   },
                   (err) => {
                     alert("Password was not reset.\nError: " + err);
@@ -158,8 +145,6 @@ const ProfilePage = () => {
 
   return (
     <div id="root" style={styles.root}>
-      <Header handleSignIn={handleOpenModal} />
-      <NavBar />
       <div
         style={{
           ...styles.wrapper,
@@ -403,24 +388,6 @@ const ProfilePage = () => {
           </Box>
         </div>
       </div>
-
-      <div
-        style={{
-          ...styles.container,
-          backgroundColor: Colors.primary,
-          width: "100%",
-          marginTop: 60,
-        }}
-      >
-        <SiteMap />
-        <Copyright />
-      </div>
-
-      <CustomModal
-        open={openModal}
-        onClose={handleCloseModal}
-        component={<SignIn />}
-      />
     </div>
   );
 };

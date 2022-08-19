@@ -12,14 +12,7 @@ import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
-import Header from "../components/header";
-import NavBar from "../components/navBar";
-import SiteMap from "../components/siteMap";
-import Copyright from "../components/copyright";
-import SignIn from "../components/signIn";
-import CustomModal from "../components/CustomModal";
 import ProfileHead from "../components/profileHead";
 import ProfileList from "../components/profileList";
 import { styled } from "@mui/material/styles";
@@ -31,10 +24,6 @@ const Input = styled("input")({
 });
 
 const ProfilePage = () => {
-  const [openModal, setOpenModal] = React.useState(false);
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
-
   const userId = localStorage.getItem("userId");
 
   const [firstName, setFirstName] = React.useState("");
@@ -50,8 +39,6 @@ const ProfilePage = () => {
   const [password, setPassword] = React.useState(""); //for some reason using password as normal variable caused errors.
 
   const [profilePic, setProfilePic] = React.useState(null);
-
-  let navigate = useNavigate();
 
   const getUserInfoById = (userId) => {
     const ApiURL = `http://localhost:5000/users/${userId}`;
@@ -96,7 +83,7 @@ const ProfilePage = () => {
   React.useEffect(() => {
     document.title = "BOSS - User Profile Page";
     if (userId == null) {
-      navigate("/signIn");
+      window.location = "/signIn";
     } else {
       initializeUserData(userId); //wouldn't work without async await?
     }
@@ -183,8 +170,6 @@ const ProfilePage = () => {
 
   return (
     <div id="root" style={styles.root}>
-      <Header handleSignIn={handleOpenModal} />
-      <NavBar />
       <div
         style={{
           ...styles.wrapper,
@@ -428,24 +413,6 @@ const ProfilePage = () => {
           </Box>
         </div>
       </div>
-
-      <div
-        style={{
-          ...styles.container,
-          backgroundColor: Colors.primary,
-          width: "100%",
-          marginTop: 60,
-        }}
-      >
-        <SiteMap />
-        <Copyright />
-      </div>
-
-      <CustomModal
-        open={openModal}
-        onClose={handleCloseModal}
-        component={<SignIn />}
-      />
     </div>
   );
 };

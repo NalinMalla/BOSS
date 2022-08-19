@@ -7,6 +7,10 @@ import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 
 import Colors from "../res/colors";
 
@@ -24,6 +28,7 @@ const ProductAddPage = () => {
   const [specification, setSpecification] = React.useState("");
   const [quantity, setQuantity] = React.useState("0");
   const [discountPrice, setDiscountPrice] = React.useState("0");
+  const [tags, setTags] = React.useState("");
 
   let [valid, setValid] = React.useState(true);
 
@@ -37,6 +42,11 @@ const ProductAddPage = () => {
   const handleDealsChange = (event) => {
     setDeals(event.target.value);
   };
+
+  const handleTagsChange = (event) => {
+    setTags(event.target.value);
+  };
+
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
   };
@@ -55,12 +65,13 @@ const ProductAddPage = () => {
   const handlePriceChange = (event) => {
     setPrice(event.target.value);
     event.target.value > 0
-    ? setDiscountPrice(
-        (discountRate === "" || discountRate <=0 || discountRate > 100)
-          ? event.target.value
-          : Number(event.target.value) - (Number(discountRate) / 100) * Number(event.target.value)
-      )
-    : setDiscountPrice(event.target.value);
+      ? setDiscountPrice(
+          discountRate === "" || discountRate <= 0 || discountRate > 100
+            ? event.target.value
+            : Number(event.target.value) -
+                (Number(discountRate) / 100) * Number(event.target.value)
+        )
+      : setDiscountPrice(event.target.value);
   };
 
   const handleQuantityChange = (event) => {
@@ -70,12 +81,14 @@ const ProductAddPage = () => {
   const handleDiscountRateChange = (event) => {
     setDiscountRate(event.target.value);
     price > 0
-    ? setDiscountPrice(
-        (event.target.value === "" || event.target.value <=0 || event.target.value > 100)
-          ? price
-          : Number(price) - (Number(event.target.value) / 100) * Number(price)
-      )
-    : setDiscountPrice(price);
+      ? setDiscountPrice(
+          event.target.value === "" ||
+            event.target.value <= 0 ||
+            event.target.value > 100
+            ? price
+            : Number(price) - (Number(event.target.value) / 100) * Number(price)
+        )
+      : setDiscountPrice(price);
   };
 
   const handleSubmit = (event) => {
@@ -109,7 +122,7 @@ const ProductAddPage = () => {
       formData.append("description", description);
       formData.append("specification", specification);
       formData.append("discountPrice", discountPrice);
-
+      formData.append("tags", tags);
       axios({
         method: "post",
         url: `http://localhost:5000/products/add`,
@@ -177,49 +190,48 @@ const ProductAddPage = () => {
                   error={title.trim() === "" && valid === false}
                 />
               </Grid>
-              
+
               <Grid item xs={12} sm={7}>
-                <TextField
-                  required
-                  fullWidth
-                  id="category"
-                  name="category"
-                  label={
-                    category.trim() === "" && valid === false
-                      ? "Empty field"
-                      : "Product Category"
-                  }
-                  value={category}
-                  onChange={handleCategoryChange}
-                  error={category.trim() === "" && valid === false}
-                />
+                <FormControl fullWidth required defaultValue="">
+                  <InputLabel id="demo-simple-select-label">
+                    {category.trim() === "" && valid === false ? (
+                      <span style={{ color: "#D32F2F" }}>Unfilled</span>
+                    ) : (
+                      "Category"
+                    )}
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    name="category"
+                    value={category}
+                    label="category"
+                    error={category === "" && valid === false}
+                    onChange={handleCategoryChange}
+                  >
+                    <MenuItem value="sofa">Sofa</MenuItem>
+                    <MenuItem value="chair">Chair</MenuItem>
+                    <MenuItem value="bed">Bed</MenuItem>
+                    <MenuItem value="wardrobe">Wardrobe</MenuItem>
+                    <MenuItem value="decoration">Decoration</MenuItem>
+                    <MenuItem value="table">Table</MenuItem>
+                    <MenuItem value="shelf">Shelf</MenuItem>
+                    <MenuItem value="window">Window</MenuItem>
+                    <MenuItem value="door">Door</MenuItem>
+                    <MenuItem value="prefab">Prefab</MenuItem>
+                  </Select>
+                </FormControl>
               </Grid>
 
-              <Grid item xs={5}>
+              <Grid item xs={12} sm={5}>
                 <TextField
+                  name="deals"
                   fullWidth
-                  id="discountRate"
-                  name="discountRate"
-                  autoComplete="discountRate"
-                  label={
-                    discountRate.trim() !== "" &&
-                    (Number(discountRate) < 0 || Number(discountRate) > 100) &&
-                    valid === false
-                      ? "Invalid Discount Rate."
-                      : "Discount Rate"
-                  }
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">%</InputAdornment>
-                    ),
-                  }}
-                  value={discountRate}
-                  onChange={handleDiscountRateChange}
-                  error={
-                    discountRate.trim() !== "" &&
-                    (Number(discountRate) < 0 || Number(discountRate) > 100) &&
-                    valid === false
-                  }
+                  id="deals"
+                  label="Offer Title"
+                  autoFocus
+                  value={deals}
+                  onChange={handleDealsChange}
                 />
               </Grid>
 
@@ -280,16 +292,44 @@ const ProductAddPage = () => {
                   }
                 />
               </Grid>
-              
-              <Grid item xs={12} sm={12}>
+
+              <Grid item xs={5}>
                 <TextField
-                  name="deals"
                   fullWidth
-                  id="deals"
-                  label="Offer Title"
+                  id="discountRate"
+                  name="discountRate"
+                  autoComplete="discountRate"
+                  label={
+                    discountRate.trim() !== "" &&
+                    (Number(discountRate) < 0 || Number(discountRate) > 100) &&
+                    valid === false
+                      ? "Invalid Discount Rate."
+                      : "Discount Rate"
+                  }
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">%</InputAdornment>
+                    ),
+                  }}
+                  value={discountRate}
+                  onChange={handleDiscountRateChange}
+                  error={
+                    discountRate.trim() !== "" &&
+                    (Number(discountRate) < 0 || Number(discountRate) > 100) &&
+                    valid === false
+                  }
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={7}>
+                <TextField
+                  name="tags"
+                  fullWidth
+                  id="tags"
+                  label="Tags"
                   autoFocus
-                  value={deals}
-                  onChange={handleDealsChange}
+                  value={tags}
+                  onChange={handleTagsChange}
                 />
               </Grid>
 

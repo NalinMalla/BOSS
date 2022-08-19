@@ -2,7 +2,8 @@ import * as React from "react";
 // import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import IconButton from "@mui/material/IconButton";
-import FlagIcon from '@mui/icons-material/Flag';
+import FlagIcon from "@mui/icons-material/Flag";
+import Badge from "@mui/material/Badge";
 
 import SearchInput from "../components/searchInput";
 import AvatarMenu from "../components/avatarMenu";
@@ -11,6 +12,9 @@ import Colors from "../res/colors";
 import Icons from "../res/icons";
 
 const Header = (props) => {
+  const userTaggedItem = localStorage.getItem("userTaggedItem").split(",");
+  const userCart = JSON.parse(localStorage.getItem("userCart"));
+
   return (
     <div style={styles.root}>
       <div style={styles.wrapper}>
@@ -31,7 +35,9 @@ const Header = (props) => {
             sx={{ marginRight: 1, marginTop: 4 }}
             href="/profile/taggedItem"
           >
-            <FlagIcon />
+            <Badge badgeContent={userTaggedItem.length} color="secondary">
+              <FlagIcon />
+            </Badge>
           </IconButton>
           <IconButton
             color="primary"
@@ -40,7 +46,9 @@ const Header = (props) => {
             sx={{ marginRight: 1, marginTop: 4 }}
             href="/cart"
           >
-            <ShoppingCartIcon />
+            <Badge badgeContent={userCart.length} color="success">
+              <ShoppingCartIcon />
+            </Badge>
           </IconButton>
           <AvatarMenu handleSignIn={props.handleSignIn} />
         </div>
@@ -50,11 +58,11 @@ const Header = (props) => {
 };
 
 const styles = {
-  root:{
+  root: {
     display: "flex",
     flex: 1,
     width: "100%",
-    justifyContent: 'center',
+    justifyContent: "center",
     background: "#FFF",
     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
   },

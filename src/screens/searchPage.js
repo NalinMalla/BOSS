@@ -9,39 +9,34 @@ import ProductList from "../components/productList";
 import Colors from "../res/colors";
 
 const SearchPage = () => {
-
   const [products, setProducts] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [minPrice, setMinPrice] = React.useState(0);
   const [maxPrice, setMaxPrice] = React.useState(100000);
 
   let search = window.location.href.split("?")[1];
-  let search1 = search.split("/")[0];
-  let search2 = search.split("/")[1];
+  let category = search.split(":")[0];
+  let categoriesCheck = category.split("/")[0];
 
-  if (
-    window.location.href.split("?")[1] !== undefined ||
-    window.location.href.split("?")[1] !== ""
-  ) {
-    search = window.location.href.split("?")[1];
-    search1 = search.split("/")[0];
-    search2 = search.split("/")[1];
-    console.log("search1+/+search2");
-    console.log(search1 + "/" + search2);
+  let searchText;
+  if (search.split(":")[1] !== undefined && search.split(":")[1] !== "") {
+    searchText = search.split(":")[1].split("%20");
   }
+  console.log("searchText");
+  console.log(searchText);
+  // if (
+  //   window.location.href.split("?")[1] !== undefined ||
+  //   window.location.href.split("?")[1] !== ""
+  // ) {
+  //   search = window.location.href.split("?")[1];
+  //   category = search.split("/")[0];
+  // }
 
   const getProductsInfo = () => {
     let ApiURL;
-
-    // if (search1 === "all") {
-    //   ApiURL = `http://localhost:5000/products/all`;
-    // }
-
-    if (search1 === "categories") {
-      ApiURL = `http://localhost:5000/products/${search}`;
-    }
-
-    else{
+    if (categoriesCheck === "categories") {
+      ApiURL = `http://localhost:5000/products/${search.split(":")[0]}`;
+    } else {
       ApiURL = `http://localhost:5000/products/all`;
     }
 
@@ -57,8 +52,24 @@ const SearchPage = () => {
       .then((response) => {
         if (response !== null) {
           response.forEach((product) => {
-            if (product.discountPrice <= maxPrice && product.discountPrice >= minPrice) {
-              tempProducts.push(product);
+            // let searchTextArr = searchText.toLowerCase().split(" ");
+            if (
+              product.discountPrice <= maxPrice &&
+              product.discountPrice >= minPrice
+            ) {
+              if (searchText !== undefined) {
+                let flag = false;
+                searchText.forEach((searchWord) => {
+                  if (product.tags.split("#").includes(searchWord)) {
+                    flag = true;
+                  }
+                });
+                if (flag) {
+                  tempProducts.push(product);
+                }
+              } else {
+                tempProducts.push(product);
+              }
             }
           });
         }
@@ -72,7 +83,7 @@ const SearchPage = () => {
   useEffect(() => {
     document.title = "BOSS - Search Page";
     setIsLoaded(false);
-    initializeProductData(search2);
+    initializeProductData();
     setTimeout(() => {
       setIsLoaded(true);
     }, 2000);

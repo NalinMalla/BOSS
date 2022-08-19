@@ -37,7 +37,16 @@ export default function SearchInput() {
             <InputAdornment position="end">
               <IconButton
                 onClick={() => {
-                  window.location = `/search/?${searchText.split(0, 7)}`;
+                  // window.location = `/search/?${
+                  //   window.location.href.split("?")[1].split(":")[0]
+                  // }:${searchText.split(0, 7)}`;
+
+                  window.location =
+                    window.location.href.split("/")[3] === "search"
+                      ? `/search/?${
+                          window.location.href.split("?")[1].split(":")[0]
+                        }:${searchText.split(0, 7)}`
+                      : `/search/?all:${searchText.split(0, 7)}`;
                 }}
                 edge="end"
               >

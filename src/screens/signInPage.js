@@ -21,7 +21,6 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 import Colors from "../res/colors";
 import Images from "../res/images";
@@ -105,10 +104,9 @@ export default function SignInSide(props) {
     }
   }
 
-  let navigate = useNavigate();
   const redirectToHomepage = () => {
     storeInfoToLocalStorage();
-    navigate("/");
+    window.location = "/";
   };
 
   const handleEmailChange = (event) => {

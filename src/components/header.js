@@ -1,5 +1,4 @@
 import * as React from "react";
-// import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import IconButton from "@mui/material/IconButton";
 import FlagIcon from "@mui/icons-material/Flag";
@@ -12,19 +11,20 @@ import Colors from "../res/colors";
 import Icons from "../res/icons";
 
 const Header = (props) => {
-  const [userTaggedItem, setUserTaggedItem] = React.useState(0);
-  const [userCart, setUserCart] = React.useState(0);
-  // if (
-  //   localStorage.getItem("userId") !== "undefined" &&
-  //   localStorage.getItem("userId") !== undefined &&
-  //   localStorage.getItem("userId") !== null
-  // ) {
-  //   setUserTaggedItem(localStorage.getItem("userTaggedItem").split(","));
-  //   setUserCart(JSON.parse(localStorage.getItem("userCart")));
-  // }
-
-  console.log(userTaggedItem);
-  console.log(userCart);
+  const [userTaggedItem] = React.useState(
+    localStorage.getItem("userId") !== "undefined" &&
+      localStorage.getItem("userId") !== undefined &&
+      localStorage.getItem("userId") !== null
+      ? localStorage.getItem("userTaggedItem").split(",")
+      : []
+  );
+  const [userCart] = React.useState(
+    localStorage.getItem("userId") !== "undefined" &&
+      localStorage.getItem("userId") !== undefined &&
+      localStorage.getItem("userId") !== null
+      ? JSON.parse(localStorage.getItem("userCart"))
+      : []
+  );
 
   return (
     <div style={styles.root}>

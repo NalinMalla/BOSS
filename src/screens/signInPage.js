@@ -1,4 +1,6 @@
 import * as React from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -21,6 +23,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { updateIsAdmin } from "../redux/reducer/isAdmin";
 
 import Colors from "../res/colors";
 import Images from "../res/images";
@@ -43,7 +46,11 @@ function Copyright(props) {
   );
 }
 
-export default function SignInSide(props) {
+export default function SignInPage() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  let shouldNavigate = false;
   //password hide and show frontend
   const [values, setValues] = React.useState({
     password: "",
@@ -97,16 +104,25 @@ export default function SignInSide(props) {
       localStorage.setItem("userLastName", user.name.lastName);
       localStorage.setItem("userContact", user.contact.toString());
       localStorage.setItem("userProfilePic", user.profilePic);
-      localStorage.setItem("userTaggedItemId", user.taggedItemId);
-      localStorage.setItem("userTaggedItem", user.taggedItem);
-      localStorage.setItem("userCartId", user.cartId);
-      localStorage.setItem("userCart", JSON.stringify(user.cart));
+      if (user.taggedItemId !== undefined) {
+        localStorage.setItem("userTaggedItemId", user.taggedItemId);
+        localStorage.setItem("userTaggedItem", user.taggedItem);
+      }
+      if (user.cartId !== undefined) {
+        localStorage.setItem("userCartId", user.cartId);
+        localStorage.setItem("userCart", JSON.stringify(user.cart));
+      }
     }
   }
 
   const redirectToHomepage = () => {
     storeInfoToLocalStorage();
-    window.location = "/";
+    if(shouldNavigate){
+      navigate("/");
+    }
+    else{
+      window.location = "/";
+    }
   };
 
   const handleEmailChange = (event) => {
@@ -147,6 +163,8 @@ export default function SignInSide(props) {
 
   async function isUserAuthorized(email, password) {
     const userInfo = await getUserInfoByEmail(email);
+    console.log("userInfo");
+    console.log(userInfo);
     if (userInfo === null) {
       return null;
     } else {
@@ -158,6 +176,12 @@ export default function SignInSide(props) {
           contact: userInfo.contact,
           profilePic: userInfo.profilePic,
         };
+
+        if (userInfo.role === "hakulakhe") {
+          dispatch(updateIsAdmin(true));
+          shouldNavigate = true;
+          return true;
+        }
 
         axios
           .post(`http://localhost:5000/users/taggedItem/create/${userInfo._id}`)

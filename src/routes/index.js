@@ -1,5 +1,6 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useSelector } from 'react-redux'
+import { BrowserRouter, Routes, Route} from "react-router-dom";
 
 import SignInPage from "../screens/signInPage";
 import SignIn from "../components/signIn";
@@ -16,14 +17,16 @@ import ProfilePaymentOptions from "../screens/profilePaymentOptions";
 import ProfilePasswordReset from "../screens/profilePasswordReset";
 import OrdersPage from "../screens/ordersPage";
 import ProductAddPage from "../screens/productAddPage";
+import ProductUpdatePage from "../screens/productUpdatePage";
 import TaggedItemPage from "../screens/taggedItemPage";
 import Dashboard from "../screens/dashboard";
 import Header from "../components/header";
 import NavBar from "../components/navBar";
-
 import CustomModal from "../components/CustomModal";
 import SiteMap from "../components/siteMap";
 import Copyright from "../components/copyright";
+
+import ProtectedRoute from "../components/ProtectedRoute";
 
 import Colors from "../res/colors";
 
@@ -32,7 +35,21 @@ const Router = () => {
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
 
-  return (
+  const isAdmin = useSelector(state => state.isAdmin.isAdmin)
+
+  console.log("isAdmin");
+  console.log(isAdmin);
+
+  return isAdmin? (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="logOut" element={<Logout />} />
+        <Route path="product/add" element={<ProductAddPage />} />
+        <Route path="product/update" element={<ProductUpdatePage />} />
+      </Routes>
+    </BrowserRouter>
+  ) : (
     <BrowserRouter>
       {window.location.href !== "http://localhost:3000/signUp" &&
       window.location.href !== "http://localhost:3000/signIn" ? (
@@ -45,9 +62,9 @@ const Router = () => {
       )}
 
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="signIn" element={<SignInPage />} />
+        <Route path="/" element={<HomePage />} ></Route>
         <Route path="signUp" element={<SignUp />} />
+        <Route path="signIn" element={<SignInPage/>} />
         <Route path="logOut" element={<Logout />} />
         <Route path="product" element={<ProductPage />} />
         <Route path="search" element={<SearchPage />} />
@@ -65,8 +82,6 @@ const Router = () => {
         />
         <Route path="profile/orders" element={<OrdersPage />} />
         <Route path="profile/taggedItem" element={<TaggedItemPage />} />
-        <Route path="product/add" element={<ProductAddPage />} />
-        <Route path="admin" element={<Dashboard />} />
       </Routes>
 
       {window.location.href !== "http://localhost:3000/signUp" &&

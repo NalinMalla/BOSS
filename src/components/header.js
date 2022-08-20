@@ -14,14 +14,20 @@ const Header = (props) => {
   const [userTaggedItem] = React.useState(
     localStorage.getItem("userId") !== "undefined" &&
       localStorage.getItem("userId") !== undefined &&
-      localStorage.getItem("userId") !== null
-      ? localStorage.getItem("userTaggedItem").split(",")
+      localStorage.getItem("userId") !== null &&
+      localStorage.getItem("userTaggedItemId") !== undefined &&
+      localStorage.getItem("userTaggedItemId") !== null
+      ? localStorage.getItem("userTaggedItem") === ""
+        ? []
+        : localStorage.getItem("userTaggedItem").split(",")
       : []
   );
   const [userCart] = React.useState(
     localStorage.getItem("userId") !== "undefined" &&
       localStorage.getItem("userId") !== undefined &&
-      localStorage.getItem("userId") !== null
+      localStorage.getItem("userId") !== null &&
+      localStorage.getItem("userCartId") !== undefined &&
+      localStorage.getItem("userCartId") !== null
       ? JSON.parse(localStorage.getItem("userCart"))
       : []
   );

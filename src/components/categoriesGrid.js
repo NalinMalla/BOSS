@@ -8,52 +8,52 @@ const CategoriesCardData = [
   {
     title: "SOFA",
     image: Images.SofaBrown,
-    url: "category/sofa",
+    url: "search/?categories/sofa",
   },
   {
     title: "CHAIR",
     image: Images.Chair,
-    url: "category/chair",
+    url: "search/?categories/chair",
   },
   {
     title: "BED",
     image: Images.Bed,
-    url: "category/bed",
+    url: "search/?categories/bed",
   },
   {
     title: "WARDROBE",
     image: Images.Wardrobe,
-    url: "category/wardrobe",
+    url: "search/?categories/wardrobe",
   },
   {
     title: "DECORATION",
     image: Images.Decoration,
-    url: "category/decoration",
+    url: "search/?categories/decoration",
   },
   {
     title: "TABLE",
     image: Images.Table,
-    url: "category/table",
+    url: "search/?categories/table",
   },
   {
     title: "SHELF",
     image: Images.Shelf,
-    url: "category/shelf",
+    url: "search/?categories/shelf",
   },
   {
     title: "WINDOW",
     image: Images.Window,
-    url: "category/window",
+    url: "search/?categories/window",
   },
   {
     title: "DOOR",
     image: Images.Door,
-    url: "category/door",
+    url: "search/?categories/door",
   },
   {
     title: "PREFABRICATION",
     image: Images.Prefab,
-    url: "category/prefab",
+    url: "search/?categories/prefab",
   },
 ];
 const CategoriesGrid = () => {

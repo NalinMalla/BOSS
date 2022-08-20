@@ -310,7 +310,7 @@ const ProductPage = () => {
           <span
             style={{
               fontSize: 32,
-              display: discountPrice === "" ? "none" : "flex",
+              display: discountRate === "" ? "none" : "flex",
               marginTop: 20,
             }}
           >
@@ -320,15 +320,15 @@ const ProductPage = () => {
             style={{
               display: "flex",
               alignItems: "center",
-              marginTop: discountPrice === "" ? 20 : 0,
+              marginTop: discountRate === "" ? 20 : 0,
             }}
           >
             <span
               style={{
-                textDecoration: discountPrice === "" ? "none" : "line-through",
-                fontSize: discountPrice === "" ? 32 : 20,
+                textDecoration: discountRate === "" ? "none" : "line-through",
+                fontSize: discountRate === "" ? 32 : 20,
 
-                color: discountPrice === "" ? "#000" : "rgba(0,0,0,0.4)",
+                color: discountRate === "" ? "#000" : "rgba(0,0,0,0.4)",
               }}
             >
               Rs.{price}

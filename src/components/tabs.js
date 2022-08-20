@@ -6,9 +6,10 @@ import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
+import { Button } from "@mui/material";
 
 import Icons from "../res/icons";
-import { Button } from "@mui/material";
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -434,13 +435,11 @@ const styles = {
     justifyContent: "space-around",
     flex: 1,
     borderRadius: 5,
-    // background: '#f5f5f5',
   },
   wrapper: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    // background: '#f5f5c5',
     width: "100%",
   },
   container: {

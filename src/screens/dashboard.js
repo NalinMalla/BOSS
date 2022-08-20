@@ -23,6 +23,7 @@ import Chart from "../components/chart";
 import Deposits from "../components/deposits";
 import Orders from "../components/orders";
 import AvatarMenu from "../components/avatarMenu";
+import ProfileHead from "../components/profileHead";
 
 function Copyright(props) {
   return (
@@ -131,11 +132,11 @@ function DashboardContent() {
               </Badge>
             </IconButton>
 
-            <div style={{ marginTop: -32 }}>
+            {/* <div style={{ marginTop: -32 }}>
               <AvatarMenu
               // handleSignIn={props.handleSignIn}
               />
-            </div>
+            </div> */}
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>

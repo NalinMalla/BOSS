@@ -65,13 +65,10 @@ const SearchPage = () => {
       .then((response) => {
         if (response !== null) {
           response.forEach((product) => {
-            // let searchTextArr = searchText.toLowerCase().split(" ");
             if (
               product.discountPrice <= maxPrice &&
               product.discountPrice >= minPrice
             ) {
-              // console.log("product.title.split()");
-              // console.log(product.title.split(" "));
               if (searchText !== undefined) {
                 let flag = false;
                 searchText.forEach((searchWord) => {
@@ -117,7 +114,7 @@ const SearchPage = () => {
             borderRadius: 3,
             justifyContent: "flex-start",
             marginTop: 20,
-            marginRight: 60,
+            marginRight: 100,
           }}
         >
           <div

@@ -57,7 +57,7 @@ const OrdersPage = (props) => {
           order.products = tempProducts;
           tempOrders.push(order);
         });
-        setOrders(tempOrders);
+        setOrders(tempOrders.reverse());
       }
     });
   }

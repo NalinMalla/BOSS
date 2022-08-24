@@ -104,23 +104,18 @@ export default function SignInPage() {
       localStorage.setItem("userLastName", user.name.lastName);
       localStorage.setItem("userContact", user.contact.toString());
       localStorage.setItem("userProfilePic", user.profilePic);
-      if (user.taggedItemId !== undefined) {
-        localStorage.setItem("userTaggedItemId", user.taggedItemId);
-        localStorage.setItem("userTaggedItem", user.taggedItem);
-      }
-      if (user.cartId !== undefined) {
-        localStorage.setItem("userCartId", user.cartId);
-        localStorage.setItem("userCart", JSON.stringify(user.cart));
-      }
+      localStorage.setItem("userTaggedItemId", user.taggedItemId);
+      localStorage.setItem("userTaggedItem", user.taggedItem);
+      localStorage.setItem("userCartId", user.cartId);
+      localStorage.setItem("userCart", JSON.stringify(user.cart));
     }
   }
 
   const redirectToHomepage = () => {
     storeInfoToLocalStorage();
-    if(shouldNavigate){
+    if (shouldNavigate) {
       navigate("/");
-    }
-    else{
+    } else {
       window.location = "/";
     }
   };
@@ -180,7 +175,6 @@ export default function SignInPage() {
         if (userInfo.role === "hakulakhe") {
           dispatch(updateIsAdmin(true));
           shouldNavigate = true;
-          return true;
         }
 
         axios

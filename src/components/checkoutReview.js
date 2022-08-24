@@ -1,7 +1,6 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import axios from "axios";
 import { Audio } from "react-loader-spinner";
 
 import ProductList from "../components/productList";
@@ -13,26 +12,11 @@ export default function Review(props) {
   const [addressInfo, setAddressInfo] = React.useState(props.address);
   const [isLoaded, setIsLoaded] = React.useState(false);
 
-  // const getAddressInfoByUserId = (userId) => {
-  //   const ApiURL = `http://localhost:5000/users/address/${userId}`;
-  //   return axios
-  //     .get(ApiURL)
-  //     .then((response) => response.data)
-  //     .catch((error) => null);
-  // };
-
-  // async function initializeAddressData(userId) {
-  //   console.log("await getAddressInfoByUserId(userId)");
-  //   console.log(await getAddressInfoByUserId(userId));
-  //   setAddressInfo(await getAddressInfoByUserId(userId));
-  // }
-
   React.useEffect(() => {
     console.log("in useEffect");
     setTimeout(() => {
       setIsLoaded(true);
     }, 2000);
-    // initializeAddressData(userId);
   }, []);
 
   console.log("addressInfo");
@@ -76,15 +60,15 @@ export default function Review(props) {
             Shipping Details
           </Typography>
           <div>
-            Receivers Name:{" "}
-            {addressInfo.firstName +
-              " " +
-              addressInfo.lastName}
+            Receivers Name: {addressInfo.firstName + " " + addressInfo.lastName}
           </div>
           <div>Email Address: {addressInfo.email}</div>
           <div>Contact Number: {addressInfo.contact}</div>
-          <div>Address: Province {addressInfo.province}, {addressInfo.city}</div>
+          <div>
+            Address: Province {addressInfo.province}, {addressInfo.city}
+          </div>
           <div>Address Details: {addressInfo.addressDetail}</div>
+          <div>Zip Code: {addressInfo.zipCode}</div>
         </Grid>
         <Grid item container direction="column" xs={12} sm={4}>
           <div

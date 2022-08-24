@@ -10,7 +10,6 @@ import Colors from "../res/colors";
 
 
 const CartPage = () => {
-
   const [products, setProducts] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState(0);
@@ -34,6 +33,8 @@ const CartPage = () => {
     userCart.forEach((element) => {
       getProductInfoById(element.productId)
         .then((response) => {
+          console.log("response");
+          console.log(response);
           if (response !== null) {
             response = {...response, count: element.count};
             tempProducts.push(response);

@@ -35,6 +35,8 @@ const TaggedItemPage = (props) => {
       getProductInfoById(element)
         .then((response) => {
           if (response !== null) {
+            console.log("response");
+            console.log(response);
             tempProducts.push(response);
           }
         })
@@ -46,16 +48,19 @@ const TaggedItemPage = (props) => {
   }
 
   useEffect(() => {
-    setTimeout(() => {
-      setIsLoaded(true);
-    }, 2000);
     document.title = "BOSS - Tagged Item Page";
     if (userId === undefined || userId === null) {
       window.location = "/signIn";
     } else {
+      setTimeout(() => {
+        setIsLoaded(true);
+      }, 2000);
       initializeProductData(userTaggedItem);
     }
   }, []);
+
+  console.log("products");
+  console.log(products);
 
   return (
     <div id="root" style={styles.root}>

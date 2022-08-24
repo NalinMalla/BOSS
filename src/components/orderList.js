@@ -32,7 +32,7 @@ const OrderList = (props) => {
               >
                 Order ID : {order._id}
               </span>
-              
+
               <span
                 style={{ color: Colors.secondary, fontSize: 24, marginTop: 10 }}
               >
@@ -47,7 +47,9 @@ const OrderList = (props) => {
                   marginLeft: 2,
                 }}
               >
-                Placed on {order.createdAt.slice(0, 10)}
+                Placed on {order.createdAt.slice(0, 10)}{" "}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Status: {order.status}
               </span>
               <span
                 style={{
@@ -55,7 +57,7 @@ const OrderList = (props) => {
                   marginBottom: 15,
                 }}
               >
-                Includes Shipping Fee (Rs. {order.shippingFee}) 
+                Includes Shipping Fee (Rs. {order.shippingFee})
               </span>
             </div>
             <ProductList products={order.products} counterDisabled={true} />

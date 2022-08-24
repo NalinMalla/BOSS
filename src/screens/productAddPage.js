@@ -11,6 +11,7 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import Toolbar from "@mui/material/Toolbar";
 
 import Colors from "../res/colors";
 
@@ -150,6 +151,7 @@ const ProductAddPage = () => {
 
   return (
     <div id="root" style={styles.root}>
+      <Toolbar/>
       <div style={styles.container}>
         <div style={{ ...styles.control, flex: 0.5 }}>
           <span
@@ -485,7 +487,7 @@ const ProductAddPage = () => {
               <TextField
                 label="Input the products description."
                 multiline
-                rows={4}
+                rows={8}
                 style={{ marginTop: 15 }}
                 name="description"
                 id="description"
@@ -510,7 +512,7 @@ const ProductAddPage = () => {
               <TextField
                 label="Input the products specification."
                 multiline
-                rows={4}
+                rows={8}
                 style={{ marginTop: 15 }}
                 name="specification"
                 id="specification"

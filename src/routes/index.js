@@ -1,6 +1,8 @@
 import React from "react";
-import { useSelector } from 'react-redux'
-import { BrowserRouter, Routes, Route} from "react-router-dom";
+import { useSelector } from "react-redux";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
 
 import SignInPage from "../screens/signInPage";
 import SignIn from "../components/signIn";
@@ -15,7 +17,7 @@ import ProfilePage from "../screens/profilePage";
 import ProfileAddressBook from "../screens/profileAddressBook";
 import ProfilePaymentOptions from "../screens/profilePaymentOptions";
 import ProfilePasswordReset from "../screens/profilePasswordReset";
-import OrdersPage from "../screens/ordersPage";
+import OrdersPage from "../screens/userOrdersPage";
 import ProductAddPage from "../screens/productAddPage";
 import ProductUpdatePage from "../screens/productUpdatePage";
 import TaggedItemPage from "../screens/taggedItemPage";
@@ -25,29 +27,54 @@ import NavBar from "../components/navBar";
 import CustomModal from "../components/CustomModal";
 import SiteMap from "../components/siteMap";
 import Copyright from "../components/copyright";
-
-import ProtectedRoute from "../components/ProtectedRoute";
+import AdminFrame from "../components/adminFrame";
+import AdminOrders from "../screens/adminOrders";
+import OrderPage from "../screens/orderPage";
 
 import Colors from "../res/colors";
+
+function CopyrightWaterMark(props) {
+  return (
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © "}
+      <Link color="inherit" href="https://bira.com.np/" underline="hover">
+        BIRA Builders & Suppliers PVT. LTD.
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}
 
 const Router = () => {
   const [openModal, setOpenModal] = React.useState(false);
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
 
-  const isAdmin = useSelector(state => state.isAdmin.isAdmin)
+  const isAdmin = useSelector((state) => state.isAdmin.isAdmin);
 
   console.log("isAdmin");
   console.log(isAdmin);
 
-  return isAdmin? (
+  return isAdmin ? (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="logOut" element={<Logout />} />
-        <Route path="product/add" element={<ProductAddPage />} />
-        <Route path="product/update" element={<ProductUpdatePage />} />
-      </Routes>
+      <div style={{ display: "flex" }}>
+        <AdminFrame />
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="logOut" element={<Logout />} />
+          <Route path="orders" element={<AdminOrders />} />
+          <Route path="order" element={<OrderPage />} />
+          <Route path="product/add" element={<ProductAddPage />} />
+          <Route path="product/update" element={<ProductUpdatePage />} />
+        </Routes>
+      </div>
+      <CopyrightWaterMark sx={{ pt: 4, pb: 2 }}/>
     </BrowserRouter>
   ) : (
     <BrowserRouter>
@@ -62,9 +89,9 @@ const Router = () => {
       )}
 
       <Routes>
-        <Route path="/" element={<HomePage />} ></Route>
+        <Route path="/" element={<HomePage />}></Route>
         <Route path="signUp" element={<SignUp />} />
-        <Route path="signIn" element={<SignInPage/>} />
+        <Route path="signIn" element={<SignInPage />} />
         <Route path="logOut" element={<Logout />} />
         <Route path="product" element={<ProductPage />} />
         <Route path="search" element={<SearchPage />} />

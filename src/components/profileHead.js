@@ -3,18 +3,14 @@ import Avatar from "@mui/material/Avatar";
 
 import Colors from "../res/colors";
 
-export default function ProfileHead() {
-  const [firstName] = React.useState(localStorage.getItem("userFirstName"));
-  const [middleName] = React.useState(localStorage.getItem("userMiddleName"));
-  const [lastName] = React.useState(localStorage.getItem("userLastName"));
-
-  const [profilePic] = React.useState(
-    localStorage.getItem("userProfilePic") !== "undefined" &&
-      localStorage.getItem("userProfilePic") !== undefined &&
-      localStorage.getItem("userProfilePic") !== null
-      ? localStorage.getItem("userProfilePic")
-      : ""
-  );
+export default function ProfileHead(props) {
+  // const [profilePic] = React.useState(
+  //   localStorage.getItem("userProfilePic") !== "undefined" &&
+  //     localStorage.getItem("userProfilePic") !== undefined &&
+  //     localStorage.getItem("userProfilePic") !== null
+  //     ? localStorage.getItem("userProfilePic")
+  //     : ""
+  // );
 
   return (
     <div
@@ -27,9 +23,12 @@ export default function ProfileHead() {
         width: "100%",
         borderRadius: 3,
         paddingBottom: 8,
+        display: props.display !== undefined ? "none" : "flex",
       }}
     >
-      {profilePic === "" ? (
+      {localStorage.getItem("userProfilePic") === "undefined" ||
+      localStorage.getItem("userProfilePic") === undefined ||
+      localStorage.getItem("userProfilePic") === null ? (
         <Avatar
           sx={{
             width: 90,
@@ -50,16 +49,24 @@ export default function ProfileHead() {
           }}
         >
           <img
-            src={"http://localhost:5000/" + profilePic}
+            src={
+              "http://localhost:5000/" + localStorage.getItem("userProfilePic")
+            }
             style={{ width: 90, height: 90 }}
           />
         </Avatar>
       )}
 
       <span style={{ color: Colors.primary, fontSize: 22, fontWeight: 500 }}>
-        {middleName == ""
-          ? firstName + " " + lastName
-          : firstName + " " + middleName + " " + lastName}
+        {localStorage.getItem("userMiddleName") == ""
+          ? localStorage.getItem("userFirstName") +
+            " " +
+            localStorage.getItem("userLastName")
+          : localStorage.getItem("userFirstName") +
+            " " +
+            localStorage.getItem("userMiddleName") +
+            " " +
+            localStorage.getItem("userLastName")}
       </span>
     </div>
   );

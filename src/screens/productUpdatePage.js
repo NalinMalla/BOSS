@@ -11,6 +11,7 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import Toolbar from "@mui/material/Toolbar";
 
 import Colors from "../res/colors";
 import Icons from "../res/icons";
@@ -264,6 +265,7 @@ const ProductUpdatePage = () => {
 
   return (
     <div id="root" style={styles.root}>
+      <Toolbar/>
       <div style={styles.container}>
         <div style={{ ...styles.control, flex: 0.5 }}>
           <span

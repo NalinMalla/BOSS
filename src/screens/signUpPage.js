@@ -1,4 +1,5 @@
 import * as React from "react";
+import md5 from "md5";
 
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -139,7 +140,7 @@ export default function SignUp() {
         middleName: middleName,
         lastName: lastName,
         email: email,
-        password: password,
+        password: md5(password),
         dateOfBirth: dateOfBirth,
         gender: gender,
         receiveOffer: receiveOffer,

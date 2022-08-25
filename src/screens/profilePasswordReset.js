@@ -13,6 +13,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import axios from "axios";
+import md5 from "md5";
 
 import ProfileList from "../components/profileList";
 import ProfileHead from "../components/profileHead";
@@ -82,14 +83,14 @@ const ProfilePage = () => {
       alert("Error: Unable to access database.");
       return false;
     } else {
-      if (userInfo.password === currentPassword) {
+      if (userInfo.password === md5(currentPassword)) {
         setIsCredentialsInvalid(false);
         user = {
           firstName: userInfo.userName.firstName,
           middleName: userInfo.userName.middleName,
           lastName: userInfo.userName.lastName,
           email: userInfo.email,
-          password: newPassword,
+          password: md5(newPassword),
           dateOfBirth: userInfo.dateOfBirth.toString(),
           gender: userInfo.gender,
           receiveOffer: userInfo.receiveOffer,

@@ -18,6 +18,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import md5 from "md5";
 
 import Colors from "../res/colors";
 
@@ -172,7 +173,7 @@ export default function SignIn() {
 
   const handleLogin = (event) => {
     event.preventDefault();
-    isUserAuthorized(email, password).then((response) => {
+    isUserAuthorized(email, md5(password)).then((response) => {
       if (response === true) {
         setIsCredentialsInvalid(false);
         storeInfoToLocalStorage();

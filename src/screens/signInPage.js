@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import md5 from "md5";
 
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -207,7 +208,7 @@ export default function SignInPage() {
   }
 
   const handleLogin = () => {
-    isUserAuthorized(email, password).then((response) => {
+    isUserAuthorized(email, md5(password)).then((response) => {
       if (response === true) {
         setIsCredentialsInvalid(false);
         storeInfoToLocalStorage();

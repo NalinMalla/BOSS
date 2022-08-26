@@ -44,10 +44,10 @@ export default function PriceSlider(props) {
 
   const handleMinChange = (event, value) => {
     setMinValue(value);
-  }
+  };
   const handleMaxChange = (event, value) => {
     setMaxValue(value);
-  }
+  };
 
   return (
     <div
@@ -95,6 +95,7 @@ export default function PriceSlider(props) {
               <InputAdornment position="start">Rs.</InputAdornment>
             }
             size="small"
+            readOnly={true}
           />
         </FormControl>
         <div style={{ marginTop: 5, flex: 0.6 }}></div>
@@ -114,6 +115,7 @@ export default function PriceSlider(props) {
               <InputAdornment position="start">Rs.</InputAdornment>
             }
             size="small"
+            readOnly={true}
           />
         </FormControl>
       </div>

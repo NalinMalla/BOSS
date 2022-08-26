@@ -29,6 +29,7 @@ import SiteMap from "../components/siteMap";
 import Copyright from "../components/copyright";
 import AdminFrame from "../components/adminFrame";
 import AdminOrders from "../screens/adminOrders";
+import AdminProducts from "../screens/adminProducts";
 import OrderPage from "../screens/orderPage";
 
 import Colors from "../res/colors";
@@ -72,6 +73,7 @@ const Router = () => {
           <Route path="order" element={<OrderPage />} />
           <Route path="product/add" element={<ProductAddPage />} />
           <Route path="product/update" element={<ProductUpdatePage />} />
+          <Route path="products" element={<AdminProducts />} />
         </Routes>
       </div>
       <CopyrightWaterMark sx={{ pt: 4, pb: 2 }}/>

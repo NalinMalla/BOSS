@@ -4,14 +4,19 @@ import FlagIcon from "@mui/icons-material/Flag";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import { Button, IconButton } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+// import DeleteIcon from "@mui/icons-material/Delete";
+import { useSelector } from "react-redux";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import Counter from "../components/productCounter";
 
 import Colors from "../res/colors";
 
 export default function ProductCard2(props) {
+  const isAdmin = useSelector((state) => state.isAdmin.isAdmin);
+  const navigate = useNavigate();
+
   const userId = localStorage.getItem("userId");
   const userTaggedItem =
     localStorage.getItem("userId") !== "undefined" &&
@@ -244,7 +249,7 @@ export default function ProductCard2(props) {
           <IconButton
             style={{ marginLeft: 10 }}
             onClick={() => {
-              window.location = `/product/?${productId}`;
+              navigate((isAdmin)? `/product/update/?${productId}`:`/product/?${productId}`);
             }}
           >
             <LibraryBooksIcon

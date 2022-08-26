@@ -1,13 +1,7 @@
 import * as React from "react";
-import Paper from "@mui/material/Paper";
-import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
-import FormControl from "@mui/material/FormControl";
-import Input from "@mui/material/Input";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 
@@ -37,10 +31,6 @@ export default function SearchInput() {
             <InputAdornment position="end">
               <IconButton
                 onClick={() => {
-                  // window.location = `/search/?${
-                  //   window.location.href.split("?")[1].split(":")[0]
-                  // }:${searchText.split(0, 7)}`;
-
                   window.location =
                     window.location.href.split("/")[3] === "search"
                       ? `/search/?${

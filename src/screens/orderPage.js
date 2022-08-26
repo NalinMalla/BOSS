@@ -78,13 +78,32 @@ const OrderPage = (props) => {
   function handleSubmit() {
     if (status !== "") {
       axios
-        .put(`http://localhost:5000/users/updateOrder/${orderId}`,{status: status})
+        .put(`http://localhost:5000/users/updateOrder/${orderId}`, {
+          status: status,
+        })
         .then((response) => {
           console.log(response);
+          if (status === "Complete") {
+            order.products.forEach((product) => {
+              axios
+                .put(
+                  `http://localhost:5000/products/addValidReviewer/${product._id}`,
+                  { userId: order.user }
+                )
+                .then((response) => {
+                  console.log(response);
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            });
+          }
           alert(`Successfully changed status of Order ${orderId} to ${status}`);
           navigate(`/orders`);
         })
-        .catch((error) => {console.log(error)});
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }
 
@@ -243,7 +262,11 @@ const OrderPage = (props) => {
                   </RadioGroup>
                 </FormControl>
                 <br />
-                <Button variant="contained" style={{ marginTop: 8 }} onClick={handleSubmit}>
+                <Button
+                  variant="contained"
+                  style={{ marginTop: 8 }}
+                  onClick={handleSubmit}
+                >
                   Update Status
                 </Button>
               </div>

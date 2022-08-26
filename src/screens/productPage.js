@@ -13,7 +13,6 @@ import { TabbedPane } from "../components/tabs";
 import Counter from "../components/productCounter";
 
 const ProductPage = () => {
-
   const productId = window.location.href.split("?")[1];
 
   const userId = localStorage.getItem("userId");
@@ -26,11 +25,11 @@ const ProductPage = () => {
   const userTaggedItemId = localStorage.getItem("userTaggedItemId");
   const userCartId = localStorage.getItem("userCartId");
   const userCart =
-  localStorage.getItem("userId") !== "undefined" &&
-  localStorage.getItem("userId") !== undefined &&
-  localStorage.getItem("userId") !== null
-    ? JSON.parse(localStorage.getItem("userCart"))
-    : [];
+    localStorage.getItem("userId") !== "undefined" &&
+    localStorage.getItem("userId") !== undefined &&
+    localStorage.getItem("userId") !== null
+      ? JSON.parse(localStorage.getItem("userCart"))
+      : [];
 
   const [isTagged] = React.useState(
     userTaggedItem.includes(productId) ? true : false
@@ -42,8 +41,6 @@ const ProductPage = () => {
     userCartItem.includes(productId) ? true : false
   );
 
-  console.log("isInCart");
-  console.log(isInCart);
 
   const [deals, setDeals] = React.useState("");
   const [title, setTitle] = React.useState("");
@@ -59,6 +56,15 @@ const ProductPage = () => {
   const [questionAnswerData, setQuestionAnswerData] = React.useState([]);
   const [answers, setAnswers] = React.useState(0);
 
+  const [reviewData, setReviewData] = React.useState([]);
+  const [reviewsRating5, setReviewsRating5] = React.useState(0);
+  const [reviewsRating4, setReviewsRating4] = React.useState(0);
+  const [reviewsRating3, setReviewsRating3] = React.useState(0);
+  const [reviewsRating2, setReviewsRating2] = React.useState(0);
+  const [reviewsRating1, setReviewsRating1] = React.useState(0);
+  const [rating, setRating] = React.useState(0);
+  const [validReviewers, setValidReviewers] = React.useState([]);
+
   let navigate = useNavigate();
 
   const getProductInfoById = (productId) => {
@@ -72,6 +78,13 @@ const ProductPage = () => {
   const getQuestionAnswerDataById = (productId) => {
     return axios
       .get(`http://localhost:5000/products/questionAnswer/${productId}`)
+      .then((response) => response.data)
+      .catch((error) => null);
+  };
+
+  const getReviewDataById = (productId) => {
+    return axios
+      .get(`http://localhost:5000/products/review/${productId}`)
       .then((response) => response.data)
       .catch((error) => null);
   };
@@ -102,11 +115,22 @@ const ProductPage = () => {
     }
 
     const questionAnswer = await getQuestionAnswerDataById(productId);
-    console.log("questionAnswerData get");
-    console.log(questionAnswer);
     if (questionAnswer !== null) {
       setQuestionAnswerData(questionAnswer.questionAnswerData.reverse());
       setAnswers(questionAnswer.answers);
+    }
+
+    const review = await getReviewDataById(productId);
+    setValidReviewers(review.validReviewers);
+    setReviewsRating5(review.reviewsRating5);
+    setReviewsRating4(review.reviewsRating4);
+    setReviewsRating3(review.reviewsRating3);
+    setReviewsRating2(review.reviewsRating2);
+    setReviewsRating1(review.reviewsRating1);
+    setRating(review.rating);
+
+    if (review.reviewData.length !== 0) {
+      setReviewData(review.reviewData.reverse());
     }
   }
 
@@ -120,10 +144,7 @@ const ProductPage = () => {
   }, []);
 
   const handleClickTaggedItem = (event) => {
-    // event.preventDefault();
-
     if (isTagged !== true) {
-      console.log("isTagged !== true");
       axios
         .put(`http://localhost:5000/users/taggedItem/add/${userId}`, {
           productId,
@@ -141,7 +162,6 @@ const ProductPage = () => {
           }
         );
     } else {
-      console.log("isTagged === true");
       axios
         .put(
           `http://localhost:5000/users/taggedItem/delete/${userTaggedItemId}`,
@@ -174,7 +194,6 @@ const ProductPage = () => {
 
   const handleClickCart = (event) => {
     if (isInCart !== true) {
-      console.log("isInCart !== true");
       axios
         .put(`http://localhost:5000/users/cart/add/${userId}`, {
           product: { productId: productId, count: count },
@@ -183,7 +202,10 @@ const ProductPage = () => {
           (res) => {
             localStorage.setItem(
               "userCart",
-              JSON.stringify([...userCart, { productId: productId, count: count }])
+              JSON.stringify([
+                ...userCart,
+                { productId: productId, count: count },
+              ])
             );
             window.location.reload();
           },
@@ -192,7 +214,6 @@ const ProductPage = () => {
           }
         );
     } else {
-      console.log("isInCart === true");
       axios
         .put(`http://localhost:5000/users/cart/delete/${userCartId}`, {
           productId,
@@ -212,32 +233,6 @@ const ProductPage = () => {
           }
         );
     }
-  };
-
-  const productData = {
-    rating: 3.5,
-    reviewsRating5: 5,
-    reviewsRating4: 83,
-    reviewsRating3: 150,
-    reviewsRating2: 69,
-    reviewsRating1: 0,
-    reviews: 307,
-    questions: 26,
-    answers: 12,
-    reviewData: [
-      {
-        rating: 4,
-        reviewer: "Nalin Malla",
-        review:
-          "Very cozy sofa. The product built and quality of material is excellent. The brown color of the sofa matches perfectly with my side table set.",
-      },
-      {
-        rating: 3.5,
-        reviewer: "Jojan Rai",
-        review:
-          "Nice sofa. The brown color of the sofa matches perfectly with my side table set. The product built and quality of material is excellent.",
-      },
-    ],
   };
 
   return (
@@ -287,7 +282,11 @@ const ProductPage = () => {
                 <ShareIcon color="none" style={{ width: 30, height: 30 }} />
               </IconButton>
               <IconButton>
-                <FlagIcon color={(isTagged)? "primary": "none"} style={{ width: 35, height: 35 }} onClick={handleClickTaggedItem}/>
+                <FlagIcon
+                  color={isTagged ? "primary" : "none"}
+                  style={{ width: 35, height: 35 }}
+                  onClick={handleClickTaggedItem}
+                />
               </IconButton>
             </span>
           </span>
@@ -298,14 +297,14 @@ const ProductPage = () => {
             <Rating
               name="half-rating-read"
               defaultValue={0}
-              value={productData.rating}
+              value={rating}
               precision={0.5}
               readOnly
             />
           </div>
           <span>
-            {productData.reviews} Reviews | {productData.questions} Questions{" "}
-            {productData.answers} Answer
+            {reviewData.length} Reviews | {questionAnswerData.length} Questions{" "}
+            {answers} Answer
           </span>
           <span
             style={{
@@ -383,7 +382,7 @@ const ProductPage = () => {
               style={{ fontSize: 18 }}
               onClick={handleClickCart}
             >
-              {isInCart ? "Undo Cart":"Add to Cart"}
+              {isInCart ? "Undo Cart" : "Add to Cart"}
             </Button>
           </div>
         </div>
@@ -400,19 +399,19 @@ const ProductPage = () => {
         }}
         description={description}
         specification={specification}
-        rating={productData.rating}
-        reviews={productData.reviews}
-        reviewsRating5={productData.reviewsRating5}
-        reviewsRating4={productData.reviewsRating4}
-        reviewsRating3={productData.reviewsRating3}
-        reviewsRating2={productData.reviewsRating2}
-        reviewsRating1={productData.reviewsRating1}
-        reviewData={productData.reviewData}
+        rating={rating}
+        reviews={reviewData.length}
+        reviewsRating5={reviewsRating5}
+        reviewsRating4={reviewsRating4}
+        reviewsRating3={reviewsRating3}
+        reviewsRating2={reviewsRating2}
+        reviewsRating1={reviewsRating1}
+        reviewData={reviewData}
+        validReviewers={validReviewers}
         answers={answers}
         questionAnswerData={questionAnswerData}
         productId={productId}
       />
-
     </div>
   );
 };
@@ -448,7 +447,6 @@ const styles = {
     padding: 40,
     backgroundColor: "#FFF",
     borderRadius: 3,
-    // border : '1px solid black',
     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
   },
   titleUnderline: {

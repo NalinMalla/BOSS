@@ -134,7 +134,11 @@ const ProductAddPage = () => {
           console.log(res.data);
           console.log("Res");
           setValid(true);
-          alert("Successfully Added Product.");
+          axios
+            .post(`http://localhost:5000/products/createReview/${res.data.message}`)
+            .then((response) => {
+              alert("Successfully Added Product.");
+            }).catch(err=>{alert("Product Review section was not created.\nError: " + err)});
         },
         (err) => {
           setValid(false);
@@ -151,7 +155,7 @@ const ProductAddPage = () => {
 
   return (
     <div id="root" style={styles.root}>
-      <Toolbar/>
+      <Toolbar />
       <div style={styles.container}>
         <div style={{ ...styles.control, flex: 0.5 }}>
           <span

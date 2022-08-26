@@ -10,7 +10,6 @@ import { Button } from "@mui/material";
 
 import Icons from "../res/icons";
 
-
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -37,6 +36,9 @@ const TabbedPane = (props) => {
   const [value, setValue] = React.useState(0);
   const userId = localStorage.getItem("userId");
   const [question, setQuestion] = React.useState("");
+  const [review, setReview] = React.useState("");
+  const [rating, setRating] = React.useState(1);
+
   let userName;
   if (localStorage.getItem("userMiddleName") === "") {
     userName =
@@ -60,13 +62,21 @@ const TabbedPane = (props) => {
     setQuestion(event.target.value);
   };
 
+  const handleRatingChange = (event) => {
+    setRating(event.target.value);
+  };
+
+  const handleReviewChange = (event) => {
+    setReview(event.target.value);
+  };
+
   let reviewsRating5 = (props.reviewsRating5 / props.reviews) * 100;
   let reviewsRating4 = (props.reviewsRating4 / props.reviews) * 100;
   let reviewsRating3 = (props.reviewsRating3 / props.reviews) * 100;
   let reviewsRating2 = (props.reviewsRating2 / props.reviews) * 100;
   let reviewsRating1 = (props.reviewsRating1 / props.reviews) * 100;
 
-  const handleSubmit = (event) => {
+  const handleQASubmit = (event) => {
     event.preventDefault();
     const questionAnswerData = {
       userName: userName,
@@ -104,6 +114,30 @@ const TabbedPane = (props) => {
           }
         );
     }
+  };
+
+  const handleReviewSubmit = (event) => {
+    event.preventDefault();
+    const reviewData = {
+      userName: userName,
+      userId: userId,
+      review: review,
+      rating: rating,
+    };
+    axios
+      .put(
+        `http://localhost:5000/products/addReview/${props.productId}`,
+        reviewData
+      )
+      .then(
+        (res) => {
+          window.location.reload();
+          console.log(res.data);
+        },
+        (err) => {
+          alert("Review was not submitted.\nError: " + err);
+        }
+      );
   };
 
   return (
@@ -162,6 +196,7 @@ const TabbedPane = (props) => {
             <div
               style={{
                 ...styles.wrapper,
+                width: "70vw",
               }}
             >
               <div style={styles.container}>
@@ -261,11 +296,51 @@ const TabbedPane = (props) => {
             </div>
             <div
               style={{
+                display: props.validReviewers.includes(userId) ? "flex" : "none",
+                flexDirection: "column"
+              }}
+            >
+              <div style={{ display: "flex",alignItems: "center", }}>
+                <span style={{ margin: 20, marginLeft: 10 }}>Your Rating:</span>
+
+                <Rating
+                  name="rating"
+                  value={rating}
+                  size={"medium"}
+                  onChange={handleRatingChange}
+                />
+              </div>
+              <TextField
+                id="filled-textarea"
+                label="Your Review Text"
+                placeholder="Write your thoughts about this product here."
+                multiline
+                variant="filled"
+                rows="3"
+                value={review}
+                onChange={handleReviewChange}
+              />
+              <div style={{ ...styles.wrapper, justifyContent: "flex-end" }}>
+                <Button
+                  size="large"
+                  variant="contained"
+                  sx={{
+                    borderRadius: "0px 0px 5px 5px",
+                  }}
+                  onClick={handleReviewSubmit}
+                >
+                  Submit Review
+                </Button>
+              </div>
+            </div>
+
+            <div
+              style={{
                 marginTop: 20,
                 borderBottom: "1px solid rgb(0,0,0,0.2)",
               }}
             >
-              Other users reviews ({props.answers})
+              Other users reviews ({props.reviews})
             </div>
             <div style={styles.container}>
               {props.reviewData.map((element) => (
@@ -282,9 +357,11 @@ const TabbedPane = (props) => {
                     readOnly
                   />
                   <div style={{ textAlign: "justify" }}>
-                    By {element.reviewer},
+                    By {element.reviewerName},
                   </div>
-                  <div style={{ textAlign: "justify" }}>{element.review}</div>
+                  <div style={{ textAlign: "justify" }}>
+                    {element.reviewText}
+                  </div>
                   <span
                     style={{
                       marginTop: 10,
@@ -331,7 +408,7 @@ const TabbedPane = (props) => {
                 sx={{
                   borderRadius: "0px 0px 5px 5px",
                 }}
-                onClick={handleSubmit}
+                onClick={handleQASubmit}
               >
                 ASK QUESTION
               </Button>
@@ -344,7 +421,6 @@ const TabbedPane = (props) => {
             >
               Other questions which have been answered ({props.answers})
             </div>
-            {console.log(props.questionAnswerData)}
             {props.questionAnswerData.length !== 0 ? (
               props.questionAnswerData.map((element) => (
                 <div
@@ -378,7 +454,8 @@ const TabbedPane = (props) => {
                           color: "rgba(0,0,0, 0.5)",
                         }}
                       >
-                        {element.questioner} asked on {element.date.slice(0,10)}.
+                        {element.questioner} asked on{" "}
+                        {element.date.slice(0, 10)}.
                       </span>
                     </div>
                   </span>

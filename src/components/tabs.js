@@ -525,7 +525,6 @@ const styles = {
     fontSize: 18,
     display: "flex",
     flexDirection: "column",
-    // background: '#c5f5f5',
   },
   ratingBar: {
     width: 100,

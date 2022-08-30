@@ -12,6 +12,8 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Toolbar from "@mui/material/Toolbar";
+import { useNavigate } from "react-router-dom";
+import Rating from "@mui/material/Rating";
 
 import Colors from "../res/colors";
 import Icons from "../res/icons";
@@ -21,6 +23,8 @@ import { TabPanel } from "../components/tabs";
 const ProductUpdatePage = () => {
   const userId = localStorage.getItem("userId");
   const productId = window.location.href.split("?")[1];
+
+  let navigate = useNavigate();
 
   const [deals, setDeals] = React.useState("");
   const [title, setTitle] = React.useState("");
@@ -36,6 +40,15 @@ const ProductUpdatePage = () => {
 
   const [questionAnswerData, setQuestionAnswerData] = React.useState([]);
   const [answers, setAnswers] = React.useState(0);
+
+  const [reviewData, setReviewData] = React.useState([]);
+  const [reviewsRating5, setReviewsRating5] = React.useState(0);
+  const [reviewsRating4, setReviewsRating4] = React.useState(0);
+  const [reviewsRating3, setReviewsRating3] = React.useState(0);
+  const [reviewsRating2, setReviewsRating2] = React.useState(0);
+  const [reviewsRating1, setReviewsRating1] = React.useState(0);
+  const [rating, setRating] = React.useState(0);
+  const [validReviewers, setValidReviewers] = React.useState([]);
 
   let [valid, setValid] = React.useState(true);
 
@@ -54,12 +67,18 @@ const ProductUpdatePage = () => {
       .catch((error) => null);
   };
 
+  const getReviewDataById = (productId) => {
+    return axios
+      .get(`http://localhost:5000/products/review/${productId}`)
+      .then((response) => response.data)
+      .catch((error) => null);
+  };
+
   async function initializeProductData(productId) {
     const productInfo = await getProductInfoById(productId);
     if (productInfo === null) {
       alert("Error: Unable to access server.");
     } else {
-      setDeals(productInfo.deals);
       setTitle(productInfo.title);
       setPrice(productInfo.price);
       setQuantity(productInfo.quantity);
@@ -81,6 +100,10 @@ const ProductUpdatePage = () => {
         setSpecification(productInfo.specification);
       }
 
+      if (productInfo.deals !== undefined) {
+        setDeals(productInfo.deals);
+      }
+
       setImage(productInfo.image);
     }
 
@@ -91,12 +114,25 @@ const ProductUpdatePage = () => {
       setQuestionAnswerData(questionAnswer.questionAnswerData.reverse());
       setAnswers(questionAnswer.answers);
     }
+
+    const review = await getReviewDataById(productId);
+    setValidReviewers(review.validReviewers);
+    setReviewsRating5(review.reviewsRating5);
+    setReviewsRating4(review.reviewsRating4);
+    setReviewsRating3(review.reviewsRating3);
+    setReviewsRating2(review.reviewsRating2);
+    setReviewsRating1(review.reviewsRating1);
+    setRating(review.rating);
+
+    if (review.reviewData.length !== 0) {
+      setReviewData(review.reviewData.reverse());
+    }
   }
 
   React.useEffect(() => {
     document.title = "BOSS - Product Page";
     if (productId === undefined) {
-      window.location = "/admin";
+      navigate("/products/?add:");
     } else {
       initializeProductData(productId); //wouldn't work without async await?
     }
@@ -157,14 +193,6 @@ const ProductUpdatePage = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const productPicSelected =
-      formData.get("productPic0").name !== "" ||
-      formData.get("productPic1").name !== "" ||
-      formData.get("productPic2").name !== "" ||
-      formData.get("productPic3").name !== "" ||
-      formData.get("productPic4").name !== "" ||
-      formData.get("productPic5").name !== "" ||
-      formData.get("productPic6").name !== "";
     if (
       title.trim() !== "" &&
       category.trim() !== "" &&
@@ -173,8 +201,7 @@ const ProductUpdatePage = () => {
       price !== "" &&
       Number(price) >= 0 &&
       quantity !== "" &&
-      Number(quantity) >= 0 &&
-      productPicSelected
+      Number(quantity) >= 0
     ) {
       formData.append("title", title);
       formData.append("category", category.toLowerCase());
@@ -187,8 +214,8 @@ const ProductUpdatePage = () => {
       formData.append("discountPrice", discountPrice);
       formData.append("tags", tags);
       axios({
-        method: "post",
-        url: `http://localhost:5000/products/add`,
+        method: "put",
+        url: `http://localhost:5000/products/update/${productId}`,
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
       }).then(
@@ -196,19 +223,39 @@ const ProductUpdatePage = () => {
           console.log(res.data);
           console.log("Res");
           setValid(true);
-          alert("Successfully Added Product.");
+          alert("Successfully Updated Product.");
         },
         (err) => {
           setValid(false);
-          alert("Product creation was unsuccessful.\nError: " + err);
+          alert("Product update was unsuccessful.\nError: " + err);
         }
       );
     } else {
       setValid(false);
-      if (!productPicSelected) {
-        alert("Please select an image.");
-      }
     }
+  };
+
+  const handleAnswerSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const reply = {
+      answer: formData.get("answer"),
+      questionId: formData.get("questionId"),
+    };
+    console.log("formData");
+    console.log(reply.questionId);
+    console.log(reply.answer);
+    axios
+      .put(`http://localhost:5000/products/addAnswer/${productId}`, reply)
+      .then(
+        (res) => {
+          navigate("/products/?add:");
+          console.log(res.data);
+        },
+        (err) => {
+          alert("Question was not submitted.\nError: " + err);
+        }
+      );
   };
 
   //TabbedPane
@@ -225,7 +272,7 @@ const ProductUpdatePage = () => {
 
   const handleQuestionSubmit = (event) => {
     event.preventDefault();
-    const questionAnswerData = {
+    const questionData = {
       userName: "BIRA Builders and Suppliers",
       userId: userId,
       question: question,
@@ -234,11 +281,11 @@ const ProductUpdatePage = () => {
       axios
         .put(
           `http://localhost:5000/products/addQuestion/${productId}`,
-          questionAnswerData
+          questionData
         )
         .then(
           (res) => {
-            window.location.reload();
+            navigate("/products/?add:");
             console.log(res.data);
           },
           (err) => {
@@ -249,11 +296,11 @@ const ProductUpdatePage = () => {
       axios
         .post(
           `http://localhost:5000/products/createQuestionAnswer/${productId}`,
-          questionAnswerData
+          questionData
         )
         .then(
           (res) => {
-            window.location.reload();
+            navigate("/products/?add:");
             console.log(res.data);
           },
           (err) => {
@@ -265,7 +312,7 @@ const ProductUpdatePage = () => {
 
   return (
     <div id="root" style={styles.root}>
-      <Toolbar/>
+      <Toolbar />
       <div style={styles.container}>
         <div style={{ ...styles.control, flex: 0.5 }}>
           <span
@@ -697,6 +744,276 @@ const ProductUpdatePage = () => {
             </div>
           </div>
         </TabPanel>
+
+        <TabPanel value={tabValue} index={1}>
+          <div
+            style={styles.tabPanel}
+          >
+            <div
+              style={{
+                padding: 20,
+                borderRadius: 3,
+                fontSize: 18,
+                display: "flex",
+                flexDirection: "column",
+                width: "100%",
+              }}
+            >
+              <div
+                style={{
+                  ...{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    width: "100%",
+                  },
+                  width: "70vw",
+                }}
+              >
+                <div
+                  style={{
+                    padding: 20,
+                    borderRadius: 3,
+                    fontSize: 18,
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <div>
+                    <span style={{ fontSize: 30, color: "rgba(0,0,0,0.5)" }}>
+                      <span style={{ fontSize: 45, color: "rgba(0,0,0,1)" }}>
+                        {rating}
+                      </span>
+                      /5
+                    </span>
+                  </div>
+                  <Rating
+                    name="half-rating-read"
+                    defaultValue={0}
+                    value={rating}
+                    precision={0.5}
+                    size={"large"}
+                    readOnly
+                  />
+                  <span style={{ fontSize: 16, color: "rgba(0,0,0,0.7)" }}>
+                    {"\u00A0"}
+                    {reviewData.length} Reviews
+                  </span>
+                </div>
+                <div
+                  style={{
+                    ...{
+                      padding: 20,
+                      borderRadius: 3,
+                      fontSize: 18,
+                      display: "flex",
+                      flexDirection: "column",
+                    },
+                    marginTop: 10,
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      width: "100%",
+                    }}
+                  >
+                    <Rating
+                      name="read-only"
+                      value={5}
+                      readOnly
+                      size={"small"}
+                    />
+                    <div style={styles.ratingBar}>
+                      <div
+                        style={{
+                          ...styles.ratingIndicator,
+                          width: reviewsRating5,
+                        }}
+                      ></div>
+                    </div>
+                    <span style={{ fontSize: 12, marginLeft: 15 }}>
+                      {reviewsRating5}
+                    </span>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      width: "100%",
+                    }}
+                  >
+                    <Rating
+                      name="read-only"
+                      value={4}
+                      readOnly
+                      size={"small"}
+                    />
+                    <div style={styles.ratingBar}>
+                      <div
+                        style={{
+                          ...styles.ratingIndicator,
+                          width: reviewsRating4,
+                        }}
+                      ></div>
+                    </div>
+                    <span style={{ fontSize: 12, marginLeft: 15 }}>
+                      {reviewsRating4}
+                    </span>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      width: "100%",
+                    }}
+                  >
+                    <Rating
+                      name="read-only"
+                      value={3}
+                      readOnly
+                      size={"small"}
+                    />
+                    <div style={styles.ratingBar}>
+                      <div
+                        style={{
+                          ...styles.ratingIndicator,
+                          width: reviewsRating3,
+                        }}
+                      ></div>
+                    </div>
+                    <span style={{ fontSize: 12, marginLeft: 15 }}>
+                      {reviewsRating3}
+                    </span>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      width: "100%",
+                    }}
+                  >
+                    <Rating
+                      name="read-only"
+                      value={2}
+                      readOnly
+                      size={"small"}
+                    />
+                    <div style={styles.ratingBar}>
+                      <div
+                        style={{
+                          ...styles.ratingIndicator,
+                          width: reviewsRating2,
+                        }}
+                      ></div>
+                    </div>
+                    <span style={{ fontSize: 12, marginLeft: 15 }}>
+                      {reviewsRating2}
+                    </span>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      width: "100%",
+                    }}
+                  >
+                    <Rating
+                      name="read-only"
+                      value={1}
+                      readOnly
+                      size={"small"}
+                    />
+                    <div style={styles.ratingBar}>
+                      <div
+                        style={{
+                          ...styles.ratingIndicator,
+                          width: reviewsRating1,
+                        }}
+                      ></div>
+                    </div>
+                    <span style={{ fontSize: 12, marginLeft: 15 }}>
+                      {reviewsRating1}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                style={{
+                  marginTop: 20,
+                  borderBottom: "1px solid rgb(0,0,0,0.2)",
+                }}
+              >
+                Users Reviews ({reviewData.length})
+              </div>
+              <div
+                style={{
+                  padding: 20,
+                  borderRadius: 3,
+                  fontSize: 18,
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                {reviewData.map((element) => (
+                  <div
+                    style={{
+                      ...{
+                        padding: 20,
+                        borderRadius: 3,
+                        fontSize: 18,
+                        display: "flex",
+                        flexDirection: "column",
+                      },
+                      borderBottom: "1px solid rgb(0,0,0,0.2)",
+                    }}
+                  >
+                    <Rating
+                      name="read-only"
+                      value={element.rating}
+                      precision={0.5}
+                      readOnly
+                    />
+                    <div style={{ textAlign: "justify" }}>
+                      By {element.reviewerName},
+                    </div>
+                    <div style={{ textAlign: "justify" }}>
+                      {element.reviewText}
+                    </div>
+                    <span
+                      style={{
+                        marginTop: 10,
+                        ...{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          width: "100%",
+                        },
+                        fontSize: 14,
+                        color: "#40aa40",
+                      }}
+                    >
+                      <img
+                        src={Icons.Verified}
+                        style={{ width: 20, height: 20, marginRight: 5 }}
+                        alt="Verified Icon"
+                      />
+                      Verified Purchase
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </TabPanel>
+
         <TabPanel value={tabValue} index={2}>
           <div style={styles.tabPanel}>
             <div
@@ -735,7 +1052,7 @@ const ProductUpdatePage = () => {
                   sx={{
                     borderRadius: "0px 0px 5px 5px",
                   }}
-                  onClick={handleSubmit}
+                  onClick={handleQuestionSubmit}
                 >
                   ASK QUESTION
                 </Button>
@@ -762,6 +1079,8 @@ const ProductUpdatePage = () => {
                       borderBottom: "1px solid rgb(0,0,0,0.2)",
                     }}
                   >
+                    {console.log("element")}
+                    {console.log(element)}
                     {console.log("element.answer")}
                     {console.log(element.answer)}
                     <span
@@ -769,7 +1088,6 @@ const ProductUpdatePage = () => {
                         display: "flex",
                         flexDirection: "row",
                         alignItems: "center",
-                        // background: '#f5f5c5',
                         width: "100%",
                         alignItems: "flex-start",
                       }}
@@ -811,8 +1129,6 @@ const ProductUpdatePage = () => {
                           width: "100%",
                           alignItems: "flex-start",
                           marginTop: 10,
-                          // display:
-                          //   element.answer === undefined ? "none" : "flex",
                         }}
                       >
                         <img
@@ -843,38 +1159,45 @@ const ProductUpdatePage = () => {
                         </div>
                       </span>
                     ) : (
-                      <div style={{marginTop: 15, width: "100%"}}>
-                        <TextField
-                          id="filled-textarea"
-                          label="Answer this users question."
-                          placeholder="Ask product related questions here."
-                          multiline
-                          variant="filled"
-                          rows="2"
-                          style={{width: "100%"}}
-                          value={question}
-                          onChange={handleQuestionChange}
-                        />
-                        <div
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            alignItems: "center",
-                            width: "100%",
-                            justifyContent: "flex-end",
-                          }}
-                        >
-                          <Button
-                            size="large"
-                            variant="contained"
-                            sx={{
-                              borderRadius: "0px 0px 5px 5px",
+                      <div style={{ marginTop: 15, width: "100%" }}>
+                        <form onSubmit={handleAnswerSubmit} method="put">
+                          <TextField
+                            id="answer"
+                            label="Answer"
+                            placeholder="Give your reply here."
+                            multiline
+                            variant="filled"
+                            rows="2"
+                            style={{ width: "100%" }}
+                            name="answer"
+                            className="answer"
+                          />
+                          <TextField
+                            name="questionId"
+                            value={element._id}
+                            style={{ display: "none" }}
+                          />
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              alignItems: "center",
+                              width: "100%",
+                              justifyContent: "flex-end",
                             }}
-                            onClick={handleSubmit}
                           >
-                            Give Answer
-                          </Button>
-                        </div>
+                            <Button
+                              size="large"
+                              variant="contained"
+                              sx={{
+                                borderRadius: "0px 0px 5px 5px",
+                              }}
+                              type="submit"
+                            >
+                              Give Answer
+                            </Button>
+                          </div>
+                        </form>
                       </div>
                     )}
 
@@ -984,6 +1307,20 @@ const styles = {
     background: "#FFF",
     borderRadius: 3,
     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+  },
+  ratingBar: {
+    width: 100,
+    height: 10,
+    // border: '1px solid black',
+    marginLeft: 15,
+    display: "flex",
+    justifyContent: "flex-start",
+    background: "rgba(0,0,0, 0.15)",
+    boxShadow: "0px 2px 2px rgba(0, 0, 0, 0.25)",
+  },
+  ratingIndicator: {
+    height: "100%",
+    background: "#FAAF20",
   },
 };
 

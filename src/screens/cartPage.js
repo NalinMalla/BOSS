@@ -20,7 +20,7 @@ const CartPage = () => {
   const userId = localStorage.getItem("userId");
   const userCart = JSON.parse(localStorage.getItem("userCart")); 
 
-  const getProductInfoById = (productId) => {
+  const getProductInfoById = async (productId) => {
     const ApiURL = `http://localhost:5000/products/${productId}`;
     return axios
       .get(ApiURL)
@@ -28,23 +28,15 @@ const CartPage = () => {
       .catch((error) => null);
   };
 
-  function initializeProductData(userCart) {
-    var tempProducts = [];
-    userCart.forEach((element) => {
-      getProductInfoById(element.productId)
-        .then((response) => {
-          console.log("response");
-          console.log(response);
-          if (response !== null) {
-            response = {...response, count: element.count};
-            tempProducts.push(response);
-          }
-        })
-        .catch((err) => {
-          console.log("Error", err);
-        });
-    });
-    setProducts(tempProducts);
+  async function initializeProductData(userCart) {
+    const tempProducts = [];
+    for(const uc of userCart){
+      const p = await getProductInfoById(uc.productId);
+      if(p){
+        tempProducts.push({...p, count: uc.count });
+      }
+    }
+    return tempProducts;
   }
 
   useEffect(() => {
@@ -52,10 +44,13 @@ const CartPage = () => {
     if (userId === undefined || userId === null) {
       window.location = "/signIn";
     } else {
-      initializeProductData(userCart);
-      setTimeout(() => {
+      console.log("state change");
+      const fetchProds = async () => {
+        const updateProds = await initializeProductData(userCart);
+        setProducts([...updateProds]);
         setIsLoaded(true);
-      }, 2000);
+      }
+      fetchProds();
     }
   }, []);
 

@@ -31,9 +31,9 @@ const CartPage = () => {
   async function initializeProductData(userCart) {
     const tempProducts = [];
     for(const uc of userCart){
-      const p = await getProductInfoById(uc.productId);
-      if(p){
-        tempProducts.push({...p, count: uc.count });
+      const product = await getProductInfoById(uc.productId);
+      if(product){
+        tempProducts.push({...product, count: uc.count });
       }
     }
     return tempProducts;
@@ -44,10 +44,9 @@ const CartPage = () => {
     if (userId === undefined || userId === null) {
       window.location = "/signIn";
     } else {
-      console.log("state change");
       const fetchProds = async () => {
-        const updateProds = await initializeProductData(userCart);
-        setProducts([...updateProds]);
+        const updateProducts = await initializeProductData(userCart);
+        setProducts([...updateProducts]);
         setIsLoaded(true);
       }
       fetchProds();

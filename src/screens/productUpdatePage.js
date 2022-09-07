@@ -1087,7 +1087,7 @@ const ProductUpdatePage = () => {
                       style={{
                         display: "flex",
                         flexDirection: "row",
-                        alignItems: "center",
+                        // alignItems: "center",
                         width: "100%",
                         alignItems: "flex-start",
                       }}
@@ -1125,7 +1125,7 @@ const ProductUpdatePage = () => {
                         style={{
                           display: "flex",
                           flexDirection: "row",
-                          alignItems: "center",
+                          // alignItems: "center",
                           width: "100%",
                           alignItems: "flex-start",
                           marginTop: 10,
@@ -1203,9 +1203,9 @@ const ProductUpdatePage = () => {
 
                     <span
                       style={{
-                        display: "flex",
+                        // display: "flex",
                         flexDirection: "row",
-                        alignItems: "center",
+                        // alignItems: "center",
                         // background: '#f5f5c5',
                         width: "100%",
                         alignItems: "flex-start",

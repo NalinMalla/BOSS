@@ -10,7 +10,6 @@ import OrderList from "../components/orderList";
 import Colors from "../res/colors";
 
 const UserOrdersPage = (props) => {
-
   const [orders, setOrders] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -32,32 +31,35 @@ const UserOrdersPage = (props) => {
       .catch((error) => null);
   };
 
-  function initializeOrderData(userCart) {
-    getOrdersByUserId(userId).then((response) => {
+  async function initializeProductData(orderItems) {
+    const tempProducts = [];
+    for (const item of orderItems) {
+      const product = await getProductInfoById(item._id);
+      if (product) {
+        tempProducts.push({ ...product, count: item.count });
+      }
+    }
+    return tempProducts;
+  }
+
+  function initializeOrderData() {
+    getOrdersByUserId(userId).then(async (response) => {
       if (response !== null) {
         console.log("response");
         console.log(response);
         let tempOrders = new Array();
 
-        response.forEach((order) => {
+        for (const order of response) {
           let tempProducts = [];
-          order.products.forEach((product) => {
-            getProductInfoById(product._id)
-              .then((response) => {
-                if (response !== null) {
-                  response = { ...response, count: product.count };
-                  tempProducts.push(response);
-                }
-              })
-              .catch((err) => {
-                console.log("Error", err);
-              });
-          });
-
-          order.products = tempProducts;
+          const products = await initializeProductData(order.products);
+          if (products) {
+            tempProducts.push({ ...products });
+          }
+          order.products = products;
           tempOrders.push(order);
-        });
+        }
         setOrders(tempOrders.reverse());
+        setIsLoaded(true);
       }
     });
   }
@@ -68,9 +70,6 @@ const UserOrdersPage = (props) => {
       window.location = "/signIn";
     } else {
       initializeOrderData(userId);
-      setTimeout(() => {
-        setIsLoaded(true);
-      }, 5000);
     }
   }, []);
 
@@ -108,41 +107,38 @@ const UserOrdersPage = (props) => {
         >
           {!isLoaded ? (
             <div
-            style={{
-              display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: "100%",
-                  height: "100%",
-              padding: 20,
-              paddingTop: 60,
-              paddingBottom: 40,
-              marginTop: 32
-            }}
-          >
-            <Audio
-              height="100"
-              width="100"
-              radius="12"
-              color={Colors.primary}
-              ariaLabel="three-dots-loading"
-              wrapperStyle
-              wrapperClass
-            />
-  
-            <div style={{ fontSize: 22, fontWeight: 500, marginTop: 10 }}>
-              Loading...
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                height: "100%",
+                padding: 20,
+                paddingTop: 60,
+                paddingBottom: 40,
+                marginTop: 32,
+              }}
+            >
+              <Audio
+                height="100"
+                width="100"
+                radius="12"
+                color={Colors.primary}
+                ariaLabel="three-dots-loading"
+                wrapperStyle
+                wrapperClass
+              />
+
+              <div style={{ fontSize: 22, fontWeight: 500, marginTop: 10 }}>
+                Loading...
+              </div>
             </div>
-          </div>
           ) : (
-            orders.map((element) => (
-            <OrderList order={element} />
-            ))
+            orders.map((element) => <OrderList order={element} />)
           )}
         </div>
       </div>
-
     </div>
   );
 };

@@ -29,22 +29,33 @@ const TaggedItemPage = (props) => {
       .catch((error) => null);
   };
 
-  function initializeProductData(userTaggedItem) {
-    var tempProducts = [];
-    userTaggedItem.forEach((element) => {
-      getProductInfoById(element)
-        .then((response) => {
-          if (response !== null) {
-            console.log("response");
-            console.log(response);
-            tempProducts.push(response);
-          }
-        })
-        .catch((err) => {
-          console.log("Error", err);
-        });
-    });
-    setProducts(tempProducts);
+  // function initializeProductData(userTaggedItem) {
+  //   var tempProducts = [];
+  //   userTaggedItem.forEach((element) => {
+  //     getProductInfoById(element)
+  //       .then((response) => {
+  //         if (response !== null) {
+  //           console.log("response");
+  //           console.log(response);
+  //           tempProducts.push(response);
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         console.log("Error", err);
+  //       });
+  //   });
+  //   setProducts(tempProducts);
+  // }
+
+  async function initializeProductData(userTaggedItem) {
+    const tempProducts = [];
+    for(const item of userTaggedItem){
+      const product = await getProductInfoById(item);
+      if(product){
+        tempProducts.push({...product});
+      }
+    }
+    return tempProducts;
   }
 
   useEffect(() => {
@@ -52,10 +63,16 @@ const TaggedItemPage = (props) => {
     if (userId === undefined || userId === null) {
       window.location = "/signIn";
     } else {
-      setTimeout(() => {
+      // setTimeout(() => {
+      //   setIsLoaded(true);
+      // }, 2000);
+      // initializeProductData(userTaggedItem);
+      const fetchProds = async () => {
+        const updateProducts = await initializeProductData(userTaggedItem);
+        setProducts([...updateProducts]);
         setIsLoaded(true);
-      }, 2000);
-      initializeProductData(userTaggedItem);
+      }
+      fetchProds();
     }
   }, []);
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route,Navigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 
@@ -74,6 +74,7 @@ const Router = () => {
           <Route path="product/add" element={<ProductAddPage />} />
           <Route path="product/update" element={<ProductUpdatePage />} />
           <Route path="products" element={<AdminProducts />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>
       <CopyrightWaterMark sx={{ pt: 4, pb: 2 }}/>
@@ -111,6 +112,7 @@ const Router = () => {
         />
         <Route path="profile/orders" element={<OrdersPage />} />
         <Route path="profile/taggedItem" element={<TaggedItemPage />} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
 
       {window.location.href !== "http://localhost:3000/signUp" &&

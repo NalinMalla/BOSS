@@ -6,10 +6,10 @@ import ExchangeOffer1 from './offers/exchangeOffer1.jpg';
 import MirrorGreen from './mirrorGreen.jpg';
 import MirrorWhite from './mirrorWhiteS.jpg';
 import MirrorBage from './mirrorBage.jpg';
-import Decoration from './decorationM.jpg';
+import Decoration from './decorationM.webp';
 import OnlineShopping from './offers/onlineShopping.jpeg';
 import Prefab from './prefab.jpeg';
-import RoomARWhite from './roomARWhite.jpg';
+import RoomARWhite from './roomARWhite.webp';
 import RoomBrown from './roomBrown.jpg';
 import RoomGreen from './roomGreen.jpg';
 import RoomLightBrown from './roomLightBrown.jpg';
@@ -19,10 +19,10 @@ import SofaBrown from './sofaS.jpg';
 import Table from './tableS.jpg';
 import Wardrobe from './wardrobeS.jpg';
 import Window from './windowS.jpg';
-import HomeDesign from './designs/homeDesign.svg';
+import HomeDesign from './designs/homeDesign.webp';
 import WhyDiwaliOffer from './offers/whyDiwaliOffer.jpg';
-import FurnitureManiaOffer from './offers/furnitureManiaOffer.jpg';
-import BigSaleOffer from './offers/bigSaleOffer.png';
+import FurnitureManiaOffer from './offers/furnitureManiaOffer.webp';
+import BigSaleOffer from './offers/bigSaleOffer.webp';
 
 const Images= {
   Bed: Bed,

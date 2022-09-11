@@ -45,9 +45,7 @@ const UserOrdersPage = (props) => {
   function initializeOrderData() {
     getOrdersByUserId(userId).then(async (response) => {
       if (response !== null) {
-        console.log("response");
-        console.log(response);
-        let tempOrders = new Array();
+        let tempOrders = [];
 
         for (const order of response) {
           let tempProducts = [];
@@ -73,8 +71,8 @@ const UserOrdersPage = (props) => {
     }
   }, []);
 
-  console.log("orders");
-  console.log(orders);
+  // console.log("orders");
+  // console.log(orders);
 
   return (
     <div id="root" style={styles.root}>

@@ -19,7 +19,7 @@ const SearchPage = () => {
   const searchType = category.split("/")[0];
   console.log("searchType");
   console.log(searchType);
-  console.log(searchType==="hotDeals");
+  console.log(searchType === "hotDeals");
 
   let searchText;
   if (search.split(":")[1] !== undefined && search.split(":")[1] !== "") {
@@ -39,17 +39,13 @@ const SearchPage = () => {
     let ApiURL;
     if (searchType === "categories") {
       ApiURL = `http://localhost:5000/products/${search.split(":")[0]}`;
-    }
-    
-    else if(searchType==="hotDeals"){
+    } else if (searchType === "hotDeals") {
       console.log("in hotDeals");
       return axios
-      .get(`http://localhost:5000/products/all/${searchType}`)
-      .then((response) => response.data)
-      .catch((error) => null);
-    }
-
-    else {
+        .get(`http://localhost:5000/products/all/${searchType}`)
+        .then((response) => response.data)
+        .catch((error) => null);
+    } else {
       ApiURL = `http://localhost:5000/products/all/none`;
     }
 
@@ -63,16 +59,21 @@ const SearchPage = () => {
     let tempProducts = [];
     getProductsInfo()
       .then((response) => {
-        if (response !== null) {
-          response.forEach((product) => {
+        if (response) {
+          for (const product of response) {
             if (
               product.discountPrice <= maxPrice &&
               product.discountPrice >= minPrice
             ) {
+              console.log("product");
+              console.log(product);
               if (searchText !== undefined) {
                 let flag = false;
                 searchText.forEach((searchWord) => {
-                  if (product.tags.split("#").includes(searchWord) || product.title.split(" ").includes(searchWord)) {
+                  if (
+                    product.tags.split("#").includes(searchWord) ||
+                    product.title.split(" ").includes(searchWord)
+                  ) {
                     flag = true;
                   }
                 });
@@ -83,22 +84,47 @@ const SearchPage = () => {
                 tempProducts.push(product);
               }
             }
-          });
+          }
+          setProducts(tempProducts);
+          setIsLoaded(true);
+
+          //   response.forEach((product) => {
+          //     if (
+          //       product.discountPrice <= maxPrice &&
+          //       product.discountPrice >= minPrice
+          //     ) {
+          //       if (searchText !== undefined) {
+          //         let flag = false;
+          //         searchText.forEach((searchWord) => {
+          //           if (
+          //             product.tags.split("#").includes(searchWord) ||
+          //             product.title.split(" ").includes(searchWord)
+          //           ) {
+          //             flag = true;
+          //           }
+          //         });
+          //         if (flag) {
+          //           tempProducts.push(product);
+          //         }
+          //       } else {
+          //         tempProducts.push(product);
+          //       }
+          //     }
+          //   });
         }
       })
       .catch((err) => {
         console.log("Error", err);
       });
-    setProducts(tempProducts);
   }
 
   useEffect(() => {
     document.title = "BOSS - Search Page";
-    setIsLoaded(false);
+    // setIsLoaded(false);
     initializeProductData();
-    setTimeout(() => {
-      setIsLoaded(true);
-    }, 2000);
+    // setTimeout(() => {
+    //   setIsLoaded(true);
+    // }, 2000);
   }, [minPrice, maxPrice]);
 
   return (

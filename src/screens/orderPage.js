@@ -23,7 +23,7 @@ const OrderPage = (props) => {
   console.log(window.location.href.split("?")[1]);
   const orderId = window.location.href.split("?")[1];
 
-  const [order, setOrder] = useState([]);
+  const [order, setOrder] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
   const [status, setStatus] = useState("");
@@ -49,14 +49,13 @@ const OrderPage = (props) => {
       .catch((error) => null);
   };
 
-  function initializeOrderData() {
+  async function initializeOrderData() {
     getOrderId(orderId).then((userOrder) => {
       if (userOrder !== null) {
         let tempProducts = [];
         setStatus(userOrder.status);
-        console.log("userOrder");
-        console.log(userOrder);
-        userOrder.products.forEach((product) => {
+
+        for (const product of userOrder.products) {
           getProductInfoById(product._id)
             .then((response) => {
               if (response !== null) {
@@ -67,10 +66,15 @@ const OrderPage = (props) => {
             .catch((err) => {
               console.log("Error", err);
             });
-        });
+        }
 
         userOrder.products = tempProducts;
         setOrder(userOrder);
+        
+        setTimeout(() => {
+          setIsLoaded(true);
+        }, 2000);
+        // setIsLoaded(true);
       }
     });
   }
@@ -110,13 +114,17 @@ const OrderPage = (props) => {
   useEffect(() => {
     document.title = "BOSS - Order Management";
     initializeOrderData(orderId);
-    setTimeout(() => {
-      setIsLoaded(true);
-    }, 2000);
   }, []);
 
-  console.log("order");
-  console.log(order);
+  // useEffect(() => {
+
+  //   console.log(order == null);
+  //   if(order)
+  //   {
+  //     setIsLoaded(true);
+  //   }
+  // }, [order]);
+
   console.log("status");
   console.log(status);
 

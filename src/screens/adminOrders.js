@@ -20,18 +20,6 @@ import { useNavigate } from "react-router-dom";
 
 import Colors from "../res/colors";
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
-
 export default function AdminOrders() {
   const [orders, setOrders] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -63,13 +51,11 @@ export default function AdminOrders() {
   function initializeOrderData() {
     getOrdersByStatus(status).then((response) => {
       if (response !== null) {
-        console.log("response");
-        console.log(response);
-        let tempOrders = new Array();
+        let tempOrders = [];
 
-        response.forEach((order) => {
+        for (const order of response) {
           let tempProducts = [];
-          order.products.forEach((product) => {
+          for (const product of order.products){
             getProductInfoById(product._id)
               .then((response) => {
                 if (response !== null) {
@@ -80,12 +66,34 @@ export default function AdminOrders() {
               .catch((err) => {
                 console.log("Error", err);
               });
-          });
-
+          }
           order.products = tempProducts;
           tempOrders.push(order);
-        });
+        }
         setOrders(tempOrders.reverse());
+        console.log("orders");
+        console.log(orders);
+        setIsLoaded(true);
+
+        // response.forEach((order) => {
+        //   let tempProducts = [];
+        //   order.products.forEach((product) => {
+        //     getProductInfoById(product._id)
+        //       .then((response) => {
+        //         if (response !== null) {
+        //           response = { ...response, count: product.count };
+        //           tempProducts.push(response);
+        //         }
+        //       })
+        //       .catch((err) => {
+        //         console.log("Error", err);
+        //       });
+        //   });
+
+        //   order.products = tempProducts;
+        //   tempOrders.push(order);
+        // });
+        // setOrders(tempOrders.reverse());
       }
     });
   }
@@ -93,14 +101,14 @@ export default function AdminOrders() {
   useEffect(() => {
     document.title = "BOSS - Order Management Page";
     initializeOrderData();
-    setTimeout(() => {
-      setIsLoaded(true);
-    }, 2000);
+    // setTimeout(() => {
+    //   setIsLoaded(true);
+    // }, 2000);
   }, [status]);
 
-  console.log("orders");
-  console.log(orders);
-  console.log(status);
+  // console.log("orders");
+  // console.log(orders);
+  // console.log(status);
 
   return !isLoaded ? (
     <div

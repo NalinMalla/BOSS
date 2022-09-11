@@ -54,7 +54,7 @@ const AdminProducts = () => {
     getProductsInfo()
       .then((response) => {
         if (response !== null) {
-          response.forEach((product) => {
+          for (const product of response) {
             if (
               product.discountPrice <= maxPrice &&
               product.discountPrice >= minPrice
@@ -76,22 +76,47 @@ const AdminProducts = () => {
                 tempProducts.push(product);
               }
             }
-          });
+          }
+          setProducts(tempProducts);
+          setIsLoaded(true);
+
+          // response.forEach((product) => {
+          //   if (
+          //     product.discountPrice <= maxPrice &&
+          //     product.discountPrice >= minPrice
+          //   ) {
+          //     if (searchText !== undefined) {
+          //       let flag = false;
+          //       searchText.forEach((searchWord) => {
+          //         if (
+          //           product.tags.split("#").includes(searchWord) ||
+          //           product.title.split(" ").includes(searchWord)
+          //         ) {
+          //           flag = true;
+          //         }
+          //       });
+          //       if (flag) {
+          //         tempProducts.push(product);
+          //       }
+          //     } else {
+          //       tempProducts.push(product);
+          //     }
+          //   }
+          // });
         }
       })
       .catch((err) => {
         console.log("Error", err);
       });
-    setProducts(tempProducts);
   }
 
   useEffect(() => {
     document.title = "BOSS - Search Page";
-    setIsLoaded(false);
+    // setIsLoaded(false);
     initializeProductData();
-    setTimeout(() => {
-      setIsLoaded(true);
-    }, 2000);
+    // setTimeout(() => {
+    //   setIsLoaded(true);
+    // }, 2000);
   }, [minPrice, maxPrice]);
 
   return (

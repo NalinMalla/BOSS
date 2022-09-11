@@ -50,11 +50,12 @@ const CartPage = () => {
         setIsLoaded(true);
       }
       fetchProds();
+      console.log("products");
+      console.log(products);
     }
   }, []);
 
-  console.log("products");
-  console.log(products);
+
 
   return (
     <div id="root" style={styles.root}>

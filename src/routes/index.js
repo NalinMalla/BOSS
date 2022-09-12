@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { BrowserRouter, Routes, Route,Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 
@@ -63,22 +63,24 @@ const Router = () => {
   console.log(isAdmin);
 
   return isAdmin ? (
-    <BrowserRouter>
-      <div style={{ display: "flex" }}>
-        <AdminFrame />
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="logOut" element={<Logout />} />
-          <Route path="orders" element={<AdminOrders />} />
-          <Route path="order" element={<OrderPage />} />
-          <Route path="product/add" element={<ProductAddPage />} />
-          <Route path="product/update" element={<ProductUpdatePage />} />
-          <Route path="products" element={<AdminProducts />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </div>
-      <CopyrightWaterMark sx={{ pt: 4, pb: 2 }}/>
-    </BrowserRouter>
+    <div style={{height: "100vh"}}>
+      <BrowserRouter>
+        <div style={{ display: "flex" }}>
+          <AdminFrame />
+          <Routes>
+            {/* <Route path="/" element={<Dashboard />} /> */}
+            <Route path="logOut" element={<Logout />} />
+            <Route path="/" element={<AdminOrders />} />
+            <Route path="order" element={<OrderPage />} />
+            <Route path="product/add" element={<ProductAddPage />} />
+            <Route path="product/update" element={<ProductUpdatePage />} />
+            <Route path="products" element={<AdminProducts />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </div>
+        <CopyrightWaterMark sx={{ pt: 4, pb: 2}} />
+      </BrowserRouter>
+    </div>
   ) : (
     <BrowserRouter>
       {window.location.href !== "http://localhost:3000/signUp" &&

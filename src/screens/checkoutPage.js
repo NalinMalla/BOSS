@@ -8,7 +8,6 @@ import Checkout from "../components/checkout";
 import Colors from "../res/colors";
 
 const CheckoutPage = () => {
-
   const userCart = JSON.parse(localStorage.getItem("userCart"));
 
   const order = window.location.href.split("?")[1];
@@ -65,30 +64,35 @@ const CheckoutPage = () => {
 
   useEffect(() => {
     document.title = "BOSS - Checkout Page";
-    if (productId === "cart") {
-      console.log("Cart checkout");
-      initializeCartData(userCart);
-      setTimeout(() => {
-        setIsLoaded(true);
-      }, 2000);
-    } else {
-      if (
-        productId === "" ||
-        count === "" ||
-        productId === undefined ||
-        count === undefined
-      ) {
-        window.location = "/signIn";
+    if (userCart) {
+      if (productId === "cart") {
+        console.log("Cart checkout");
+        initializeCartData(userCart);
+        setTimeout(() => {
+          setIsLoaded(true);
+        }, 2000);
       } else {
-        console.log("Single product checkout");
-        if (products.length === 0) {
-          console.log("products.length === 0");
-          initializeProductData(productId);
-          setTimeout(() => {
-            setIsLoaded(true);
-          }, 2000);
+        if (
+          productId === "" ||
+          count === "" ||
+          productId === undefined ||
+          count === undefined
+        ) {
+          window.location = "/signIn";
+        } else {
+          console.log("Single product checkout");
+          if (products.length === 0) {
+            console.log("products.length === 0");
+            initializeProductData(productId);
+            setTimeout(() => {
+              setIsLoaded(true);
+            }, 2000);
+          }
         }
       }
+    }
+    else{
+      window.location = "/signIn";
     }
   }, []);
 

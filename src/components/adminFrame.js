@@ -107,16 +107,16 @@ export default function AdminFrame() {
             noWrap
             sx={{ flexGrow: 1 }}
           >
-            Dashboard
+            BIRA Online Sales System
           </Typography>
-          <IconButton color="inherit" style={{ marginRight: 10 }}>
+          {/* <IconButton color="inherit" style={{ marginRight: 10 }}>
             <Badge badgeContent={4} color="green">
               <NotificationsIcon />
             </Badge>
-          </IconButton>
+          </IconButton> */}
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open}>
+      <Drawer variant="permanent" open={open} style={{ boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",}}>
         <Toolbar
           sx={{
             display: "flex",
@@ -134,11 +134,17 @@ export default function AdminFrame() {
         <Divider />
         <List component="nav">
           {/* {mainListItems} */}
-          <ListItemButton onClick={()=>{navigate("/")}}>
+          {/* <ListItemButton onClick={()=>{navigate("/")}}>
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
+          </ListItemButton> */}
+           <ListItemButton onClick={()=>{navigate("/")}}>
+            <ListItemIcon>
+              <ShoppingCartIcon />
+            </ListItemIcon>
+            <ListItemText primary="Orders" />
           </ListItemButton>
 
           <ListItemButton onClick={()=>{navigate("/products/?add:")}}>
@@ -155,12 +161,7 @@ export default function AdminFrame() {
             <ListItemText primary="Add Products" />
           </ListItemButton>
 
-          <ListItemButton onClick={()=>{navigate("/orders")}}>
-            <ListItemIcon>
-              <ShoppingCartIcon />
-            </ListItemIcon>
-            <ListItemText primary="Orders" />
-          </ListItemButton>
+         
           
           {/* <ListItemButton>
             <ListItemIcon>

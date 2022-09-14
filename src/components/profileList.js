@@ -102,7 +102,7 @@ export default function ProfileList() {
         </ListItemButton>
       </Link>
 
-      <Link href="/profile/cancellations" underline="none" style={{ color: "#000" }}>
+      <Link href="/profile/orders/cancellations" underline="none" style={{ color: "#000" }}>
         <ListItemButton>
           <ListItemIcon>
             <CancelIcon style={{ height: 25, width: 25, marginTop: -2 }} />
@@ -111,7 +111,7 @@ export default function ProfileList() {
         </ListItemButton>
       </Link>
 
-      <Link href="/profile/returns" underline="none" style={{ color: "#000" }}>
+      <Link href="/profile/orders/returns" underline="none" style={{ color: "#000" }}>
         <ListItemButton>
           <ListItemIcon>
             <RestartAltIcon style={{ height: 25, width: 25, marginTop: -2 }} />

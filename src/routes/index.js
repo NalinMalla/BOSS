@@ -21,7 +21,7 @@ import OrdersPage from "../screens/userOrdersPage";
 import ProductAddPage from "../screens/productAddPage";
 import ProductUpdatePage from "../screens/productUpdatePage";
 import TaggedItemPage from "../screens/taggedItemPage";
-import Dashboard from "../screens/dashboard";
+// import Dashboard from "../screens/dashboard";
 import Header from "../components/header";
 import NavBar from "../components/navBar";
 import CustomModal from "../components/CustomModal";
@@ -31,6 +31,9 @@ import AdminFrame from "../components/adminFrame";
 import AdminOrders from "../screens/adminOrders";
 import AdminProducts from "../screens/adminProducts";
 import OrderPage from "../screens/orderPage";
+import OrderReturnPage from "../screens/userOrderReturnPage";
+import OrderCancelledPage from "../screens/userOrderCancelledPage";
+import ReviewPage from "../screens/userReviewPage";
 
 import Colors from "../res/colors";
 
@@ -113,6 +116,9 @@ const Router = () => {
           element={<ProfilePasswordReset />}
         />
         <Route path="profile/orders" element={<OrdersPage />} />
+        <Route path="profile/orders/returns" element={<OrderReturnPage />} />
+        <Route path="profile/orders/cancellations" element={<OrderCancelledPage />} />
+        <Route path="profile/reviews" element={<ReviewPage />} />
         <Route path="profile/taggedItem" element={<TaggedItemPage />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

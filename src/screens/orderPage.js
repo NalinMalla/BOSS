@@ -70,7 +70,7 @@ const OrderPage = (props) => {
 
         userOrder.products = tempProducts;
         setOrder(userOrder);
-        
+
         setTimeout(() => {
           setIsLoaded(true);
         }, 2000);
@@ -96,6 +96,77 @@ const OrderPage = (props) => {
                 )
                 .then((response) => {
                   console.log(response);
+                  axios
+                    .post(`http://localhost:5000/users/mail`, {
+                      subject: "Review Access Granted",
+                      to: order.address.email,
+                      html: `Thank you for your purchase. You can now review the products you bought in Order: ${order._id}.<br>- BIRA Builders & Suppliers`,
+                    })
+                    .then((res) => {
+                      console.log(res);
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                    });
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            });
+          }
+          if (status === "Processing") {
+            order.products.forEach((product) => {
+              axios
+                .put(
+                  `http://localhost:5000/products/updateInventory/${product._id}`,
+                  { count: product.count }
+                )
+                .then((response) => {
+                  console.log(response);
+
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            });
+          }
+          if (status === "Returned") {
+            order.products.forEach((product) => {
+              axios
+                .put(
+                  `http://localhost:5000/products/updateInventory/${product._id}`,
+                  { count: product.count, return: true }
+                )
+                .then((response) => {
+                  console.log(response);
+                  axios
+                  .post(`http://localhost:5000/users/mail`, {
+                    subject: "Order Returned Successfully",
+                    to: order.address.email,
+                    html: `The Order: ${order._id} was returned successfully. Thank you for shopping at BIRA.<br>- BIRA Builders & Suppliers`,
+                  })
+                  .then((res) => {
+                    console.log(res);
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            });
+          }
+          if (status === "Cancelled") {
+            order.products.forEach((product) => {
+              axios
+                .put(
+                  `http://localhost:5000/products/updateInventory/${product._id}`,
+                  { count: product.count, return: true }
+                )
+                .then((response) => {
+                  console.log(response);
+
                 })
                 .catch((error) => {
                   console.log(error);
@@ -127,6 +198,8 @@ const OrderPage = (props) => {
 
   console.log("status");
   console.log(status);
+  console.log("order");
+  console.log(order);
 
   return (
     <div id="root" style={styles.root}>

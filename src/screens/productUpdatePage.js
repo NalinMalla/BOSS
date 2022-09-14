@@ -323,7 +323,7 @@ const ProductUpdatePage = () => {
               fontWeight: 500,
             }}
           >
-            Create Product
+            Update Product
           </span>
           <Box
             component="form"

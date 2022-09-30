@@ -11,6 +11,7 @@ import Colors from "../res/colors";
 import Icons from "../res/icons";
 
 const Header = (props) => {
+  // console.log(localStorage.getItem("userTaggedItem").slice(1));
   const [userTaggedItem] = React.useState(
     localStorage.getItem("userId") !== "undefined" &&
       localStorage.getItem("userId") !== undefined &&
@@ -19,9 +20,13 @@ const Header = (props) => {
       localStorage.getItem("userTaggedItemId") !== null
       ? localStorage.getItem("userTaggedItem") === ""
         ? []
-        : localStorage.getItem("userTaggedItem").split(",")
+        : localStorage.getItem("userTaggedItem").slice(1).split(",")
       : []
   );
+
+  console.log("userTaggedItem");
+  console.log(userTaggedItem);
+
   const [userCart] = React.useState(
     localStorage.getItem("userId") !== "undefined" &&
       localStorage.getItem("userId") !== undefined &&
@@ -31,6 +36,13 @@ const Header = (props) => {
       ? JSON.parse(localStorage.getItem("userCart"))
       : []
   );
+
+  // React.useEffect(() => {
+  //   if(userTaggedItem[0] === "")
+  //   {
+  //     userTaggedItem.shift();
+  //   }
+  // }, [userTaggedItem])
 
   return (
     <div style={styles.root}>

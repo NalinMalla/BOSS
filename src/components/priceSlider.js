@@ -7,7 +7,7 @@ import FormControl from "@mui/material/FormControl";
 
 const minDistance = 5000;
 
-export default function PriceSlider() {
+export default function PriceSlider(props) {
   const [minValue, setMinValue] = React.useState(0);
   const [maxValue, setMaxValue] = React.useState(100000);
   const [value, setValue] = React.useState([minValue, maxValue]);
@@ -23,25 +23,31 @@ export default function PriceSlider() {
         setValue([clamped, clamped + minDistance]);
         setMinValue(clamped);
         setMaxValue(clamped + minDistance);
+        props.setMinValue(clamped);
+        props.setMaxValue(clamped + minDistance);
       } else {
         const clamped = Math.max(newValue[1], minDistance);
         setValue([clamped - minDistance, clamped]);
         setMinValue(clamped - minDistance);
         setMaxValue(clamped);
+        props.setMinValue(clamped - minDistance);
+        props.setMaxValue(clamped);
       }
     } else {
       setValue(newValue);
       setMinValue(newValue[0]);
       setMaxValue(newValue[1]);
+      props.setMinValue(newValue[0]);
+      props.setMaxValue(newValue[1]);
     }
   };
 
   const handleMinChange = (event, value) => {
     setMinValue(value);
-  }
+  };
   const handleMaxChange = (event, value) => {
     setMaxValue(value);
-  }
+  };
 
   return (
     <div
@@ -89,6 +95,7 @@ export default function PriceSlider() {
               <InputAdornment position="start">Rs.</InputAdornment>
             }
             size="small"
+            readOnly={true}
           />
         </FormControl>
         <div style={{ marginTop: 5, flex: 0.6 }}></div>
@@ -108,6 +115,7 @@ export default function PriceSlider() {
               <InputAdornment position="start">Rs.</InputAdornment>
             }
             size="small"
+            readOnly={true}
           />
         </FormControl>
       </div>

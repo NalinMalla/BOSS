@@ -12,73 +12,140 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import axios from "axios";
+import md5 from "md5";
 
-import Header from "../components/header";
-import NavBar from "../components/navBar";
-import SiteMap from "../components/siteMap";
-import Copyright from "../components/copyright";
-import SignIn from "../components/signIn";
-import CustomModal from "../components/CustomModal";
 import ProfileList from "../components/profileList";
+import ProfileHead from "../components/profileHead";
 
 import Colors from "../res/colors";
-import Images from "../res/images";
 
 const ProfilePage = () => {
-  const [openModal, setOpenModal] = React.useState(false);
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
+  const userId = localStorage.getItem("userId");
 
-  const [values, setValues] = React.useState({
-    currentPassword: "",
-    showCurrentPassword: false,
-    newPassword: "",
-    showNewPassword: false,
-    confirmNewPassword: "",
-    showConfirmNewPassword: false,
-  });
+  const [currentPassword, setCurrentPassword] = React.useState("");
+  const [showCurrentPassword, setShowCurrentPassword] = React.useState(false);
+  const [newPassword, setNewPassword] = React.useState("");
+  const [showNewPassword, setShowNewPassword] = React.useState(false);
+  const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
+  React.useEffect(() => {
+    document.title = "BOSS - Password Reset";
+    if (userId == null) {
+      window.location = "/signIn";
+    }
+  }, []);
+
+  const handleCurrentPasswordChange = (event) => {
+    setCurrentPassword(event.target.value);
+  };
+
+  const handleNewPasswordChange = (event) => {
+    setNewPassword(event.target.value);
+  };
+
+  const handleConfirmPasswordChange = (event) => {
+    setConfirmPassword(event.target.value);
   };
 
   const handleClickShowCurrentPassword = () => {
-    setValues({
-      ...values,
-      showCurrentPassword: !values.showCurrentPassword,
-    });
+    setShowCurrentPassword(!showCurrentPassword);
   };
 
   const handleClickShowNewPassword = () => {
-    setValues({
-      ...values,
-      showNewPassword: !values.showNewPassword,
-    });
+    setShowNewPassword(!showNewPassword);
   };
 
-  const handleClickShowConfirmNewPassword = () => {
-    setValues({
-      ...values,
-      showConfirmNewPassword: !values.showConfirmNewPassword,
-    });
+  const handleClickShowConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
 
+  const [isCredentialsInvalid, setIsCredentialsInvalid] = React.useState(true);
+  const [valid, setValid] = React.useState(true);
+
+  const getUserInfoById = (userId) => {
+    const ApiURL = `http://localhost:5000/users/${userId}`;
+    return axios
+      .get(ApiURL)
+      .then((response) => response.data)
+      .catch((error) => null);
+  };
+
+  let user;
+  async function isUserAuthorized(userId, currentPassword) {
+    const userInfo = await getUserInfoById(userId);
+    if (userInfo == null) {
+      alert("Error: Unable to access database.");
+      return false;
+    } else {
+      if (userInfo.password === md5(currentPassword)) {
+        setIsCredentialsInvalid(false);
+        user = {
+          firstName: userInfo.userName.firstName,
+          middleName: userInfo.userName.middleName,
+          lastName: userInfo.userName.lastName,
+          email: userInfo.email,
+          password: md5(newPassword),
+          dateOfBirth: userInfo.dateOfBirth.toString(),
+          gender: userInfo.gender,
+          receiveOffer: userInfo.receiveOffer,
+          contact: userInfo.contact.toString(),
+          profilePic: userInfo.profilePic,
+        };
+        return true;
+      }
+      setIsCredentialsInvalid(true);
+      return false;
+    }
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      newPassword: data.get("newPassword"),
-    });
+    isUserAuthorized(userId, currentPassword)
+      .then((response) => {
+        if (response === true) {
+          if (newPassword === confirmPassword && newPassword.trim() !== "") {
+            if (
+              window.confirm(
+                "Your are about to change your password. \nAre you sure you want to continue?"
+              )
+            ) {
+              axios
+                .put(`http://localhost:5000/users/update/${userId}`, user)
+                .then(
+                  (res) => {
+                    console.log(res.data);
+                    console.log("Res");
+                    alert("Password Reset Successfully.");
+                    setValid(true);
+                    localStorage.clear();
+                    window.location = "/signIn";
+                  },
+                  (err) => {
+                    alert("Password was not reset.\nError: " + err);
+                    console.log("Err");
+                    setValid(false);
+                  }
+                );
+            }
+          }
+          else {
+            setValid(false);
+          }
+        } else {
+          setValid(false);
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
     <div id="root" style={styles.root}>
-      <Header handleSignIn={handleOpenModal} />
-      <NavBar />
       <div
         style={{
           ...styles.wrapper,
@@ -94,38 +161,7 @@ const ProfilePage = () => {
             flex: 0.22,
           }}
         >
-          <div
-            style={{
-              ...styles.container,
-              background: "#FFF",
-              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
-              width: "100%",
-              borderRadius: 3,
-              paddingBottom: 8,
-            }}
-          >
-            <Avatar
-              sx={{
-                width: 90,
-                height: 90,
-                m: 1,
-                bgcolor: Colors.primary,
-                mt: 2,
-              }}
-            >
-              <img
-                src={Images.Bed}
-                alt="profile pic"
-                style={{ width: 90, height: 90 }}
-              />
-            </Avatar>
-
-            <span
-              style={{ color: Colors.primary, fontSize: 22, fontWeight: 500 }}
-            >
-              Nalin Malla
-            </span>
-          </div>
+          <ProfileHead />
           <ProfileList />
         </div>
         <div
@@ -168,7 +204,6 @@ const ProfilePage = () => {
             <Box
               component="form"
               noValidate
-              onSubmit={handleSubmit}
               sx={{
                 my: 4,
                 ml: 3,
@@ -187,24 +222,43 @@ const ProfilePage = () => {
                 }}
               >
                 <Grid item xs={12}>
-                  <FormControl fullWidth variant="outlined">
+                  <FormControl fullWidth variant="outlined" required>
                     <InputLabel htmlFor="outlined-adornment-currentPassword">
-                      Current Password
+                      {(currentPassword.trim() === "" ||
+                        isCredentialsInvalid) &&
+                      valid === false ? (
+                        currentPassword.trim() === "" ? (
+                          <span style={{ color: "#D32F2F" }}>
+                            Field is required
+                          </span>
+                        ) : (
+                          <span style={{ color: "#D32F2F" }}>
+                            Invalid Password
+                          </span>
+                        )
+                      ) : (
+                        "Current Password"
+                      )}
                     </InputLabel>
                     <OutlinedInput
                       id="outlined-adornment-currentPassword"
-                      type={values.showCurrentPassword ? "text" : "password"}
-                      value={values.currentPassword}
-                      onChange={handleChange("currentPassword")}
+                      type={showCurrentPassword ? "text" : "password"}
+                      value={currentPassword}
+                      onChange={handleCurrentPasswordChange}
+                      error={
+                        (currentPassword.trim() === "" ||
+                          isCredentialsInvalid) &&
+                        valid === false
+                      }
                       endAdornment={
                         <InputAdornment position="end">
                           <IconButton
-                            aria-label="toggle currentPassword visibility"
+                            aria-label="toggle password visibility"
                             onClick={handleClickShowCurrentPassword}
                             onMouseDown={handleMouseDownPassword}
                             edge="end"
                           >
-                            {values.showNewPassword ? (
+                            {showCurrentPassword ? (
                               <Visibility />
                             ) : (
                               <VisibilityOff />
@@ -217,24 +271,43 @@ const ProfilePage = () => {
                   </FormControl>
                 </Grid>
                 <Grid item xs={12}>
-                  <FormControl fullWidth variant="outlined">
+                  <FormControl fullWidth variant="outlined" required>
                     <InputLabel htmlFor="outlined-adornment-newPassword">
-                      New Password
+                      {(newPassword.trim() === "" ||
+                        confirmPassword !== newPassword) &&
+                      valid === false ? (
+                        confirmPassword !== newPassword ? (
+                          <span style={{ color: "#D32F2F" }}>
+                            Mismatched 
+                          </span>
+                        ) : (
+                          <span style={{ color: "#D32F2F" }}>
+                            Field is required
+                          </span>
+                        )
+                      ) : (
+                        "New Password"
+                      )}
                     </InputLabel>
                     <OutlinedInput
                       id="outlined-adornment-newPassword"
-                      type={values.showNewPassword ? "text" : "password"}
-                      value={values.newPassword}
-                      onChange={handleChange("newPassword")}
+                      type={showNewPassword ? "text" : "password"}
+                      value={newPassword}
+                      onChange={handleNewPasswordChange}
+                      error={
+                        (newPassword.trim() === "" ||
+                          confirmPassword !== newPassword) &&
+                        valid === false
+                      }
                       endAdornment={
                         <InputAdornment position="end">
                           <IconButton
-                            aria-label="toggle newPassword visibility"
+                            aria-label="toggle password visibility"
                             onClick={handleClickShowNewPassword}
                             onMouseDown={handleMouseDownPassword}
                             edge="end"
                           >
-                            {values.showNewPassword ? (
+                            {showNewPassword ? (
                               <Visibility />
                             ) : (
                               <VisibilityOff />
@@ -247,24 +320,43 @@ const ProfilePage = () => {
                   </FormControl>
                 </Grid>
                 <Grid item xs={12}>
-                  <FormControl fullWidth variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-newPassword">
-                      Confirm New Password
+                  <FormControl fullWidth variant="outlined" required>
+                    <InputLabel htmlFor="outlined-adornment-confirmPassword">
+                      {(confirmPassword.trim() === "" ||
+                        newPassword !== confirmPassword) &&
+                      valid === false ? (
+                        newPassword !== confirmPassword ? (
+                          <span style={{ color: "#D32F2F" }}>
+                            Mismatch Password
+                          </span>
+                        ) : (
+                          <span style={{ color: "#D32F2F" }}>
+                            Field is required
+                          </span>
+                        )
+                      ) : (
+                        "Confirm Password"
+                      )}
                     </InputLabel>
                     <OutlinedInput
-                      id="outlined-adornment-newPassword"
-                      type={values.showConfirmNewPassword ? "text" : "password"}
-                      value={values.confirmNewPassword}
-                      onChange={handleChange("confirmNewPassword")}
+                      id="outlined-adornment-confirmPassword"
+                      type={showConfirmPassword ? "text" : "password"}
+                      value={confirmPassword}
+                      onChange={handleConfirmPasswordChange}
+                      error={
+                        (confirmPassword.trim() === "" ||
+                          newPassword !== confirmPassword) &&
+                        valid === false
+                      }
                       endAdornment={
                         <InputAdornment position="end">
                           <IconButton
-                            aria-label="toggle newPassword visibility"
-                            onClick={handleClickShowConfirmNewPassword}
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowConfirmPassword}
                             onMouseDown={handleMouseDownPassword}
                             edge="end"
                           >
-                            {values.showConfirmNewPassword ? (
+                            {showConfirmPassword ? (
                               <Visibility />
                             ) : (
                               <VisibilityOff />
@@ -272,7 +364,7 @@ const ProfilePage = () => {
                           </IconButton>
                         </InputAdornment>
                       }
-                      label="Confirm New Password"
+                      label="Confirm Password"
                     />
                   </FormControl>
                 </Grid>
@@ -287,6 +379,7 @@ const ProfilePage = () => {
                       backgroundColor: Colors.primary,
                       fontSize: "16px",
                     }}
+                    onClick={handleSubmit}
                   >
                     RESET PASSWORD
                   </Button>
@@ -296,24 +389,6 @@ const ProfilePage = () => {
           </Box>
         </div>
       </div>
-
-      <div
-        style={{
-          ...styles.container,
-          backgroundColor: Colors.primary,
-          width: "100%",
-          marginTop: 60,
-        }}
-      >
-        <SiteMap />
-        <Copyright />
-      </div>
-
-      <CustomModal
-        open={openModal}
-        onClose={handleCloseModal}
-        component={<SignIn />}
-      />
     </div>
   );
 };

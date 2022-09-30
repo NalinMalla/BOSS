@@ -15,6 +15,8 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import PersonIcon from "@mui/icons-material/Person";
 import ShareLocationIcon from "@mui/icons-material/ShareLocation";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import FlagIcon from '@mui/icons-material/Flag';
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Link } from "@mui/material";
 
 export default function ProfileList() {
@@ -83,6 +85,23 @@ export default function ProfileList() {
       </Collapse>
 
       <Divider />
+      <Link href="/profile/taggedItem" underline="none" style={{ color: "#000" }}>
+        <ListItemButton>
+          <ListItemIcon>
+            <FlagIcon style={{ height: 25, width: 25, marginTop: -2 }} />
+          </ListItemIcon>
+          <ListItemText primary="My Tagged Items" />
+        </ListItemButton>
+      </Link>
+
+      <Link href="/cart" underline="none" style={{ color: "#000" }}>
+        <ListItemButton>
+          <ListItemIcon>
+            <ShoppingCartIcon style={{ height: 25, width: 25, marginTop: -2 }} />
+          </ListItemIcon>
+          <ListItemText primary="My Cart" />
+        </ListItemButton>
+      </Link>
 
       <Link href="/profile/orders" underline="none" style={{ color: "#000" }}>
         <ListItemButton>
@@ -93,7 +112,7 @@ export default function ProfileList() {
         </ListItemButton>
       </Link>
 
-      <Link href="/profile/cancellations" underline="none" style={{ color: "#000" }}>
+      <Link href="/profile/orders/cancellations" underline="none" style={{ color: "#000" }}>
         <ListItemButton>
           <ListItemIcon>
             <CancelIcon style={{ height: 25, width: 25, marginTop: -2 }} />
@@ -102,7 +121,7 @@ export default function ProfileList() {
         </ListItemButton>
       </Link>
 
-      <Link href="/profile/returns" underline="none" style={{ color: "#000" }}>
+      <Link href="/profile/orders/returns" underline="none" style={{ color: "#000" }}>
         <ListItemButton>
           <ListItemIcon>
             <RestartAltIcon style={{ height: 25, width: 25, marginTop: -2 }} />

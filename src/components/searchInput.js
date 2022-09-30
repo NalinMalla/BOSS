@@ -1,42 +1,52 @@
 import * as React from "react";
-import Paper from "@mui/material/Paper";
-import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
+import InputAdornment from "@mui/material/InputAdornment";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
 
 export default function SearchInput() {
-  const handleSearch = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      searchText: data.get("search"),
-    });
+  const [searchText, setSearchText] = React.useState("");
+
+  const handleSearchTextChange = (event) => {
+    console.log(event.target.value);
+    setSearchText(event.target.value);
   };
+
   return (
-    <Paper
-      component="form"
-      onSubmit={handleSearch}
-      sx={{
-        p: "2px 4px",
-        display: "flex",
-        alignItems: "center",
-        width: "25vw",
-        height: 32,
-        minWidth: 250,
-        marginTop: 4,
-        marginRight: 3,
-        border: `1px solid rgba(0,0,0, 0.5)`, 
-        borderRadius: 50,
-      }}
+    <Box
+      noValidate
+      style={{ marginTop: 32, marginRight: 20 }}
+      autoComplete="on"
     >
-      <InputBase
-        sx={{ ml: 1, flex: 1 }}
-        placeholder="Search..."
-        name="search"
+      <TextField
+        id="input-with-icon-textfield"
+        label="Search"
+        value={searchText}
+        size="small"
+        style={{ borderRadius: 50, width: 350 }}
+        onChange={handleSearchTextChange}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                onClick={() => {
+                  window.location =
+                    window.location.href.split("/")[3] === "search"
+                      ? `/search/?${
+                          window.location.href.split("?")[1].split(":")[0]
+                        }:${searchText.split(0, 7)}`
+                      : `/search/?all:${searchText.split(0, 7)}`;
+                }}
+                edge="end"
+              >
+                <SearchIcon />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+        variant="outlined"
       />
-      <IconButton type="submit" aria-label="search" href="search">
-        <SearchIcon />
-      </IconButton>
-    </Paper>
+    </Box>
   );
 }

@@ -5,9 +5,10 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import TextField from "@mui/material/TextField";
+import axios from "axios";
+import { Button } from "@mui/material";
 
 import Icons from "../res/icons";
-import { Button } from "@mui/material";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -33,17 +34,111 @@ TabPanel.propTypes = {
 
 const TabbedPane = (props) => {
   const [value, setValue] = React.useState(0);
+  const userId = localStorage.getItem("userId");
+  const [question, setQuestion] = React.useState("");
+  const [review, setReview] = React.useState("");
+  const [rating, setRating] = React.useState(1);
+
+  let userName;
+  if (localStorage.getItem("userMiddleName") === "") {
+    userName =
+      localStorage.getItem("userFirstName") +
+      " " +
+      localStorage.getItem("userLastName");
+  } else {
+    userName =
+      localStorage.getItem("userFirstName") +
+      " " +
+      localStorage.getItem("userMiddleName") +
+      " " +
+      localStorage.getItem("userLastName");
+  }
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  const handleQuestionChange = (event) => {
+    setQuestion(event.target.value);
+  };
+
+  const handleRatingChange = (event) => {
+    setRating(event.target.value);
+  };
+
+  const handleReviewChange = (event) => {
+    setReview(event.target.value);
+  };
+
   let reviewsRating5 = (props.reviewsRating5 / props.reviews) * 100;
-  console.log("reviewRating5 :" + reviewsRating5);
   let reviewsRating4 = (props.reviewsRating4 / props.reviews) * 100;
   let reviewsRating3 = (props.reviewsRating3 / props.reviews) * 100;
   let reviewsRating2 = (props.reviewsRating2 / props.reviews) * 100;
   let reviewsRating1 = (props.reviewsRating1 / props.reviews) * 100;
+
+  const handleQASubmit = (event) => {
+    event.preventDefault();
+    const questionAnswerData = {
+      userName: userName,
+      userId: userId,
+      question: question,
+    };
+    if (props.questionAnswerData.length !== 0) {
+      axios
+        .put(
+          `http://localhost:5000/products/addQuestion/${props.productId}`,
+          questionAnswerData
+        )
+        .then(
+          (res) => {
+            window.location.reload();
+            console.log(res.data);
+          },
+          (err) => {
+            alert("Question was not submitted.\nError: " + err);
+          }
+        );
+    } else {
+      axios
+        .post(
+          `http://localhost:5000/products/createQuestionAnswer/${props.productId}`,
+          questionAnswerData
+        )
+        .then(
+          (res) => {
+            window.location.reload();
+            console.log(res.data);
+          },
+          (err) => {
+            alert("Question was not submitted.\nError: " + err);
+          }
+        );
+    }
+  };
+
+  const handleReviewSubmit = (event) => {
+    event.preventDefault();
+    const reviewData = {
+      userName: userName,
+      userId: userId,
+      review: review,
+      rating: rating,
+    };
+    axios
+      .put(
+        `http://localhost:5000/products/addReview/${props.productId}`,
+        reviewData
+      )
+      .then(
+        (res) => {
+          window.location.reload();
+          console.log(res.data);
+        },
+        (err) => {
+          alert("Review was not submitted.\nError: " + err);
+        }
+      );
+  };
 
   return (
     <Box style={props.style}>
@@ -101,6 +196,7 @@ const TabbedPane = (props) => {
             <div
               style={{
                 ...styles.wrapper,
+                width: "70vw",
               }}
             >
               <div style={styles.container}>
@@ -200,11 +296,51 @@ const TabbedPane = (props) => {
             </div>
             <div
               style={{
+                display: props.validReviewers.includes(userId) ? "flex" : "none",
+                flexDirection: "column"
+              }}
+            >
+              <div style={{ display: "flex",alignItems: "center", }}>
+                <span style={{ margin: 20, marginLeft: 10 }}>Your Rating:</span>
+
+                <Rating
+                  name="rating"
+                  value={rating}
+                  size={"medium"}
+                  onChange={handleRatingChange}
+                />
+              </div>
+              <TextField
+                id="filled-textarea"
+                label="Your Review Text"
+                placeholder="Write your thoughts about this product here."
+                multiline
+                variant="filled"
+                rows="3"
+                value={review}
+                onChange={handleReviewChange}
+              />
+              <div style={{ ...styles.wrapper, justifyContent: "flex-end" }}>
+                <Button
+                  size="large"
+                  variant="contained"
+                  sx={{
+                    borderRadius: "0px 0px 5px 5px",
+                  }}
+                  onClick={handleReviewSubmit}
+                >
+                  Submit Review
+                </Button>
+              </div>
+            </div>
+
+            <div
+              style={{
                 marginTop: 20,
                 borderBottom: "1px solid rgb(0,0,0,0.2)",
               }}
             >
-              Other users reviews ({props.answers})
+              Other users reviews ({props.reviews})
             </div>
             <div style={styles.container}>
               {props.reviewData.map((element) => (
@@ -221,9 +357,11 @@ const TabbedPane = (props) => {
                     readOnly
                   />
                   <div style={{ textAlign: "justify" }}>
-                    By {element.reviewer},
+                    By {element.reviewerName},
                   </div>
-                  <div style={{ textAlign: "justify" }}>{element.review}</div>
+                  <div style={{ textAlign: "justify" }}>
+                    {element.reviewText}
+                  </div>
                   <span
                     style={{
                       marginTop: 10,
@@ -256,6 +394,8 @@ const TabbedPane = (props) => {
               variant="filled"
               rows="3"
               style={{ width: "70vw" }}
+              value={question}
+              onChange={handleQuestionChange}
             />
             <div style={{ ...styles.wrapper, justifyContent: "space-between" }}>
               <span style={{ fontSize: 14 }}>
@@ -268,6 +408,7 @@ const TabbedPane = (props) => {
                 sx={{
                   borderRadius: "0px 0px 5px 5px",
                 }}
+                onClick={handleQASubmit}
               >
                 ASK QUESTION
               </Button>
@@ -280,75 +421,83 @@ const TabbedPane = (props) => {
             >
               Other questions which have been answered ({props.answers})
             </div>
-            {props.questionAnswerData.map((element) => (
-              <div
-                style={{
-                  ...styles.container,
-                  borderBottom: "1px solid rgb(0,0,0,0.2)",
-                }}
-              >
-                <span
+            {props.questionAnswerData.length !== 0 ? (
+              props.questionAnswerData.map((element) => (
+                <div
                   style={{
-                    ...styles.wrapper,
-                    alignItems: "flex-start",
+                    ...styles.container,
+                    borderBottom: "1px solid rgb(0,0,0,0.2)",
                   }}
                 >
-                  <img
-                    src={Icons.Question}
+                  <span
                     style={{
-                      width: 20,
-                      height: 20,
-                      marginRight: 20,
-                      marginTop: 5,
+                      ...styles.wrapper,
+                      alignItems: "flex-start",
                     }}
-                    alt="Question Icon"
-                  />
-                  <div style={{ textAlign: "justify" }}>
-                    {element.question}
-                    <span
+                  >
+                    <img
+                      src={Icons.Question}
                       style={{
-                        ...styles.wrapper,
-                        fontSize: 14,
-                        color: "rgba(0,0,0, 0.5)",
+                        width: 20,
+                        height: 20,
+                        marginRight: 20,
+                        marginTop: 5,
                       }}
-                    >
-                      {element.questioner}
-                    </span>
-                  </div>
-                </span>
-                <span
-                  style={{
-                    ...styles.wrapper,
-                    alignItems: "flex-start",
-                    marginTop: 10,
-                  }}
-                >
-                  <img
-                    src={Icons.Answer}
+                      alt="Question Icon"
+                    />
+                    <div style={{ textAlign: "justify" }}>
+                      {element.question}
+                      <span
+                        style={{
+                          ...styles.wrapper,
+                          fontSize: 14,
+                          color: "rgba(0,0,0, 0.5)",
+                        }}
+                      >
+                        {element.questioner} asked on{" "}
+                        {element.date.slice(0, 10)}.
+                      </span>
+                    </div>
+                  </span>
+                  <span
                     style={{
-                      width: 20,
-                      height: 20,
-                      marginRight: 20,
-                      marginTop: 5,
+                      ...styles.wrapper,
+                      alignItems: "flex-start",
+                      marginTop: 10,
+                      display: element.answer === undefined ? "none" : "flex",
                     }}
-                    alt="Answer Icon"
-                  />
-                  <div style={{ textAlign: "justify" }}>
-                    {element.answer}
-                    <br></br>
-                    <span
+                  >
+                    <img
+                      src={Icons.Answer}
                       style={{
-                        ...styles.wrapper,
-                        fontSize: 14,
-                        color: "rgba(0,0,0, 0.5)",
+                        width: 20,
+                        height: 20,
+                        marginRight: 20,
+                        marginTop: 5,
                       }}
-                    >
-                      BIRA Builders & Suppliers
-                    </span>
-                  </div>
-                </span>
-              </div>
-            ))}
+                      alt="Answer Icon"
+                    />
+                    <div style={{ textAlign: "justify" }}>
+                      {element.answer}
+                      <br></br>
+                      <span
+                        style={{
+                          ...styles.wrapper,
+                          fontSize: 14,
+                          color: "rgba(0,0,0, 0.5)",
+                        }}
+                      >
+                        BIRA Builders & Suppliers
+                      </span>
+                    </div>
+                  </span>
+                </div>
+              ))
+            ) : (
+              <span style={{ marginTop: 20 }}>
+                No question has been asked yet.
+              </span>
+            )}
           </div>
         </div>
       </TabPanel>
@@ -363,13 +512,11 @@ const styles = {
     justifyContent: "space-around",
     flex: 1,
     borderRadius: 5,
-    // background: '#f5f5f5',
   },
   wrapper: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    // background: '#f5f5c5',
     width: "100%",
   },
   container: {
@@ -378,7 +525,6 @@ const styles = {
     fontSize: 18,
     display: "flex",
     flexDirection: "column",
-    // background: '#c5f5f5',
   },
   ratingBar: {
     width: 100,
@@ -411,4 +557,4 @@ TabbedPane.defaultProps = {
   answers: 0,
 };
 
-export default TabbedPane;
+export { TabPanel, TabbedPane };

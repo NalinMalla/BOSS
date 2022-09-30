@@ -19,6 +19,9 @@ export default function Component(props) {
       onMouseOver={MouseOver}
       onMouseOut={MouseOut}
       className={"container"}
+      onClick={()=>{
+        window.location= props.url;
+      }}
     >
       <span style={Styles.title} className={"title"}>
         {props.title}

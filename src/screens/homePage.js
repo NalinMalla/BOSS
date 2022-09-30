@@ -1,24 +1,15 @@
 import * as React from "react";
 import Colors from "../res/colors";
 
-import Header from "../components/header";
-import NavBar from "../components/navBar";
 import Carousel, { CarouselItem } from "../components/carousel";
 import CategoriesGrid from "../components/categoriesGrid";
 import ServicesOffered from "../components/servicesOffered";
 import AboutCompany from "../components/aboutCompany";
-import SiteMap from "../components/siteMap";
-import Copyright from "../components/copyright";
-import SignIn from "../components/signIn";
-import CustomModal from "../components/CustomModal";
 import ProductCarousel from "../components/productCarousel";
 
 import Images from "../res/images";
 
 const HomePage = () => {
-  const [openModal, setOpenModal] = React.useState(false);
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
 
   const OfferCarouselData = [
     {
@@ -96,8 +87,6 @@ const HomePage = () => {
 
   return (
     <div id="root" style={Styles.root}>
-      <Header handleSignIn={handleOpenModal} />
-      <NavBar />
       <Carousel width="100%" transformWidth="100" delay="1700">
         {OfferCarouselData.map((element) => (
           <CarouselItem {...element} />
@@ -135,16 +124,6 @@ const HomePage = () => {
       <ProductCarousel />
 
       <AboutCompany />
-      <div style={Styles.wrapper}>
-        <SiteMap />
-        <Copyright />
-      </div>
-
-      <CustomModal
-        open={openModal}
-        onClose={handleCloseModal}
-        component={<SignIn />}
-      />
     </div>
   );
 };

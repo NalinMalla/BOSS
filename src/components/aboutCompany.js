@@ -30,6 +30,7 @@ const Styles = {
     justifyContent: "space-between",
     backgroundColor: Colors.primary,
     marginTop: 120,
+    marginBottom: -60
   },
   leftContainer: {
     display: "flex",

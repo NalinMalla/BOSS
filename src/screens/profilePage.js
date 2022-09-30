@@ -1,5 +1,4 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
@@ -12,47 +11,186 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
+import axios from "axios";
 
-import Header from "../components/header";
-import NavBar from "../components/navBar";
-import SiteMap from "../components/siteMap";
-import Copyright from "../components/copyright";
-import SignIn from "../components/signIn";
-import CustomModal from "../components/CustomModal";
+import ProfileHead from "../components/profileHead";
 import ProfileList from "../components/profileList";
 import { styled } from "@mui/material/styles";
 
 import Colors from "../res/colors";
-import Images from "../res/images";
 
 const Input = styled("input")({
   display: "none",
 });
 
 const ProfilePage = () => {
-  const [openModal, setOpenModal] = React.useState(false);
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
+  const userId = localStorage.getItem("userId");
+
+  const [firstName, setFirstName] = React.useState("");
+  const [middleName, setMiddleName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+
+  const [email, setEmail] = React.useState("");
+  const [contact, setContact] = React.useState("");
 
   const [gender, setGender] = React.useState("");
+  const [dateOfBirth, setDateOfBirth] = React.useState("");
+
+  const [password, setPassword] = React.useState(""); //for some reason using password as normal variable caused errors.
+
+  const [profilePic, setProfilePic] = React.useState(null);
+
+  const getUserInfoById = (userId) => {
+    const ApiURL = `http://localhost:5000/users/${userId}`;
+    return axios
+      .get(ApiURL)
+      .then((response) => response.data)
+      .catch((error) => null);
+  };
+
+  const deleteUserProfile = () => {
+    const ApiURL = `http://localhost:5000/users/delete/${userId}`;
+    if (
+      window.confirm(
+        "Your profile is about to be deleted. \nAre you sure you want to delete your user profile?"
+      )
+    ) {
+      axios
+      .delete(ApiURL)
+      .then(
+        (res) => {
+          alert("Profile successfully deleted.");
+          window.location.href = "/logOut";
+        },
+        (err) => {
+          alert("Profile was not deleted.\nError: " + err);
+          console.log("Err");
+        }
+      );
+    }
+  };
+
+  async function initializeUserData(userId) {
+    const userInfo = await getUserInfoById(userId);
+    if (userInfo === "") {
+      alert("Error: Unable to access server.");
+    } else {
+      setFirstName(userInfo.userName.firstName);
+      setMiddleName(userInfo.userName.middleName);
+      setLastName(userInfo.userName.lastName);
+      setEmail(userInfo.email);
+      setContact(userInfo.contact.toString()); //returns in number type
+      setDateOfBirth(userInfo.dateOfBirth.toString().substring(0, 10)); //returns in a different format
+      setGender(userInfo.gender);
+      setPassword(userInfo.password);
+      setProfilePic(userInfo.profilePic);
+    }
+  }
+
+  async function storeInfoToLocalStorage(userId) {
+    const user = await getUserInfoById(userId);
+    if (user !== null) {
+      localStorage.setItem("userEmail", user.email);
+      localStorage.setItem("userFirstName", user.userName.firstName);
+      localStorage.setItem("userMiddleName", user.userName.middleName);
+      localStorage.setItem("userLastName", user.userName.lastName);
+      localStorage.setItem("userContact", user.contact);
+      localStorage.setItem("userProfilePic", user.profilePic);
+    } else {
+      alert("User not found.");
+    }
+  }
+
+  React.useEffect(() => {
+    document.title = "BOSS - User Profile Page";
+    if (userId == null) {
+      window.location = "/signIn";
+    } else {
+      initializeUserData(userId); //wouldn't work without async await?
+    }
+  }, []);
+
+  const emailRGX = /^([a-z A-Z 0-9 \._-]+)@([a-z A-Z 0-9 -]+)\.([a-z]{2,20})$/;
+  const contactRGX = /^[0-9]{9,10}$/;
+
+  const handleFirstNameChange = (event) => {
+    setFirstName(event.target.value);
+  };
+  const handleMiddleNameChange = (event) => {
+    setMiddleName(event.target.value);
+  };
+  const handleLastNameChange = (event) => {
+    setLastName(event.target.value);
+  };
+
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+
+  const handleContactChange = (event) => {
+    setContact(event.target.value);
+  };
 
   const handleGenderChange = (event) => {
     setGender(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleDateOfBirthChange = (event) => {
+    setDateOfBirth(event.target.value);
+  };
+
+  const handleProfilePicChange = (event) => {
+    setProfilePic(event.target.files[0]);
+    console.log(profilePic);
+  };
+
+  const handleUpdate = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+
+    if (
+      !(firstName.trim() === "") &&
+      !(lastName.trim() === "") &&
+      contactRGX.test(contact) &&
+      emailRGX.test(email) &&
+      !(dateOfBirth.trim() === "") &&
+      !(gender.trim() === "")
+    ) {
+      const formData = new FormData(event.currentTarget);
+      formData.append("password", password);
+      console.log("formData");
+      console.log(formData.profilePic);
+
+      if (
+        window.confirm(
+          "Your profile is about to be overwritten. The previous details will be lost. \nAre you ok with this?"
+        )
+      ) {
+        axios({
+          method: "put",
+          url: `http://localhost:5000/users/update/${userId}`,
+          data: formData,
+          headers: { "Content-Type": "multipart/form-data" },
+        }).then(
+          (res) => {
+            storeInfoToLocalStorage(userId);
+            console.log(res.data);
+            console.log("Res");
+            alert("Updated profile successfully.");
+            window.location.href = "/profile";
+          },
+          (err) => {
+            alert("Profile was not updated.\nError: " + err);
+            console.log("Err");
+          }
+        );
+      }
+    } else {
+      alert("Invalid input.");
+    }
   };
 
   return (
     <div id="root" style={styles.root}>
-      <Header handleSignIn={handleOpenModal} />
-      <NavBar />
       <div
         style={{
           ...styles.wrapper,
@@ -68,38 +206,7 @@ const ProfilePage = () => {
             flex: 0.22,
           }}
         >
-          <div
-            style={{
-              ...styles.container,
-              background: "#FFF",
-              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
-              width: "100%",
-              borderRadius: 3,
-              paddingBottom: 8,
-            }}
-          >
-            <Avatar
-              sx={{
-                width: 90,
-                height: 90,
-                m: 1,
-                bgcolor: Colors.primary,
-                mt: 2,
-              }}
-            >
-              <img
-                src={Images.Bed}
-                alt="profile pic"
-                style={{ width: 90, height: 90 }}
-              />
-            </Avatar>
-
-            <span
-              style={{ color: Colors.primary, fontSize: 22, fontWeight: 500 }}
-            >
-              Nalin Malla
-            </span>
-          </div>
+          <ProfileHead />
           <ProfileList />
         </div>
         <div
@@ -112,15 +219,25 @@ const ProfilePage = () => {
           }}
         >
           <Box
+            component="form"
+            noValidate
+            onSubmit={handleUpdate}
             sx={{
               mx: 4,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
             }}
+            enctype="multipart/form-data"
           >
             <label htmlFor="icon-button-file">
-              <Input accept="image/*" id="icon-button-file" type="file" />
+              <Input
+                accept="image/*"
+                id="icon-button-file"
+                type="file"
+                name="profilePic"
+                onClick={handleProfilePicChange}
+              />
               <IconButton
                 color="primary"
                 aria-label="upload picture"
@@ -130,7 +247,7 @@ const ProfilePage = () => {
                   height: 80,
                   marginTop: 30,
                   boxShadow: "2px 4px 4px rgba(0, 0, 0, 0.25)",
-                  background: '#F9F9F9'
+                  background: "#F9F9F9",
                 }}
               >
                 <PhotoCamera style={{ width: 44, height: 44 }} />
@@ -146,9 +263,6 @@ const ProfilePage = () => {
             </Typography>
 
             <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit}
               sx={{
                 my: 4,
                 ml: 3,
@@ -166,8 +280,11 @@ const ProfilePage = () => {
                     required
                     fullWidth
                     id="firstName"
-                    label="First Name"
+                    label={firstName.trim() === "" ? "Unfilled" : "First Name"}
                     autoFocus
+                    value={firstName}
+                    onChange={handleFirstNameChange}
+                    error={firstName.trim() === ""}
                   />
                 </Grid>
                 <Grid item xs={12} sm={4}>
@@ -178,6 +295,9 @@ const ProfilePage = () => {
                     id="middleName"
                     label="Middle Name"
                     autoFocus
+                    defaultValue=""
+                    value={middleName}
+                    onChange={handleMiddleNameChange}
                   />
                 </Grid>
                 <Grid item xs={12} sm={4}>
@@ -185,19 +305,31 @@ const ProfilePage = () => {
                     required
                     fullWidth
                     id="lastName"
-                    label="Last Name"
                     name="lastName"
                     autoComplete="family-name"
+                    label={lastName.trim() === "" ? "Unfilled" : "Last Name"}
+                    value={lastName}
+                    onChange={handleLastNameChange}
+                    error={lastName.trim() === ""}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
                     required
                     fullWidth
-                    id="contactNum"
-                    label="Contact Number"
-                    name="contactNum"
-                    autoComplete="contactNum"
+                    id="contact"
+                    name="contact"
+                    autoComplete="contact"
+                    label={
+                      contact.trim() === "" || !contactRGX.test(contact)
+                        ? contact.trim() === ""
+                          ? "Empty field"
+                          : "Invalid contact number"
+                        : "Contact Number"
+                    }
+                    value={contact}
+                    onChange={handleContactChange}
+                    error={contact.trim() === "" || !contactRGX.test(contact)}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -205,38 +337,62 @@ const ProfilePage = () => {
                     required
                     fullWidth
                     id="email"
-                    label="Email Address"
                     name="email"
                     autoComplete="email"
+                    label={
+                      email.trim() === "" || !emailRGX.test(email)
+                        ? email.trim() === ""
+                          ? "Email Address is required."
+                          : "Invalid email address."
+                        : "Email Address"
+                    }
+                    value={email}
+                    onChange={handleEmailChange}
+                    error={email.trim() === "" || !emailRGX.test(email)}
                   />
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    id="date"
-                    label="Date of Birth"
+                    id="dateOfBirth"
+                    name="dateOfBirth"
+                    required
                     type="date"
                     fullWidth
                     InputLabelProps={{
                       shrink: true,
                     }}
+                    label={
+                      dateOfBirth.trim() === ""
+                        ? "Empty field"
+                        : "Date of Birth"
+                    }
+                    value={dateOfBirth}
+                    onChange={handleDateOfBirthChange}
+                    error={dateOfBirth.trim() === ""}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <FormControl fullWidth>
+                  <FormControl fullWidth required defaultValue="">
                     <InputLabel id="demo-simple-select-label">
-                      Gender
+                      {gender.trim() === "" ? (
+                        <span style={{ color: "#D32F2F" }}>Unfilled</span>
+                      ) : (
+                        "Gender"
+                      )}
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
+                      name="gender"
                       value={gender}
                       label="Gender"
+                      error={gender === ""}
                       onChange={handleGenderChange}
                     >
-                      <MenuItem value={10}>Male</MenuItem>
-                      <MenuItem value={20}>Female</MenuItem>
-                      <MenuItem value={30}>Other</MenuItem>
+                      <MenuItem value="male">Male</MenuItem>
+                      <MenuItem value="female">Female</MenuItem>
+                      <MenuItem value="other">Other</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
@@ -259,13 +415,12 @@ const ProfilePage = () => {
                     fontSize: "16px",
                   }}
                 >
-                  Save Profile
+                  Update Profile
                 </Button>
                 <Button
-                  type="submit"
                   fullWidth
                   variant="contained"
-                  href="passwordReset"
+                  href="/profile/passwordReset"
                   sx={{
                     height: "50px",
                     backgroundColor: Colors.primary,
@@ -275,28 +430,24 @@ const ProfilePage = () => {
                   Change Password
                 </Button>
               </Stack>
+              <Grid item xs={12} sm={12}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  onClick={deleteUserProfile}
+                  sx={{
+                    height: "50px",
+                    backgroundColor: Colors.primary,
+                    fontSize: "16px",
+                  }}
+                >
+                  DELETE PROFILE
+                </Button>
+              </Grid>
             </Box>
           </Box>
         </div>
       </div>
-
-      <div
-        style={{
-          ...styles.container,
-          backgroundColor: Colors.primary,
-          width: "100%",
-          marginTop: 60,
-        }}
-      >
-        <SiteMap />
-        <Copyright />
-      </div>
-
-      <CustomModal
-        open={openModal}
-        onClose={handleCloseModal}
-        component={<SignIn />}
-      />
     </div>
   );
 };

@@ -74,26 +74,6 @@ export default function AdminOrders() {
         console.log("orders");
         console.log(orders);
         setIsLoaded(true);
-
-        // response.forEach((order) => {
-        //   let tempProducts = [];
-        //   order.products.forEach((product) => {
-        //     getProductInfoById(product._id)
-        //       .then((response) => {
-        //         if (response !== null) {
-        //           response = { ...response, count: product.count };
-        //           tempProducts.push(response);
-        //         }
-        //       })
-        //       .catch((err) => {
-        //         console.log("Error", err);
-        //       });
-        //   });
-
-        //   order.products = tempProducts;
-        //   tempOrders.push(order);
-        // });
-        // setOrders(tempOrders.reverse());
       }
     });
   }
@@ -101,14 +81,7 @@ export default function AdminOrders() {
   useEffect(() => {
     document.title = "BOSS - Order Management Page";
     initializeOrderData();
-    // setTimeout(() => {
-    //   setIsLoaded(true);
-    // }, 2000);
   }, [status]);
-
-  // console.log("orders");
-  // console.log(orders);
-  // console.log(status);
 
   return !isLoaded ? (
     <div

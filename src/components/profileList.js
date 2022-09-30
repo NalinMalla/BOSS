@@ -16,6 +16,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import ShareLocationIcon from "@mui/icons-material/ShareLocation";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import FlagIcon from '@mui/icons-material/Flag';
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Link } from "@mui/material";
 
 export default function ProfileList() {
@@ -90,6 +91,15 @@ export default function ProfileList() {
             <FlagIcon style={{ height: 25, width: 25, marginTop: -2 }} />
           </ListItemIcon>
           <ListItemText primary="My Tagged Items" />
+        </ListItemButton>
+      </Link>
+
+      <Link href="/cart" underline="none" style={{ color: "#000" }}>
+        <ListItemButton>
+          <ListItemIcon>
+            <ShoppingCartIcon style={{ height: 25, width: 25, marginTop: -2 }} />
+          </ListItemIcon>
+          <ListItemText primary="My Cart" />
         </ListItemButton>
       </Link>
 

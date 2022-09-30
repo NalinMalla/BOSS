@@ -34,13 +34,24 @@ const SearchPage = () => {
   //   search = window.location.href.split("?")[1];
   //   category = search.split("/")[0];
   // }
-
   const getProductsInfo = () => {
     let ApiURL;
     if (searchType === "categories") {
       ApiURL = `http://localhost:5000/products/${search.split(":")[0]}`;
     } else if (searchType === "hotDeals") {
       console.log("in hotDeals");
+      return axios
+        .get(`http://localhost:5000/products/all/${searchType}`)
+        .then((response) => response.data)
+        .catch((error) => null);
+    } else if (searchType === "trending") {
+      console.log("in trending");
+      return axios
+        .get(`http://localhost:5000/products/all/${searchType}`)
+        .then((response) => response.data)
+        .catch((error) => null);
+    } else if (searchType === "popular") {
+      console.log("in popular");
       return axios
         .get(`http://localhost:5000/products/all/${searchType}`)
         .then((response) => response.data)

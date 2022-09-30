@@ -48,6 +48,28 @@ const ProfilePage = () => {
       .catch((error) => null);
   };
 
+  const deleteUserProfile = () => {
+    const ApiURL = `http://localhost:5000/users/delete/${userId}`;
+    if (
+      window.confirm(
+        "Your profile is about to be deleted. \nAre you sure you want to delete your user profile?"
+      )
+    ) {
+      axios
+      .delete(ApiURL)
+      .then(
+        (res) => {
+          alert("Profile successfully deleted.");
+          window.location.href = "/logOut";
+        },
+        (err) => {
+          alert("Profile was not deleted.\nError: " + err);
+          console.log("Err");
+        }
+      );
+    }
+  };
+
   async function initializeUserData(userId) {
     const userInfo = await getUserInfoById(userId);
     if (userInfo === "") {
@@ -74,8 +96,7 @@ const ProfilePage = () => {
       localStorage.setItem("userLastName", user.userName.lastName);
       localStorage.setItem("userContact", user.contact);
       localStorage.setItem("userProfilePic", user.profilePic);
-    }
-    else{
+    } else {
       alert("User not found.");
     }
   }
@@ -409,6 +430,20 @@ const ProfilePage = () => {
                   Change Password
                 </Button>
               </Stack>
+              <Grid item xs={12} sm={12}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  onClick={deleteUserProfile}
+                  sx={{
+                    height: "50px",
+                    backgroundColor: Colors.primary,
+                    fontSize: "16px",
+                  }}
+                >
+                  DELETE PROFILE
+                </Button>
+              </Grid>
             </Box>
           </Box>
         </div>

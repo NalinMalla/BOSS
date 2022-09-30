@@ -131,7 +131,11 @@ export default function AddressForm(props) {
 
   const handleUpdate = (event) => {
     event.preventDefault();
+    console.log("saveAddress");
+    console.log(saveAddress);
 
+    console.log("addNewAddress");
+    console.log(addNewAddress);
     if (
       !(firstName.trim() === "") &&
       !(lastName.trim() === "") &&
@@ -142,8 +146,7 @@ export default function AddressForm(props) {
       !(addressDetail.trim() === "")
     ) {
       props.handleAddressValidation(true);
-      console.log("saveAddress");
-      console.log(saveAddress);
+
       const address = {
         firstName: firstName,
         middleName: middleName,
@@ -356,8 +359,14 @@ export default function AddressForm(props) {
             error={email.trim() === "" || !emailRGX.test(email)}
           />
         </Grid>
-       
-        <Grid item xs={12}>
+
+        <Grid
+          item
+          xs={12}
+          style={{
+            ...props.saveCheckboxStyle,
+          }}
+        >
           <FormControlLabel
             control={
               <Checkbox
@@ -372,10 +381,10 @@ export default function AddressForm(props) {
         </Grid>
         <Grid
           item
-          xs={6}
+          xs={12}
           style={{
             ...props.saveButtonStyle,
-            justifyContent: "flex-end",
+            justifyContent: "flex-start",
           }}
         >
           <Button size="large" variant="contained" onClick={handleUpdate}>
@@ -386,3 +395,8 @@ export default function AddressForm(props) {
     </React.Fragment>
   );
 }
+
+AddressForm.defaultProps = {
+  setAddress: () => {},
+  handleAddressValidation: () => {},
+};

@@ -173,7 +173,7 @@ export default function SignInPage() {
           profilePic: userInfo.profilePic,
         };
 
-        if (userInfo.role === "hakulakhe") {
+        if (userInfo.role === "Admin") {
           dispatch(updateIsAdmin(true));
           shouldNavigate = true;
         }

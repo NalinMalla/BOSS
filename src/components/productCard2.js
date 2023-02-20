@@ -27,11 +27,11 @@ export default function ProductCard2(props) {
   const userTaggedItemId = localStorage.getItem("userTaggedItemId");
   const userCartId = localStorage.getItem("userCartId");
   const userCart =
-  localStorage.getItem("userId") !== "undefined" &&
-  localStorage.getItem("userId") !== undefined &&
-  localStorage.getItem("userId") !== null
-    ? JSON.parse(localStorage.getItem("userCart"))
-    : [];
+    localStorage.getItem("userId") !== "undefined" &&
+    localStorage.getItem("userId") !== undefined &&
+    localStorage.getItem("userId") !== null
+      ? JSON.parse(localStorage.getItem("userCart"))
+      : [];
   // const userCart = JSON.parse(localStorage.getItem("userCart"));
   const [productId] = React.useState(props._id);
   console.log(productId);
@@ -200,7 +200,10 @@ export default function ProductCard2(props) {
         <span
           style={{
             fontSize: 18,
-            display: (props.discountRate === undefined|| props.discountRate===0) ? "none" : "flex",
+            display:
+              props.discountRate === undefined || props.discountRate === 0
+                ? "none"
+                : "flex",
             fontWeight: 500,
           }}
         >
@@ -210,17 +213,34 @@ export default function ProductCard2(props) {
           style={{
             display: "flex",
             alignItems: "center",
-            marginTop: (props.discountRate === undefined|| props.discountRate===0) ? 16 : 0,
+            marginTop:
+              props.discountRate === undefined || props.discountRate === 0
+                ? 16
+                : 0,
           }}
         >
           <span
             style={{
               textDecoration:
-                (props.discountRate === undefined|| props.discountRate===0) ? "none" : "line-through",
-              fontSize: (props.discountRate === undefined|| props.discountRate===0) ? 18 : 16,
-              fontWeight: (props.discountRate === undefined|| props.discountRate===0) ? 500 : "medium",
-              marginTop: (props.discountRate === undefined|| props.discountRate===0) ? -14 : 0,
-              color: (props.discountRate === undefined|| props.discountRate===0) ? "#000" : "rgba(0,0,0,0.4)",
+                props.discountRate === undefined || props.discountRate === 0
+                  ? "none"
+                  : "line-through",
+              fontSize:
+                props.discountRate === undefined || props.discountRate === 0
+                  ? 18
+                  : 16,
+              fontWeight:
+                props.discountRate === undefined || props.discountRate === 0
+                  ? 500
+                  : "medium",
+              marginTop:
+                props.discountRate === undefined || props.discountRate === 0
+                  ? -14
+                  : 0,
+              color:
+                props.discountRate === undefined || props.discountRate === 0
+                  ? "#000"
+                  : "rgba(0,0,0,0.4)",
             }}
           >
             Rs.{props.price}
@@ -230,7 +250,10 @@ export default function ProductCard2(props) {
               fontSize: 16,
               marginLeft: 8,
               color: "#ee0000",
-              display: (props.discountRate === undefined|| props.discountRate===0) ? "none" : "flex",
+              display:
+                props.discountRate === undefined || props.discountRate === 0
+                  ? "none"
+                  : "flex",
             }}
           >
             -{props.discountRate}%
@@ -249,7 +272,11 @@ export default function ProductCard2(props) {
           <IconButton
             style={{ marginLeft: 10 }}
             onClick={() => {
-              navigate((isAdmin)? `/product/update/?${productId}`:`/product/?${productId}`);
+              navigate(
+                isAdmin
+                  ? `/product/update/?${productId}`
+                  : `/product/?${productId}`
+              );
             }}
           >
             <LibraryBooksIcon

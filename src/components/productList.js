@@ -5,7 +5,6 @@ import ProductCard2 from "./productCard2";
 import Colors from "../res/colors";
 
 const ProductList = (props) => {
-
   let products = props.products;
   // let products = JSON.parse(props.products);
 

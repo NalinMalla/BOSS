@@ -5,11 +5,7 @@ import Colors from "../res/colors";
 
 export default function ProfileHead(props) {
   // const [profilePic] = React.useState(
-  //   localStorage.getItem("userProfilePic") !== "undefined" &&
-  //     localStorage.getItem("userProfilePic") !== undefined &&
-  //     localStorage.getItem("userProfilePic") !== null
-  //     ? localStorage.getItem("userProfilePic")
-  //     : ""
+  //   localStorage.getItem("userProfilePic")
   // );
 
   return (
@@ -26,7 +22,7 @@ export default function ProfileHead(props) {
         display: props.display !== undefined ? "none" : "flex",
       }}
     >
-      {localStorage.getItem("userProfilePic") === "undefined" ||
+      {localStorage.getItem("userProfilePic")  === "undefined" ||
       localStorage.getItem("userProfilePic") === undefined ||
       localStorage.getItem("userProfilePic") === null ? (
         <Avatar

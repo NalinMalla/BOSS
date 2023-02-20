@@ -38,15 +38,15 @@ const CartPage = () => {
     return tempProducts;
   }
 
-  function initializeOrderSummery(){
-    console.log("products");
-    console.log(products);
+  function initializeOrderSummery() {
+    // console.log("products");
+    // console.log(products);
     setShippingFee(2000);
     let grossTemp = 0;
     let itemsTemp = 0;
 
     for (let i = 0; i < products.length; i++) {
-      grossTemp = grossTemp + (products[i].count * products[i].discountPrice);
+      grossTemp = grossTemp + products[i].count * products[i].discountPrice;
       itemsTemp = itemsTemp + products[i].count;
     }
     setGrossTotalPrice(grossTemp);
@@ -65,14 +65,13 @@ const CartPage = () => {
       };
       fetchProds();
     }
-  }, []);
+  }, [userCart]);
 
   useEffect(() => {
     initializeOrderSummery();
     setIsLoaded(true);
   }, [products]);
 
-  
   console.log("grossTotalPrice");
   console.log(grossTotalPrice);
   console.log("items");

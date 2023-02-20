@@ -309,7 +309,7 @@ const ProductPage = () => {
           <span
             style={{
               fontSize: 32,
-              display: discountRate === "" ? "none" : "flex",
+              display: (discountRate === "" || discountRate === 0) ? "none" : "flex",
               marginTop: 20,
             }}
           >
@@ -319,15 +319,15 @@ const ProductPage = () => {
             style={{
               display: "flex",
               alignItems: "center",
-              marginTop: discountRate === "" ? 20 : 0,
+              marginTop: (discountRate === "" || discountRate === 0) ? 20 : 0,
             }}
           >
             <span
               style={{
-                textDecoration: discountRate === "" ? "none" : "line-through",
-                fontSize: discountRate === "" ? 32 : 20,
+                textDecoration: (discountRate === "" || discountRate === 0) ? "none" : "line-through",
+                fontSize: (discountRate === "" || discountRate === 0) ? 32 : 20,
 
-                color: discountRate === "" ? "#000" : "rgba(0,0,0,0.4)",
+                color: (discountRate === "" || discountRate === 0) ? "#000" : "rgba(0,0,0,0.4)",
               }}
             >
               Rs.{price}
@@ -337,7 +337,7 @@ const ProductPage = () => {
                 fontSize: 20,
                 marginLeft: 10,
                 color: "#ee0000",
-                display: discountRate === "" ? "none" : "flex",
+                display: (discountRate === "" || discountRate === 0) ? "none" : "flex",
               }}
             >
               -{discountRate}%

@@ -1,7 +1,6 @@
 {
   "name": "boss",
   "version": "0.1.0",
-  "homepage": "https://https://nalinmalla.github.io/boss_frontend",
   "dependencies": {
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",

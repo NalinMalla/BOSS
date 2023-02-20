@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 
 import OrderList from "../components/orderList";
+import AdminFrame from "../components/adminFrame";
 
 import Colors from "../res/colors";
 import Icons from "../res/icons";
@@ -123,7 +124,6 @@ const OrderPage = (props) => {
                 )
                 .then((response) => {
                   console.log(response);
-
                 })
                 .catch((error) => {
                   console.log(error);
@@ -140,17 +140,17 @@ const OrderPage = (props) => {
                 .then((response) => {
                   console.log(response);
                   axios
-                  .post(`http://localhost:5000/users/mail`, {
-                    subject: "Order Returned Successfully",
-                    to: order.address.email,
-                    html: `The Order: ${order._id} was returned successfully. Thank you for shopping at BIRA.<br>- BIRA Builders & Suppliers`,
-                  })
-                  .then((res) => {
-                    console.log(res);
-                  })
-                  .catch((err) => {
-                    console.log(err);
-                  });
+                    .post(`http://localhost:5000/users/mail`, {
+                      subject: "Order Returned Successfully",
+                      to: order.address.email,
+                      html: `The Order: ${order._id} was returned successfully. Thank you for shopping at BIRA.<br>- BIRA Builders & Suppliers`,
+                    })
+                    .then((res) => {
+                      console.log(res);
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                    });
                 })
                 .catch((error) => {
                   console.log(error);
@@ -166,7 +166,6 @@ const OrderPage = (props) => {
                 )
                 .then((response) => {
                   console.log(response);
-
                 })
                 .catch((error) => {
                   console.log(error);
@@ -202,157 +201,160 @@ const OrderPage = (props) => {
   console.log(order);
 
   return (
-    <div id="root" style={styles.root}>
-      <Toolbar />
-      <div
-        style={{
-          ...styles.wrapper,
-          justifyContent: "center",
-          marginTop: 20,
-        }}
-      >
+    <div style={{ display: "flex" }}>
+      <AdminFrame />
+      <div id="root" style={styles.root}>
+        <Toolbar />
         <div
           style={{
-            ...styles.container,
-            flex: 0.9,
-            background: "#FAFAFA",
-            boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-            borderRadius: 3,
+            ...styles.wrapper,
+            justifyContent: "center",
+            marginTop: 20,
           }}
         >
-          {!isLoaded ? (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "100%",
-                height: "100%",
-                padding: 20,
-                paddingTop: 60,
-                paddingBottom: 40,
-                marginTop: 32,
-              }}
-            >
-              <Audio
-                height="100"
-                width="100"
-                radius="12"
-                color={Colors.primary}
-                ariaLabel="three-dots-loading"
-                wrapperStyle
-                wrapperClass
-              />
+          <div
+            style={{
+              ...styles.container,
+              flex: 0.9,
+              background: "#FAFAFA",
+              boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+              borderRadius: 3,
+            }}
+          >
+            {!isLoaded ? (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  height: "100%",
+                  padding: 20,
+                  paddingTop: 60,
+                  paddingBottom: 40,
+                  marginTop: 32,
+                }}
+              >
+                <Audio
+                  height="100"
+                  width="100"
+                  radius="12"
+                  color={Colors.primary}
+                  ariaLabel="three-dots-loading"
+                  wrapperStyle
+                  wrapperClass
+                />
 
-              <div style={{ fontSize: 22, fontWeight: 500, marginTop: 10 }}>
-                Loading...
+                <div style={{ fontSize: 22, fontWeight: 500, marginTop: 10 }}>
+                  Loading...
+                </div>
               </div>
-            </div>
-          ) : (
-            <>
-              <OrderList order={order} />
-              <div style={{ width: "90%", marginBottom: 20 }}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={8}>
-                    <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-                      Shipping Details
-                    </Typography>
-                    <div>User ID: {order.user}</div>
-                    <div>
-                      Receivers Name:{" "}
-                      {order.address.receiversName.firstName +
-                        " " +
-                        order.address.receiversName.lastName}
-                    </div>
-                    <div>Email Address: {order.address.email}</div>
-                    <div>Contact Number: {order.address.contact}</div>
-                    <div>
-                      Address: Province {order.address.province},{" "}
-                      {order.address.city}
-                    </div>
-                    <div>Address Details: {order.address.addressDetail}</div>
-                    <div>Zip Code: {order.address.zipCode}</div>
-                  </Grid>
-                  <Grid item container direction="column" xs={12} sm={4}>
-                    <div
-                      style={{
-                        width: "100%",
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                      }}
-                    >
+            ) : (
+              <>
+                <OrderList order={order} />
+                <div style={{ width: "90%", marginBottom: 20 }}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} sm={8}>
                       <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-                        Payment details
+                        Shipping Details
                       </Typography>
-                      <img
-                        src={Icons.CashOnDelivery}
-                        alt="Cash On Delivery"
-                        style={{ width: 70, height: 70, marginTop: 10 }}
-                      />
-                      <div style={{ marginTop: 10 }}>Cash on Delivery</div>
-                    </div>
+                      <div>User ID: {order.user}</div>
+                      <div>
+                        Receivers Name:{" "}
+                        {order.address.receiversName.firstName +
+                          " " +
+                          order.address.receiversName.lastName}
+                      </div>
+                      <div>Email Address: {order.address.email}</div>
+                      <div>Contact Number: {order.address.contact}</div>
+                      <div>
+                        Address: Province {order.address.province},{" "}
+                        {order.address.city}
+                      </div>
+                      <div>Address Details: {order.address.addressDetail}</div>
+                      <div>Zip Code: {order.address.zipCode}</div>
+                    </Grid>
+                    <Grid item container direction="column" xs={12} sm={4}>
+                      <div
+                        style={{
+                          width: "100%",
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+                          Payment details
+                        </Typography>
+                        <img
+                          src={Icons.CashOnDelivery}
+                          alt="Cash On Delivery"
+                          style={{ width: 70, height: 70, marginTop: 10 }}
+                        />
+                        <div style={{ marginTop: 10 }}>Cash on Delivery</div>
+                      </div>
 
-                    <Grid container></Grid>
+                      <Grid container></Grid>
+                    </Grid>
                   </Grid>
-                </Grid>
-                <br />
-                <hr style={{ width: "100%" }} />
-                <FormControl>
-                  <FormLabel id="demo-radio-buttons-group-label">
-                    Order Status:
-                  </FormLabel>
-                  <RadioGroup
-                    defaultValue={status}
-                    name="radio-buttons-group"
-                    value={status}
-                    onChange={handleStatusChange}
-                    row
+                  <br />
+                  <hr style={{ width: "100%" }} />
+                  <FormControl>
+                    <FormLabel id="demo-radio-buttons-group-label">
+                      Order Status:
+                    </FormLabel>
+                    <RadioGroup
+                      defaultValue={status}
+                      name="radio-buttons-group"
+                      value={status}
+                      onChange={handleStatusChange}
+                      row
+                    >
+                      <FormControlLabel
+                        value="Pending"
+                        control={<Radio />}
+                        label="Pending"
+                      />
+                      <FormControlLabel
+                        value="Processing"
+                        control={<Radio />}
+                        label="Processing"
+                      />
+                      <FormControlLabel
+                        value="Complete"
+                        control={<Radio />}
+                        label="Complete"
+                      />
+                      <FormControlLabel
+                        value="Returning"
+                        control={<Radio />}
+                        label="Returning"
+                      />
+                      <FormControlLabel
+                        value="Returned"
+                        control={<Radio />}
+                        label="Returned"
+                      />
+                      <FormControlLabel
+                        value="Cancelled"
+                        control={<Radio />}
+                        label="Cancelled"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                  <br />
+                  <Button
+                    variant="contained"
+                    style={{ marginTop: 8 }}
+                    onClick={handleSubmit}
                   >
-                    <FormControlLabel
-                      value="Pending"
-                      control={<Radio />}
-                      label="Pending"
-                    />
-                    <FormControlLabel
-                      value="Processing"
-                      control={<Radio />}
-                      label="Processing"
-                    />
-                    <FormControlLabel
-                      value="Complete"
-                      control={<Radio />}
-                      label="Complete"
-                    />
-                    <FormControlLabel
-                      value="Returning"
-                      control={<Radio />}
-                      label="Returning"
-                    />
-                    <FormControlLabel
-                      value="Returned"
-                      control={<Radio />}
-                      label="Returned"
-                    />
-                    <FormControlLabel
-                      value="Cancelled"
-                      control={<Radio />}
-                      label="Cancelled"
-                    />
-                  </RadioGroup>
-                </FormControl>
-                <br />
-                <Button
-                  variant="contained"
-                  style={{ marginTop: 8 }}
-                  onClick={handleSubmit}
-                >
-                  Update Status
-                </Button>
-              </div>
-            </>
-          )}
+                    Update Status
+                  </Button>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>

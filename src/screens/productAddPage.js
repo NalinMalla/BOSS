@@ -13,6 +13,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Toolbar from "@mui/material/Toolbar";
 
+import AdminFrame from "../components/adminFrame";
+
 import Colors from "../res/colors";
 
 import { TabPanel } from "../components/tabs";
@@ -135,10 +137,15 @@ const ProductAddPage = () => {
           console.log("Res");
           setValid(true);
           axios
-            .post(`http://localhost:5000/products/createReview/${res.data.message}`)
+            .post(
+              `http://localhost:5000/products/createReview/${res.data.message}`
+            )
             .then((response) => {
               alert("Successfully Added Product.");
-            }).catch(err=>{alert("Product Review section was not created.\nError: " + err)});
+            })
+            .catch((err) => {
+              alert("Product Review section was not created.\nError: " + err);
+            });
         },
         (err) => {
           setValid(false);
@@ -154,379 +161,386 @@ const ProductAddPage = () => {
   };
 
   return (
-    <div id="root" style={styles.root}>
-      <Toolbar />
-      <div style={styles.container}>
-        <div style={{ ...styles.control, flex: 0.5 }}>
-          <span
-            style={{
-              display: "flex",
-              fontSize: 35,
-              color: Colors.primary,
-              fontWeight: 500,
-            }}
-          >
-            Create Product
-          </span>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{
-              // my: 1,
-              mt: 2,
-              color: Colors.primary,
-              borderColor: Colors.primary,
-            }}
-          >
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="title"
-                  name="title"
-                  label={
-                    title.trim() === "" && valid === false
-                      ? "Empty field"
-                      : "Product Title"
-                  }
-                  value={title}
-                  onChange={handleTitleChange}
-                  error={title.trim() === "" && valid === false}
-                />
-              </Grid>
-
-              <Grid item xs={12} sm={7}>
-                <FormControl fullWidth required defaultValue="">
-                  <InputLabel id="demo-simple-select-label">
-                    {category.trim() === "" && valid === false ? (
-                      <span style={{ color: "#D32F2F" }}>Unfilled</span>
-                    ) : (
-                      "Category"
-                    )}
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    name="category"
-                    value={category}
-                    label="category"
-                    error={category === "" && valid === false}
-                    onChange={handleCategoryChange}
-                  >
-                    <MenuItem value="sofa">Sofa</MenuItem>
-                    <MenuItem value="chair">Chair</MenuItem>
-                    <MenuItem value="bed">Bed</MenuItem>
-                    <MenuItem value="wardrobe">Wardrobe</MenuItem>
-                    <MenuItem value="decoration">Decoration</MenuItem>
-                    <MenuItem value="table">Table</MenuItem>
-                    <MenuItem value="shelf">Shelf</MenuItem>
-                    <MenuItem value="window">Window</MenuItem>
-                    <MenuItem value="door">Door</MenuItem>
-                    <MenuItem value="prefab">Prefab</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-
-              <Grid item xs={12} sm={5}>
-                <TextField
-                  name="deals"
-                  fullWidth
-                  id="deals"
-                  label="Offer Title"
-                  autoFocus
-                  value={deals}
-                  onChange={handleDealsChange}
-                />
-              </Grid>
-
-              <Grid item xs={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="price"
-                  name="price"
-                  autoComplete="price"
-                  label={
-                    (price.trim() === "" || Number(price) < 0) &&
-                    valid === false
-                      ? price.trim() === ""
-                        ? "Empty field"
-                        : "Invalid price."
-                      : "Price"
-                  }
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">Rs.</InputAdornment>
-                    ),
-                  }}
-                  value={price}
-                  onChange={handlePriceChange}
-                  error={
-                    (price.trim() === "" || Number(price) < 0) &&
-                    valid === false
-                  }
-                />
-              </Grid>
-
-              <Grid item xs={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="quantity"
-                  name="quantity"
-                  autoComplete="quantity"
-                  label={
-                    (quantity.trim() === "" || Number(quantity) < 0) &&
-                    valid === false
-                      ? quantity.trim() === ""
-                        ? "Empty field"
-                        : "Invalid quantity."
-                      : "Quantity"
-                  }
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">units</InputAdornment>
-                    ),
-                  }}
-                  value={quantity}
-                  onChange={handleQuantityChange}
-                  error={
-                    (quantity.trim() === "" || Number(quantity) < 0) &&
-                    valid === false
-                  }
-                />
-              </Grid>
-
-              <Grid item xs={5}>
-                <TextField
-                  fullWidth
-                  id="discountRate"
-                  name="discountRate"
-                  autoComplete="discountRate"
-                  label={
-                    discountRate.trim() !== "" &&
-                    (Number(discountRate) < 0 || Number(discountRate) > 100) &&
-                    valid === false
-                      ? "Invalid Discount Rate."
-                      : "Discount Rate"
-                  }
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">%</InputAdornment>
-                    ),
-                  }}
-                  value={discountRate}
-                  onChange={handleDiscountRateChange}
-                  error={
-                    discountRate.trim() !== "" &&
-                    (Number(discountRate) < 0 || Number(discountRate) > 100) &&
-                    valid === false
-                  }
-                />
-              </Grid>
-
-              <Grid item xs={12} sm={7}>
-                <TextField
-                  name="tags"
-                  fullWidth
-                  id="tags"
-                  label="Tags"
-                  autoFocus
-                  value={tags}
-                  onChange={handleTagsChange}
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <span style={{ fontSize: 22 }}>
-                  Discounted Price: {"\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0"} Rs.{" "}
-                  {discountPrice}
-                </span>
-              </Grid>
-            </Grid>
-          </Box>
-        </div>
-
-        <div style={{ display: "flex", flex: 0.07 }}></div>
-
-        <div
-          style={{
-            ...styles.control,
-            justifyContent: "space-around",
-            alignItems: "center",
-            flex: 0.43,
-            paddingTop: 35,
-            paddingBottom: 20,
-          }}
-        >
-          <span
-            style={{
-              display: "flex",
-              fontSize: 30,
-              width: "100%",
-              color: Colors.primary,
-              fontWeight: 500,
-            }}
-          >
-            Upload Product Images
-          </span>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              width: "100%",
-              justifyContent: "space-between",
-            }}
-            method="post"
-            enctype="multipart/form-data"
-          >
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={12}>
-                <input
-                  type="file"
-                  name="productPic0"
-                  class="form-control"
-                ></input>
-              </Grid>
-
-              <Grid item xs={12} sm={12}>
-                <input
-                  type="file"
-                  name="productPic1"
-                  class="form-control"
-                ></input>
-              </Grid>
-
-              <Grid item xs={12} sm={12}>
-                <input
-                  type="file"
-                  name="productPic2"
-                  class="form-control"
-                ></input>
-              </Grid>
-
-              <Grid item xs={12} sm={12}>
-                <input
-                  type="file"
-                  name="productPic3"
-                  class="form-control"
-                ></input>
-              </Grid>
-
-              <Grid item xs={12} sm={12}>
-                <input
-                  type="file"
-                  name="productPic4"
-                  class="form-control"
-                ></input>
-              </Grid>
-
-              <Grid item xs={12} sm={12}>
-                <input
-                  type="file"
-                  name="productPic5"
-                  class="form-control"
-                ></input>
-              </Grid>
-
-              <Grid item xs={12} sm={12}>
-                <input
-                  type="file"
-                  name="productPic6"
-                  class="form-control"
-                ></input>
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
+    <div style={{ display: "flex" }}>
+      <AdminFrame />
+      <div id="root" style={styles.root}>
+        <Toolbar />
+        <div style={styles.container}>
+          <div style={{ ...styles.control, flex: 0.5 }}>
+            <span
+              style={{
+                display: "flex",
+                fontSize: 35,
+                color: Colors.primary,
+                fontWeight: 500,
+              }}
+            >
+              Create Product
+            </span>
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleSubmit}
               sx={{
+                // my: 1,
                 mt: 2,
-                height: "50px",
-                backgroundColor: Colors.primary,
-                fontSize: "16px",
+                color: Colors.primary,
+                borderColor: Colors.primary,
               }}
             >
-              Add Product
-            </Button>
-          </Box>
-        </div>
-      </div>
-      <Box style={styles.tabbedPane}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <Tabs
-            variant="scrollable"
-            value={0}
-            aria-label="basic tabs example"
-            TabIndicatorProps={{ style: { background: "brown" } }}
-          >
-            <Tab
-              style={{ fontSize: 20 }}
-              label="Details & Overview"
-              index={0}
-            />
-          </Tabs>
-        </Box>
-        <TabPanel value={0} index={0}>
-          <div style={styles.tabPanel}>
-            <div
-              style={{
-                padding: 20,
-                borderRadius: 3,
-                fontSize: 18,
-                display: "flex",
-                flexDirection: "column",
-                width: "48%",
-                backgroundColor: "#F5F5F5",
-                boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
-              }}
-            >
-              <div style={{ fontSize: 20, fontWeight: 550 }}>Description</div>
-              <TextField
-                label="Input the products description."
-                multiline
-                rows={8}
-                style={{ marginTop: 15 }}
-                name="description"
-                id="description"
-                value={description}
-                onChange={handleDescriptionChange}
-              />
-            </div>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="title"
+                    name="title"
+                    label={
+                      title.trim() === "" && valid === false
+                        ? "Empty field"
+                        : "Product Title"
+                    }
+                    value={title}
+                    onChange={handleTitleChange}
+                    error={title.trim() === "" && valid === false}
+                  />
+                </Grid>
 
-            <div
+                <Grid item xs={12} sm={7}>
+                  <FormControl fullWidth required defaultValue="">
+                    <InputLabel id="demo-simple-select-label">
+                      {category.trim() === "" && valid === false ? (
+                        <span style={{ color: "#D32F2F" }}>Unfilled</span>
+                      ) : (
+                        "Category"
+                      )}
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      name="category"
+                      value={category}
+                      label="category"
+                      error={category === "" && valid === false}
+                      onChange={handleCategoryChange}
+                    >
+                      <MenuItem value="sofa">Sofa</MenuItem>
+                      <MenuItem value="chair">Chair</MenuItem>
+                      <MenuItem value="bed">Bed</MenuItem>
+                      <MenuItem value="wardrobe">Wardrobe</MenuItem>
+                      <MenuItem value="decoration">Decoration</MenuItem>
+                      <MenuItem value="table">Table</MenuItem>
+                      <MenuItem value="shelf">Shelf</MenuItem>
+                      <MenuItem value="window">Window</MenuItem>
+                      <MenuItem value="door">Door</MenuItem>
+                      <MenuItem value="prefab">Prefab</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={12} sm={5}>
+                  <TextField
+                    name="deals"
+                    fullWidth
+                    id="deals"
+                    label="Offer Title"
+                    autoFocus
+                    value={deals}
+                    onChange={handleDealsChange}
+                  />
+                </Grid>
+
+                <Grid item xs={6}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="price"
+                    name="price"
+                    autoComplete="price"
+                    label={
+                      (price.trim() === "" || Number(price) < 0) &&
+                      valid === false
+                        ? price.trim() === ""
+                          ? "Empty field"
+                          : "Invalid price."
+                        : "Price"
+                    }
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">Rs.</InputAdornment>
+                      ),
+                    }}
+                    value={price}
+                    onChange={handlePriceChange}
+                    error={
+                      (price.trim() === "" || Number(price) < 0) &&
+                      valid === false
+                    }
+                  />
+                </Grid>
+
+                <Grid item xs={6}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="quantity"
+                    name="quantity"
+                    autoComplete="quantity"
+                    label={
+                      (quantity.trim() === "" || Number(quantity) < 0) &&
+                      valid === false
+                        ? quantity.trim() === ""
+                          ? "Empty field"
+                          : "Invalid quantity."
+                        : "Quantity"
+                    }
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">units</InputAdornment>
+                      ),
+                    }}
+                    value={quantity}
+                    onChange={handleQuantityChange}
+                    error={
+                      (quantity.trim() === "" || Number(quantity) < 0) &&
+                      valid === false
+                    }
+                  />
+                </Grid>
+
+                <Grid item xs={5}>
+                  <TextField
+                    fullWidth
+                    id="discountRate"
+                    name="discountRate"
+                    autoComplete="discountRate"
+                    label={
+                      discountRate.trim() !== "" &&
+                      (Number(discountRate) < 0 ||
+                        Number(discountRate) > 100) &&
+                      valid === false
+                        ? "Invalid Discount Rate."
+                        : "Discount Rate"
+                    }
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">%</InputAdornment>
+                      ),
+                    }}
+                    value={discountRate}
+                    onChange={handleDiscountRateChange}
+                    error={
+                      discountRate.trim() !== "" &&
+                      (Number(discountRate) < 0 ||
+                        Number(discountRate) > 100) &&
+                      valid === false
+                    }
+                  />
+                </Grid>
+
+                <Grid item xs={12} sm={7}>
+                  <TextField
+                    name="tags"
+                    fullWidth
+                    id="tags"
+                    label="Tags"
+                    autoFocus
+                    value={tags}
+                    onChange={handleTagsChange}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <span style={{ fontSize: 22 }}>
+                    Discounted Price: {"\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0"}{" "}
+                    Rs. {discountPrice}
+                  </span>
+                </Grid>
+              </Grid>
+            </Box>
+          </div>
+
+          <div style={{ display: "flex", flex: 0.07 }}></div>
+
+          <div
+            style={{
+              ...styles.control,
+              justifyContent: "space-around",
+              alignItems: "center",
+              flex: 0.43,
+              paddingTop: 35,
+              paddingBottom: 20,
+            }}
+          >
+            <span
               style={{
-                padding: 20,
-                borderRadius: 3,
-                fontSize: 18,
                 display: "flex",
-                flexDirection: "column",
-                width: "40%",
-                backgroundColor: "#F5F5F5",
-                boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+                fontSize: 30,
+                width: "100%",
+                color: Colors.primary,
+                fontWeight: 500,
               }}
             >
-              <div style={{ fontSize: 20, fontWeight: 550 }}>Specification</div>
-              <TextField
-                label="Input the products specification."
-                multiline
-                rows={8}
-                style={{ marginTop: 15 }}
-                name="specification"
-                id="specification"
-                value={specification}
-                onChange={handleSpecificationChange}
-              />
-            </div>
+              Upload Product Images
+            </span>
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleSubmit}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                width: "100%",
+                justifyContent: "space-between",
+              }}
+              method="post"
+              enctype="multipart/form-data"
+            >
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={12}>
+                  <input
+                    type="file"
+                    name="productPic0"
+                    class="form-control"
+                  ></input>
+                </Grid>
+
+                <Grid item xs={12} sm={12}>
+                  <input
+                    type="file"
+                    name="productPic1"
+                    class="form-control"
+                  ></input>
+                </Grid>
+
+                <Grid item xs={12} sm={12}>
+                  <input
+                    type="file"
+                    name="productPic2"
+                    class="form-control"
+                  ></input>
+                </Grid>
+
+                <Grid item xs={12} sm={12}>
+                  <input
+                    type="file"
+                    name="productPic3"
+                    class="form-control"
+                  ></input>
+                </Grid>
+
+                <Grid item xs={12} sm={12}>
+                  <input
+                    type="file"
+                    name="productPic4"
+                    class="form-control"
+                  ></input>
+                </Grid>
+
+                <Grid item xs={12} sm={12}>
+                  <input
+                    type="file"
+                    name="productPic5"
+                    class="form-control"
+                  ></input>
+                </Grid>
+
+                <Grid item xs={12} sm={12}>
+                  <input
+                    type="file"
+                    name="productPic6"
+                    class="form-control"
+                  ></input>
+                </Grid>
+              </Grid>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{
+                  mt: 2,
+                  height: "50px",
+                  backgroundColor: Colors.primary,
+                  fontSize: "16px",
+                }}
+              >
+                Add Product
+              </Button>
+            </Box>
           </div>
-        </TabPanel>
-      </Box>
+        </div>
+        <Box style={styles.tabbedPane}>
+          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <Tabs
+              variant="scrollable"
+              value={0}
+              aria-label="basic tabs example"
+              TabIndicatorProps={{ style: { background: "brown" } }}
+            >
+              <Tab
+                style={{ fontSize: 20 }}
+                label="Details & Overview"
+                index={0}
+              />
+            </Tabs>
+          </Box>
+          <TabPanel value={0} index={0}>
+            <div style={styles.tabPanel}>
+              <div
+                style={{
+                  padding: 20,
+                  borderRadius: 3,
+                  fontSize: 18,
+                  display: "flex",
+                  flexDirection: "column",
+                  width: "48%",
+                  backgroundColor: "#F5F5F5",
+                  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+                }}
+              >
+                <div style={{ fontSize: 20, fontWeight: 550 }}>Description</div>
+                <TextField
+                  label="Input the products description."
+                  multiline
+                  rows={8}
+                  style={{ marginTop: 15 }}
+                  name="description"
+                  id="description"
+                  value={description}
+                  onChange={handleDescriptionChange}
+                />
+              </div>
+
+              <div
+                style={{
+                  padding: 20,
+                  borderRadius: 3,
+                  fontSize: 18,
+                  display: "flex",
+                  flexDirection: "column",
+                  width: "40%",
+                  backgroundColor: "#F5F5F5",
+                  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+                }}
+              >
+                <div style={{ fontSize: 20, fontWeight: 550 }}>
+                  Specification
+                </div>
+                <TextField
+                  label="Input the products specification."
+                  multiline
+                  rows={8}
+                  style={{ marginTop: 15 }}
+                  name="specification"
+                  id="specification"
+                  value={specification}
+                  onChange={handleSpecificationChange}
+                />
+              </div>
+            </div>
+          </TabPanel>
+        </Box>
+      </div>
     </div>
   );
 };

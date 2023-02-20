@@ -1,5 +1,5 @@
 import * as React from "react";
-import Colors from "../res/colors";
+import axios from "axios";
 
 import Carousel, { CarouselItem } from "../components/carousel";
 import CategoriesGrid from "../components/categoriesGrid";
@@ -8,16 +8,15 @@ import AboutCompany from "../components/aboutCompany";
 import ProductCarousel from "../components/productCarousel";
 
 import Images from "../res/images";
+import Colors from "../res/colors";
 
 const HomePage = () => {
-
+  const [popularProducts, setPopularProducts] = React.useState([]);
+  const [hotProducts, setHotProducts] = React.useState([]);
   const OfferCarouselData = [
     {
       children: (
-        <a
-          href="offers/furnitureMania"
-          style={{ width: "100%", height: "80vh" }}
-        >
+        <a href="search/?all:mania" style={{ width: "100%", height: "80vh" }}>
           <img
             style={{ width: "100%", height: "80vh" }}
             src={Images.FurnitureManiaOffer}
@@ -29,7 +28,7 @@ const HomePage = () => {
 
     {
       children: (
-        <a href="offers/bigSaleOffer" style={{ width: "100%", height: "80vh" }}>
+        <a href="search/?all:mega" style={{ width: "100%", height: "80vh" }}>
           <img
             style={{ width: "100%", height: "80vh" }}
             src={Images.BigSaleOffer}
@@ -41,10 +40,7 @@ const HomePage = () => {
 
     {
       children: (
-        <a
-          href="offers/whyOnlyDiwali"
-          style={{ width: "100%", height: "80vh" }}
-        >
+        <a href="search/?all:offer" style={{ width: "100%", height: "80vh" }}>
           <img
             style={{ width: "100%", height: "80vh" }}
             src={Images.WhyDiwaliOffer}
@@ -85,6 +81,26 @@ const HomePage = () => {
     },
   ];
 
+  axios
+    .get(`http://localhost:5000/products/ten/popular`)
+    .then((response) => setPopularProducts(response.data))
+    .catch();
+
+  axios
+    .get(`http://localhost:5000/products/ten/hotDeals`)
+    .then((response) => setHotProducts(response.data))
+    .catch();
+  // React.useEffect(async () => {
+  //   await axios
+  //     .get(`http://localhost:5000/products/all/popular`)
+  //     .then((response) => setPopularProducts(response.data))
+  //     .catch();
+  //   await axios
+  //     .get(`http://localhost:5000/products/all/hotDeals`)
+  //     .then((response) => setHotProducts(response.data))
+  //     .catch();
+  // }, []);
+
   return (
     <div id="root" style={Styles.root}>
       <Carousel width="100%" transformWidth="100" delay="1700">
@@ -115,13 +131,13 @@ const HomePage = () => {
         <div style={{ ...Styles.titleUnderline, width: 170 }}></div>
       </div>
 
-      <ProductCarousel />
+      <ProductCarousel products={popularProducts} />
 
       <div style={Styles.container}>
         <span style={Styles.title}>HOT DEALS</span>
         <div style={{ ...Styles.titleUnderline, width: 120 }}></div>
       </div>
-      <ProductCarousel />
+      <ProductCarousel products={hotProducts} />
 
       <AboutCompany />
     </div>

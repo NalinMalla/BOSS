@@ -27,7 +27,6 @@ import NavBar from "../components/navBar";
 import CustomModal from "../components/CustomModal";
 import SiteMap from "../components/siteMap";
 import Copyright from "../components/copyright";
-import AdminFrame from "../components/adminFrame";
 import AdminOrders from "../screens/adminOrders";
 import AdminProducts from "../screens/adminProducts";
 import OrderPage from "../screens/orderPage";
@@ -68,8 +67,8 @@ const Router = () => {
   return isAdmin ? (
     <div style={{height: "100vh"}}>
       <BrowserRouter>
-        <div style={{ display: "flex" }}>
-          <AdminFrame />
+        {/* <div style={{ display: "flex" }}>
+          <AdminFrame />  */}
           <Routes>
             {/* <Route path="/" element={<Dashboard />} /> */}
             <Route path="logOut" element={<Logout />} />
@@ -80,7 +79,7 @@ const Router = () => {
             <Route path="products" element={<AdminProducts />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
-        </div>
+        {/* </div> */}
         <CopyrightWaterMark sx={{ pt: 4, pb: 2}} />
       </BrowserRouter>
     </div>

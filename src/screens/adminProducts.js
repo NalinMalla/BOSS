@@ -5,6 +5,7 @@ import axios from "axios";
 import Toolbar from "@mui/material/Toolbar";
 
 import FilterList from "../components/filterList";
+import AdminFrame from "../components/adminFrame";
 import ProductList from "../components/productList";
 
 import Colors from "../res/colors";
@@ -120,76 +121,79 @@ const AdminProducts = () => {
   }, [minPrice, maxPrice]);
 
   return (
-    <div id="root" style={styles.root}>
-      <div style={{ ...styles.wrapper }}>
-        <div
-          style={{
-            ...styles.container,
-            width: "80%",
-            background: "#FAFAFA",
-            // boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-            // borderRadius: 3,
-            justifyContent: "flex-start",
-            // marginTop: 20,
-          }}
-        >
-          <Toolbar />
+    <div style={{ display: "flex" }}>
+      <AdminFrame />
+      <div id="root" style={styles.root}>
+        <div style={{ ...styles.wrapper }}>
           <div
             style={{
-              display: "flex",
-              flexDirection: "column",
-              width: "92%",
-              marginTop: 20,
-              color: Colors.primary,
-              fontSize: 28,
-              fontWeight: 500,
+              ...styles.container,
+              width: "80%",
+              background: "#FAFAFA",
+              // boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+              // borderRadius: 3,
+              justifyContent: "flex-start",
+              // marginTop: 20,
             }}
           >
-            Search Result for "{search}" :
-          </div>
-          {!isLoaded ? (
+            <Toolbar />
             <div
               style={{
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "100%",
-                marginTop: 80,
-              }}
-            >
-              <Audio
-                height="100"
-                width="100"
-                radius="12"
-                color={Colors.primary}
-                ariaLabel="three-dots-loading"
-                wrapperStyle
-                wrapperClass
-              />
-
-              <div style={{ fontSize: 22, fontWeight: 500, marginTop: 10 }}>
-                Loading...
-              </div>
-            </div>
-          ) : (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
                 width: "92%",
                 marginTop: 20,
+                color: Colors.primary,
+                fontSize: 28,
+                fontWeight: 500,
               }}
             >
-              <ProductList
-                products={products}
-                counterDisabled={true}
-                counterDisplay={"none"}
-              />
+              Search Result for "{search}" :
             </div>
-          )}
+            {!isLoaded ? (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  marginTop: 80,
+                }}
+              >
+                <Audio
+                  height="100"
+                  width="100"
+                  radius="12"
+                  color={Colors.primary}
+                  ariaLabel="three-dots-loading"
+                  wrapperStyle
+                  wrapperClass
+                />
+
+                <div style={{ fontSize: 22, fontWeight: 500, marginTop: 10 }}>
+                  Loading...
+                </div>
+              </div>
+            ) : (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  width: "92%",
+                  marginTop: 20,
+                }}
+              >
+                <ProductList
+                  products={products}
+                  counterDisabled={true}
+                  counterDisplay={"none"}
+                />
+              </div>
+            )}
+          </div>
+          <FilterList setMaxPrice={setMaxPrice} setMinPrice={setMinPrice} />
         </div>
-        <FilterList setMaxPrice={setMaxPrice} setMinPrice={setMinPrice} />
       </div>
     </div>
   );
